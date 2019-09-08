@@ -2,7 +2,7 @@ Metadata-Version: 1.2
 Name: plateflex
 Version: 0.0.1
 Summary: Python package for estimating lithospheric elastic thickness
-Home-page: UNKNOWN
+Home-page: https://github.com/paudetseis/PlateFlex
 Author: Pascal Audet
 Author-email: pascal.audet@uottawa.ca
 Maintainer: Pascal Audet

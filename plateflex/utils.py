@@ -1,6 +1,9 @@
 import numpy as np
 from plateflex import conf as cf
 
+def npow2(x):
+    return 1 if x==0 else 2**(x-1).bit_length()
+
 #------------------------------------------------
 #     Subroutine lam2k
 #

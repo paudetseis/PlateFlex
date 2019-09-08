@@ -250,40 +250,29 @@
 !     Puts half taper function on four sides
 !     of matrix
 !---------------------------------------------
-      SUBROUTINE taper_data(dat,maxx,maxy,tap)
+      SUBROUTINE taper_data(dat,maxx,maxy,maxt)
       IMPLICIT NONE
       REAL :: pi = 3.141592653589793
-      INTEGER :: maxtx,maxty,tap,it,ix,iy,maxx,maxy
+      INTEGER :: maxt,it,ix,iy,maxx,maxy
       REAL :: taperx(maxx/2),tapery(maxy/2)
       REAL :: dat(maxx,maxy)
 
       taperx=0.
       tapery=0.
-      maxtx=maxx/2
-      maxty=maxy/2
-!      maxt=10
-!      print*,maxtx,maxty,maxx,maxy
-      SELECT CASE(tap)
-      CASE(1)      !half Hanning window
-         DO it=1,maxty
-            tapery(it)=0.5*(1.-COS(pi*(it-1)/maxty))
-         END DO
-         DO it=1,maxtx
-            taperx(it)=0.5*(1.-COS(pi*(it-1)/maxtx))
-         END DO
-      CASE(2)      !half Welch window
-!         do it=1,maxt
-!            taper(it)=1-((0.5*it-.5*maxt)/(0.5*maxt))**2
-!         END DO
-      END SELECT
+      DO it=1,maxt
+        tapery(it)=0.5*(1.-COS(pi*(it-1)/maxt))
+      END DO
+      DO it=1,maxt
+        taperx(it)=0.5*(1.-COS(pi*(it-1)/maxt))
+      END DO
       DO iy=1,maxy
-         DO it=1,maxtx
+         DO it=1,maxt
             dat(it,iy)=taperx(it)*dat(it,iy)
             dat(maxx+1-it,iy)=taperx(it)*dat(maxx+1-it,iy)
          END DO
       END DO
       DO ix=1,maxx
-         DO it=1,maxty
+         DO it=1,maxt
             dat(ix,it)=tapery(it)*dat(ix,it)
             dat(ix,maxy+1-it)=tapery(it)*dat(ix,maxy+1-it)
          END DO
@@ -456,4 +445,6 @@
         nprev=n*nprev
       end do
       return
-      END
+      END SUBROUTINE fourn
+
+

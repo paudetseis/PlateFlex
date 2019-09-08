@@ -11,7 +11,7 @@ setup(
     author              = 'Pascal Audet',
     maintainer          = 'Pascal Audet',
     author_email        = 'pascal.audet@uottawa.ca',
-    # url                 = 'https://github.com/paudetseis/PlateFlex', 
+    url                 = 'https://github.com/paudetseis/PlateFlex', 
     # download_url        = 'https://github.com/paudetseis/Telewavesim/archive/0.1.0.tar.gz',
     classifiers         = [
         'Development Status :: 3 - Alpha',
