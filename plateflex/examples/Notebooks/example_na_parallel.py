@@ -42,7 +42,7 @@ dy = float(pars[2])
 grid1 = grid1.reshape(nx, ny)[::-1]
 grid2 = grid2.reshape(nx, ny)[::-1]
 
-pf.plotting.plot_real_grid(grid1)
+# pf.plotting.plot_real_grid(grid1)
 # pf.plotting.plot_real_grid(grid2)
 
 ns, k = pf.utils.lam2k(nx, ny, dx, dy)

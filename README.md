@@ -6,13 +6,13 @@ The flexure of elastic plates is a central concept in the theory of plate tecton
 where the Earth's lithosphere (crust and uppermost mantle) reacts to applied loads 
 by bending (i.e., flexural isostasy). The plate elasticity is parameterized by the 
 *flexural rigidity*, which is the product of Young's modulus with the elastic plate 
-thickness. Estimating the *effective* elastic thickness (\\T_e\\) of the lithosphere 
+thickness. Estimating the *effective* elastic thickness ($$T_e$$) of the lithosphere 
 (thickness 
 of an equivalent ideal elastic plate) can be done by modeling the cross-spectral 
 properties (admittance and coherence) between topography and gravity anomaly data, 
 which are proxies for the distribution of flexurally compensated surface and subsurface 
 loads. These spectral properties can be calculated using various different spectral
-estimation techniques - however, to map \\T_e\\ variations it is important to use
+estimation techniques - however, to map $$T_e$$ variations it is important to use
 analysis windows small enough for good spatial resolution, but large enough
 to capture the effect of flexure at long wavelengths. 
 
@@ -36,9 +36,9 @@ The current version was developed using **Python3.7**
 Also, the following packages are required:
 
 - [`gfortran`](https://gcc.gnu.org/wiki/GFortran) (or any Fortran compiler)
-- [`numpy`]
-- [`pymc3`]
-- [`matplotlib`]
+- [`numpy`](https://numpy.org)
+- [`pymc3`](https://docs.pymc.io)
+- [`matplotlib`](https://matplotlib.org)
 
 ### Installing using pip
 

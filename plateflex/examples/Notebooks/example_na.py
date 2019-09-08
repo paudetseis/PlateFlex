@@ -9,8 +9,8 @@ from theano.compile.ops import as_op
 import theano.tensor as tt
 
 cf_f.k0 = cf.k0
-cf.samples=1000
-cf.tunes=1000
+cf.samples=500
+cf.tunes=500
 
 pars = np.loadtxt('../data/params.txt')
 grid1 = np.loadtxt('../data/retopo.txt')
@@ -24,7 +24,7 @@ dy = float(pars[2])
 grid1 = grid1.reshape(nx, ny)[::-1]
 grid2 = grid2.reshape(nx, ny)[::-1]
 
-# pf.plotting.plot_real_grid(grid1)
+pf.plotting.plot_real_grid(grid1)
 # pf.plotting.plot_real_grid(grid2)
 
 ns, k = pf.utils.lam2k(nx, ny, dx, dy)
@@ -48,6 +48,8 @@ F_grid = np.zeros(grid1.shape)
 
 for (x,y), value in np.ndenumerate(grid1):
     print(x,y)
+    if grid1[x,y] < 0.:
+        continue
     adm1d = np.real(admit[x,y,:])
     cor1d = np.real(corr[x,y,:])
     coh1d = coh[x,y,:]
