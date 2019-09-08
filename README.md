@@ -11,7 +11,7 @@ thickness. Estimating the *effective* elastic thickness
 of an equivalent ideal elastic plate) can be done by modeling the cross-spectral 
 properties (admittance and coherence) between topography and gravity anomaly data, 
 which are proxies for the distribution of flexurally compensated surface and subsurface 
-loads. These spectral properties can be calculated using various different spectral
+loads. These spectral properties can be calculated using different spectral
 estimation techniques - however, to map <i>T<sub>e</sub></i> variations it is 
 important to use
 analysis windows small enough for good spatial resolution, but large enough
