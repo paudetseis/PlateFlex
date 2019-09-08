@@ -9,6 +9,8 @@ from theano.compile.ops import as_op
 import theano.tensor as tt
 
 cf_f.k0 = cf.k0
+cf.samples=1000
+cf.tunes=1000
 
 pars = np.loadtxt('../data/params.txt')
 grid1 = np.loadtxt('../data/retopo.txt')
@@ -41,24 +43,26 @@ ws_grid2, ews_grid2 = pf.wavelet.scalogram(wt_grid2)
 
 admit, eadmit, corr, ecorr, coh, ecohe = pf.wavelet.admit_corr(wt_grid1, wt_grid2)
 
-adm = np.real(admit[200,200,:])
-cor = np.real(corr[200,200,:])
-coh = coh[200,200,:]
-eadm = eadmit[200,200,:]
-ecor = ecorr[200,200,:]
-ecoh = ecohe[200,200,:]
+te_grid = np.zeros(grid1.shape)
+F_grid = np.zeros(grid1.shape)
 
-cf.samples=1000
-cf.tunes=1000
+for (x,y), value in np.ndenumerate(grid1):
+    print(x,y)
+    adm1d = np.real(admit[x,y,:])
+    cor1d = np.real(corr[x,y,:])
+    coh1d = coh[x,y,:]
+    eadm = eadmit[x,y,:]
+    ecor = ecorr[x,y,:]
+    ecoh = ecohe[x,y,:]
+    trace, map_estimate, summary = \
+        pf.estimate.bayes_real_estimate(k, adm1d, cor1d, coh1d, typ='admit_coh')
+    # pf.plotting.plot_trace_stats(trace)
 
-trace, map_estimate, summary = pf.estimate.bayes_real_estimate(k, adm, cor, coh, typ='admit_coh')
+    mte, ste, bte, mF, sF, bF = pf.estimate.get_values(map_estimate, summary)
+    te_grid[x,y] = mte
+    F_grid[x,y] = mF
+    # padm, pcor, pcoh = pf.flexure.real_xspec_functions(k, mte, mF, 90.)
+    # pf.plotting.plot_fitted(k, adm, eadm, coh, ecoh, padm, pcoh)
 
-mte, ste, bte, mF, sF, bF = pf.estimate.get_values(map_estimate, summary)
-
-pf.plotting.plot_trace_stats(trace)
-
-mte = np.mean(trace['Te'])
-mF = np.mean(trace['F'])
-padm, pcor, pcoh = pf.flexure.real_xspec_functions(k, mte, mF, 90.)
-
-pf.plotting.plot_fitted(k, adm, eadm, coh, ecoh, padm, pcoh)
+pf.plotting.plot_real_grid(te_grid)
+pf.plotting.plot_real_grid(F_grid)

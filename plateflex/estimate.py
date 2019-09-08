@@ -66,7 +66,7 @@ def bayes_real_estimate(k, adm, cor, coh, typ='real_admit'):
                 observed=admit_coh)
 
         # Sample the Posterior distribution
-        trace = pm.sample(cf.samples, tune=cf.tunes, cores=4)
+        trace = pm.sample(cf.samples, tune=cf.tunes, cores=1)
 
         # Get Max a porteriori estimate
         map_estimate = pm.find_MAP()
