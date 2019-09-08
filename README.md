@@ -7,12 +7,12 @@ where the Earth's lithosphere (crust and uppermost mantle) reacts to applied loa
 by bending (i.e., flexural isostasy). The plate elasticity is parameterized by the 
 *flexural rigidity*, which is the product of Young's modulus with the elastic plate 
 thickness. Estimating the *effective* elastic thickness 
-(<i> T<sub>e</sub> </i>) of the lithosphere (thickness 
+(<i>T<sub>e</sub></i>) of the lithosphere (thickness 
 of an equivalent ideal elastic plate) can be done by modeling the cross-spectral 
 properties (admittance and coherence) between topography and gravity anomaly data, 
 which are proxies for the distribution of flexurally compensated surface and subsurface 
 loads. These spectral properties can be calculated using various different spectral
-estimation techniques - however, to map <i> T<sub>e</sub> </i> variations it is 
+estimation techniques - however, to map <i>T<sub>e</sub></i> variations it is 
 important to use
 analysis windows small enough for good spatial resolution, but large enough
 to capture the effect of flexure at long wavelengths. 
