@@ -67,7 +67,7 @@
       COMPLEX :: daughter(nx,ny)
 
 !
-!-----Morlet wavelet in Fourier domain
+! Morlet wavelet in Fourier domain
 !
       kx0=k0*cos(a)
       ky0=k0*sin(a)
@@ -84,6 +84,67 @@
 
       RETURN
       END SUBROUTINE wave_function
+
+
+!----------------------------------------------------------
+!     Subroutine jackknife_1d_admit
+!
+!     Calculates Jackknife error on admittance.
+!----------------------------------------------------------
+      SUBROUTINE jackknife_1d_sgram(ss,nx,ny,na,ns,ess)
+      IMPLICIT NONE
+      INTEGER :: nx,ny,na,ns,ix,iy,ia,ia2,i_k,is
+      REAL :: ss(nx,ny,na,ns),p1
+
+      REAL :: mss,dss,ssj(na-1),ssj2(na),ess(nx,ny,ns)
+
+      DO is=1,ns
+      DO iy=1,ny
+      DO ix=1,nx
+      DO ia=1,na
+
+        i_k=0
+        p1=0.
+
+        DO ia2=1,na
+
+          IF (ia2==ia) THEN
+            CYCLE
+          END IF
+
+          i_k=i_k+1
+
+          p1=p1+ss(ix,iy,ia2,is)
+
+          IF (p1.ne.0) THEN
+            ssj(i_k)=p1
+          ELSE
+            ssj(i_k)=0.
+          END IF
+
+        END DO
+
+        ssj2(ia)=SUM(ssj)/FLOAT(na-1)
+
+      END DO
+
+      mss=SUM(ssj2)/FLOAT(na)
+      dss=0.
+
+      DO ia=1,na
+        dss=dss+(ssj2(ia)-mss)**2
+      END DO
+
+      dss=(SQRT(dss*FLOAT(na-1)/FLOAT(na)))
+      IF (ISNAN(dss)) dss=0.
+
+      ess(ix,iy,is)=dss
+      END DO
+      END DO
+      END DO
+
+      RETURN
+      END SUBROUTINE jackknife_1d_sgram
 
 
 !----------------------------------------------------------
@@ -138,8 +199,6 @@
         dad=dad+(ad2(ia)-mad)**2
       END DO
 
-!      dad=dad/FLOAT(na)
-!      dad=(SQRT(dad*FLOAT(na-1)/FLOAT(na)))
       dad=(SQRT(dad*FLOAT(na-1)/FLOAT(na)))
       IF (ISNAN(dad)) dad=0.
 
@@ -178,7 +237,7 @@
         DO ia2=1,na
 
           IF (ia2==ia) THEN
-            !Y!LE
+            CYCLE
           END IF
 
           i_k=i_k+1
@@ -206,8 +265,6 @@
         dco=dco+(co2(ia)-mco)**2
       END DO
 
-!      dco=dco/FLOAT(na)
-!      dco=(SQRT(dco*FLOAT(na-1)/FLOAT(na)))
       dco=(SQRT(dco*FLOAT(na-1)/FLOAT(na)))
       IF (ISNAN(dco)) dco=0.
 
@@ -218,6 +275,82 @@
 
       RETURN
       END SUBROUTINE jackknife_1d_corr
+
+
+!----------------------------------------------------------
+!     Subroutine jackknife_1d_corr
+!
+!     Calculates Jackknife error on coherence.
+!----------------------------------------------------------
+      SUBROUTINE jackknife_admit_coh(sxp,ss1,ss2,nx,ny,na,ns,sad,sco)
+      IMPLICIT NONE
+      INTEGER :: nx,ny,na,ns,ix,iy,ia,ia2,i_k,is
+      REAL :: ss1(nx,ny,na,ns),ss2(nx,ny,na,ns),p1,p2
+      COMPLEX :: sxp(nx,ny,na,ns),xp
+
+      REAL :: mco,dco,co(na-1),co2(na),sco(nx,ny,ns)
+      REAL :: mad,dad,ad(na-1),ad2(na),sad(nx,ny,ns)
+
+      DO is=1,ns
+      DO iy=1,ny
+      DO ix=1,nx
+      DO ia=1,na
+
+        i_k=0
+        p1=0.
+        p2=0.
+        xp=CMPLX(0.,0.)
+
+        DO ia2=1,na
+
+          IF (ia2==ia) THEN
+            CYCLE
+          END IF
+
+          i_k=i_k+1
+
+          p1=p1+ss1(ix,iy,ia2,is)
+          p2=p2+ss2(ix,iy,ia2,is)
+          xp=xp+sxp(ix,iy,ia2,is)
+
+          IF ((p1.ne.0).and.(p2.ne.0)) THEN
+            co(i_k)=CABS(xp*CONJG(xp))/(p1*p2)
+            ad(i_k)=REAL(xp)/p1
+          ELSE
+            co(i_k)=0.
+            ad(i_k)=0.
+          END IF
+
+        END DO
+
+        co2(ia)=SUM(co)/FLOAT(na-1)
+        ad2(ia)=SUM(ad)/FLOAT(na-1)
+
+      END DO
+
+      mco=SUM(co2)/FLOAT(na)
+      mad=SUM(ad2)/FLOAT(na)
+      dco=0.
+      dad=0.
+
+      DO ia=1,na
+        dco=dco+(co2(ia)-mco)**2
+        dad=dad+(ad2(ia)-mad)**2
+      END DO
+
+      dco=(SQRT(dco*FLOAT(na-1)/FLOAT(na)))
+      dad=(SQRT(dad*FLOAT(na-1)/FLOAT(na)))
+      IF (ISNAN(dco)) dco=0.
+      IF (ISNAN(dad)) dad=0.
+
+      sco(ix,iy,is)=dco
+      sad(ix,iy,is)=dad
+      END DO
+      END DO
+      END DO
+
+      RETURN
+      END SUBROUTINE jackknife_admit_coh
 
 
 !----------------------------------------------------------

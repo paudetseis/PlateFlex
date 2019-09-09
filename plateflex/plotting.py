@@ -28,14 +28,21 @@ import seaborn as sns
 sns.set()
 
 
-def plot_real_grid(grid, log=False):
+def plot_real_grid(grid, title=None, log=False, mask=False):
 
     if log:
         grid = np.log(grid)
 
+    if mask:
+        grid = np.ma.masked_where(grid==0., grid)
+
     plt.figure()
     plt.imshow(grid, origin='lower', cmap='viridis')
     plt.colorbar()
+
+    if title:
+        plt.title(title)
+    
     plt.show()
 
 

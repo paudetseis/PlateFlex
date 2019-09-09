@@ -20,7 +20,7 @@ setup(
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7'],
-    install_requires    = ['numpy>=1.15', 'matplotlib'],
+    install_requires    = ['numpy>=1.15', 'pymc3', 'matplotlib', 'seaborn'],
     python_requires     = '>=3.5',
     tests_require       = ['pytest'],
     ext_modules         = ext,

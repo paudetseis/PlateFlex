@@ -30,20 +30,26 @@ import plateflex.conf as cf
 
 def flexfilter1D(psi, zeta, sigma, typ):
     if typ=='top':
-        return -(cf.rhoc/cf.drho)*(1. + psi/cf.drho/cf.g + zeta/cf.drho/cf.g + 
-            sigma/cf.drho/cf.g)**(-1.)
+        return -((cf.rhoc-cf.rhof)/(cf.rhom-cf.rhoc))*(1. + \
+            psi/(cf.rhom-cf.rhoc)/cf.g + \
+            zeta/(cf.rhom-cf.rhoc)/cf.g + 
+            sigma/(cf.rhom-cf.rhoc)/cf.g)**(-1.)
     elif typ=='bot':
-        return -(cf.rhoc/cf.drho)*(1. + psi/cf.rhoc/cf.g + zeta/cf.rhoc/cf.g + 
-            sigma/cf.rhoc/cf.g)
+        return -((cf.rhoc-cf.rhof)/(cf.rhom-cf.rhoc))*(1. + \
+            psi/(cf.rhoc-cf.rhof)/cf.g + \
+            zeta/(cf.rhoc-cf.rhof)/cf.g + 
+            sigma/(cf.rhoc-cf.rhof)/cf.g)
 
 
-def decon1D(theta, phi, k):
+def decon1D(theta, phi, k, A):
     
     mu_h = 1./(1.-theta)
     mu_w = 1./(phi-1.)
-    nu_h = 2.*np.pi*cf.G*(cf.drho*theta*np.exp(-k*cf.zc))
+    nu_h = 2.*np.pi*cf.G*(A*(cf.rhoc-cf.rhof)*np.exp(-k*cf.wd) + \
+        (cf.rhom-cf.rhoc)*theta*np.exp(-k*(cf.zc+cf.wd)))
     nu_h = nu_h/(1.-theta)
-    nu_w = 2.*np.pi*cf.G*(cf.drho*phi*np.exp(-k*cf.zc))
+    nu_w = 2.*np.pi*cf.G*(A*(cf.rhoc-cf.rhof)*np.exp(-k*cf.wd) + \
+        (cf.rhom-cf.rhoc)*phi*np.exp(-k*(cf.zc+cf.wd)))
     nu_w = nu_w/(phi-1.)
 
     return mu_h, mu_w, nu_h, nu_w
@@ -51,7 +57,7 @@ def decon1D(theta, phi, k):
 
 def tr_func(mu_h, mu_w, nu_h, nu_w, F, alpha):
     
-    r = cf.rhoc/cf.drho
+    r = (cf.rhoc-cf.rhof)/(cf.rhom-cf.rhoc)
     f = F/(1. - F)
     hg = nu_h*mu_h + nu_w*mu_w*(f**2)*(r**2) + (nu_h*mu_w + nu_w*mu_h)*f*r*np.cos(alpha) + \
         1j*(nu_h*mu_w - nu_w*mu_h)*f*r*np.sin(alpha)
@@ -61,10 +67,10 @@ def tr_func(mu_h, mu_w, nu_h, nu_w, F, alpha):
     corr = hg/np.sqrt(hh)/np.sqrt(gg)
     coh = np.real(corr)**2
     
-    return admit, corr, coh
+    return admit, coh
 
 
-def real_xspec_functions(k, Te, F, alpha):
+def real_xspec_functions(k, Te, F, alpha=np.pi/2., wd=0.):
     """
     Calculate analytical expressions for the real component of admittance, 
     coherency and coherence functions. 
@@ -73,15 +79,29 @@ def real_xspec_functions(k, Te, F, alpha):
         k (np.ndarray)  : Wavenumbers (rad/m)
         Te (float)      : Effective elastic thickness (km)
         F (float)       : Subruface-to-surface load ratio [0, 1[
-        alpha (float)   : Phase difference between initial applied loads (deg)
+        alpha (float, optional)   : Phase difference between initial applied loads (rad)
+        boug (bool, optional)     : Bouguer gravity used (False -> free air gravity is used)
+        water (bool, optional)    : Include water layer (False -> on land)
+        wd (float, optional)      : Water layer thickness 
 
     Returns:
         (tuple): tuple containing:
-            * admit (np.ndarray)    : Real admittance function (shape ``len(k)``)
-            * corr (np.ndarray)     : Real coherency function (shape ``len(k)``)
+            * adm (np.ndarray)    : Real admittance function (shape ``len(k)``)
             * coh (np.ndarray)      : Coherence functions (shape ``len(k)``)
 
     """
+
+    if cf.boug:
+        A = 0.
+    else:
+        A = 1.
+
+    if cf.water:
+        cf.rhof = cf.rhow
+        cf.wd = wd*1.e3
+    else:
+        cf.rhof = cf.rhoa
+        cf.wd = 0.
 
     # Te in meters
     Te = Te*1.e3
@@ -92,21 +112,16 @@ def real_xspec_functions(k, Te, F, alpha):
     # Isostatic function
     psi = D*k**4.
 
-    # Get alpha in radians
-    alpha = alpha*np.pi/180.
-
     # Flexural filters
-    theta = flex.flexfilter1D(psi, 0., 0., 'top')
-    phi = flex.flexfilter1D(psi, 0., 0., 'bot')
-    mu_h, mu_w, nu_h, nu_w = flex.decon1D(theta, phi, k)
+    theta = flexfilter1D(psi, 0., 0., 'top')
+    phi = flexfilter1D(psi, 0., 0., 'bot')
+    mu_h, mu_w, nu_h, nu_w = decon1D(theta, phi, k, A)
 
     # Get spectral functions
-    admit, corr, coh = flex.tr_func(mu_h, mu_w, nu_h, nu_w, F, alpha)
+    adm, coh = tr_func(mu_h, mu_w, nu_h, nu_w, F, alpha)
 
-    admit = np.real(admit)
-    corr = np.real(corr)
+    # Get real-valued admittance
+    adm = np.real(adm)
 
-    return admit, corr, coh
+    return adm, coh
 
-
-    return admit, corr, coh

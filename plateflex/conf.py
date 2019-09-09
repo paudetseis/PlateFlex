@@ -35,8 +35,12 @@ Variables are:
         - g (float): Gravitational acceleration (9.81 m/s^2)
         - G (float): Gravitational constant (6.67e-11*1.e5 mGal)
         - zc (float): Crustal thickness (35.e3 m)
-        - drho (float): Density contrast at crust-mantle boundary (500. kg/m^3)
+        - rhom (float): Uppermost mantle density (3200. kg/m^3)
         - rhoc (float): Crustal density (2700. kg/m^3)
+        - rhoa (float): Air density (0. kg/m^3)
+        - rhow (float): Water density (1030. kg/m^3)
+        - rhof (float): Fluid density at topo/fluid interface (rhoa or rhow)
+        - wd (float): Water depth (1.e3 m)
 
     ``bayes parameters``:
         - samples (int): Number of samples in single MCMC chain
@@ -50,14 +54,23 @@ k0 = 5.336
 p = 0.85
 
 # Earth parameters
-global E, nu, g, G, zc, drho, rhoc
+global E, nu, g, G, zc, drho, rhoc, wd
 E = 1.e11
 nu = 0.25
 g = 9.81
 G = 6.67e-11*1.e5
 zc = 35.*1.e3
-drho = 500.
+rhom = 3200.
 rhoc = 2700.
+rhow = 1030.
+rhoa = 0.
+rhof = rhoa
+wd = 0.
+
+# flex analysis
+global boug, water
+boug = True
+water = False
 
 # bayes parameters
 global samples, tunes

@@ -34,9 +34,38 @@ from theano.compile.ops import as_op
 import theano.tensor as tt
 
 
+@as_op(itypes=[tt.dvector, tt.dscalar, tt.dscalar], 
+    otypes=[tt.dvector, tt.dvector])
+def real_xspec_functions_noalpha(k, Te, F):
+    """
+    Calculate analytical expressions for the real component of admittance, 
+    coherency and coherence functions. 
+
+    Args:
+        k (np.ndarray)  : Wavenumbers (rad/m)
+        Te (float)      : Effective elastic thickness (km)
+        F (float)       : Subruface-to-surface load ratio [0, 1[
+
+    Returns:
+        (tuple): tuple containing:
+            * adm (np.ndarray)    : Real admittance function (shape ``len(k)``)
+            * coh (np.ndarray)      : Coherence functions (shape ``len(k)``)
+
+    Note:
+        This function has a ``theano.compile.ops.as_op`` decorator, which
+        enables its use as ``pymc3`` variable.
+
+    """
+
+    # Get spectral functions
+    adm, coh = flex.real_xspec_functions(k, Te, F)
+
+    return adm, coh
+
+
 @as_op(itypes=[tt.dvector, tt.dscalar, tt.dscalar, tt.dscalar], 
-    otypes=[tt.dvector, tt.dvector, tt.dvector])
-def real_xspec_functions(k, Te, F, alpha):
+    otypes=[tt.dvector, tt.dvector])
+def real_xspec_functions_alpha(k, Te, F, alpha):
     """
     Calculate analytical expressions for the real component of admittance, 
     coherency and coherence functions. 
@@ -49,8 +78,7 @@ def real_xspec_functions(k, Te, F, alpha):
 
     Returns:
         (tuple): tuple containing:
-            * admit (np.ndarray)    : Real admittance function (shape ``len(k)``)
-            * corr (np.ndarray)     : Real coherency function (shape ``len(k)``)
+            * adm (np.ndarray)    : Real admittance function (shape ``len(k)``)
             * coh (np.ndarray)      : Coherence functions (shape ``len(k)``)
 
     Note:
@@ -59,42 +87,23 @@ def real_xspec_functions(k, Te, F, alpha):
 
     """
 
-    # Te in meters
-    Te = Te*1.e3
-
-    # Flexural rigidity
-    D = cf.E*Te**3/12./(1.-cf.nu**2.)
-
-    # Isostatic function
-    psi = D*k**4.
-
-    # Get alpha in radians
-    alpha = alpha*np.pi/180.
-
-    # Flexural filters
-    theta = flex.flexfilter1D(psi, 0., 0., 'top')
-    phi = flex.flexfilter1D(psi, 0., 0., 'bot')
-    mu_h, mu_w, nu_h, nu_w = flex.decon1D(theta, phi, k)
-
     # Get spectral functions
-    admit, corr, coh = flex.tr_func(mu_h, mu_w, nu_h, nu_w, F, alpha)
+    adm, coh = flex.real_xspec_functions(k, Te, F, alpha)
 
-    admit = np.real(admit)
-    corr = np.real(corr)
-
-    return admit, corr, coh
+    return adm, coh
 
 
-def bayes_real_estimate(k, adm, cor, coh, typ='real_admit'):
+def bayes_real_estimate(k, adm, eadm, coh, ecoh, atyp=False, typ='admit'):
     """
     Function that runs ``pymc3`` to estimate the effective elastic thickness,
     load ratio and spectal 'noise' from real-valued spectral functions.
 
     Args:
         k (np.ndarray)      : Wavenumbers (rad/m)
-        admit (np.ndarray)  : Real admittance function (mGal/m)
-        corr (np.ndarray)   : Real coherency function 
+        adm (np.ndarray)    : Admittance function (mGal/m)
         coh (np.ndarray)    : Coherence functions 
+        atyp (bool)         : Is alpha a parameter to estimate?
+        typ (bool)          : Type of analysis to perform ('admit', 'coh', 'admit_coh')
 
 
     Returns:
@@ -150,36 +159,41 @@ def bayes_real_estimate(k, adm, cor, coh, typ='real_admit'):
 
     with pm.Model() as admit_model:
 
-        # Prior distributions
-        Te = pm.Uniform('Te', lower=5., upper=250.)
-        F = pm.Uniform('F', lower=0., upper=0.99999)
-        alpha = pm.Normal('alpha', 90., observed=90.)
-        sigma = pm.HalfNormal('sigma', sigma=1.)
-
-        # k is a fixed observed array - needs to be passed as distribution
+        # k is an array - needs to be passed as distribution
         k_obs = pm.Normal('k', mu=k, sigma=1., observed=k)
 
-        admit_exp, corr_exp, coh_exp = real_xspec_functions(k_obs, Te, F, alpha)
+        # Prior distributions
+        Te = pm.Uniform('Te', lower=2., upper=250.)
+        F = pm.Uniform('F', lower=0., upper=0.99999)
 
-        if typ=='real_admit':
+        # Select whether to include alpha as a parameter to estimate
+        if atyp:
+            alpha = pm.Uniform('alpha', lower=0., upper=np.pi)
+            admit_exp, coh_exp = real_xspec_functions_alpha(k_obs, Te, F, alpha)
+        else:
+            admit_exp, coh_exp = real_xspec_functions_noalpha(k_obs, Te, F)
+
+        # Select type of analysis to perform
+        if typ=='admit':
+
+            sigma = pm.Normal('sigma', mu=eadm, sigma=1., observed=eadm)
 
             # Likelihood of observations
             admit_obs = pm.Normal('admit_obs', mu=admit_exp, sigma=sigma, 
                 observed=adm)
 
-        elif typ=='real_corr':
-
-            # Likelihood of observations
-            corr_obs = pm.Normal('corr_obs', mu=corr_exp, sigma=sigma, 
-                observed=cor)
-
         elif typ=='coh':
+
+            sigma = pm.Normal('sigma', mu=ecoh, sigma=1., observed=ecoh)
 
             # Likelihood of observations
             coh_obs = pm.Normal('coh_obs', mu=coh_exp, sigma=sigma, 
                 observed=coh)
 
         elif typ=='admit_coh':
+
+            eadm_ecoh = np.array([eadm, ecoh]).flatten()
+            sigma = pm.Normal('sigma', mu=eadm_ecoh, sigma=1., observed=eadm_ecoh)
 
             admit_coh = np.array([adm, coh]).flatten()
             admit_coh_exp = tt.flatten(tt.concatenate([admit_exp, coh_exp]))
@@ -189,7 +203,7 @@ def bayes_real_estimate(k, adm, cor, coh, typ='real_admit'):
                 observed=admit_coh)
 
         # Sample the Posterior distribution
-        trace = pm.sample(cf.samples, tune=cf.tunes, cores=8)
+        trace = pm.sample(cf.samples, tune=cf.tunes, cores=4)
 
         # Get Max a porteriori estimate
         map_estimate = pm.find_MAP()
@@ -198,6 +212,7 @@ def bayes_real_estimate(k, adm, cor, coh, typ='real_admit'):
         summary = pm.summary(trace).round(2)
 
     return trace, map_estimate, summary
+
 
 
 def get_Te_F(map_estimate, summary):
