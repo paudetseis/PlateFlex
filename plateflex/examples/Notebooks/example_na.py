@@ -60,7 +60,7 @@ for (x,y), value in np.ndenumerate(grid1):
         pf.estimate.bayes_real_estimate(k, adm1d, cor1d, coh1d, typ='admit_coh')
     # pf.plotting.plot_trace_stats(trace)
 
-    mte, ste, bte, mF, sF, bF = pf.estimate.get_values(map_estimate, summary)
+    mte, ste, bte, mF, sF, bF = pf.estimate.get_Te_F(map_estimate, summary)
     te_grid[x,y] = mte
     F_grid[x,y] = mF
     # padm, pcor, pcoh = pf.flexure.real_xspec_functions(k, mte, mF, 90.)

@@ -1,3 +1,30 @@
+# Copyright 2019 Pascal Audet
+
+# This file is part of PlateFlex.
+
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
+'''
+
+Functions to calculate spectral quantities with given Te, F and alpha values.
+
+'''
 import numpy as np
 import plateflex.conf as cf
 
@@ -38,15 +65,48 @@ def tr_func(mu_h, mu_w, nu_h, nu_w, F, alpha):
 
 
 def real_xspec_functions(k, Te, F, alpha):
+    """
+    Calculate analytical expressions for the real component of admittance, 
+    coherency and coherence functions. 
+
+    Args:
+        k (np.ndarray)  : Wavenumbers (rad/m)
+        Te (float)      : Effective elastic thickness (km)
+        F (float)       : Subruface-to-surface load ratio [0, 1[
+        alpha (float)   : Phase difference between initial applied loads (deg)
+
+    Returns:
+        (tuple): tuple containing:
+            * admit (np.ndarray)    : Real admittance function (shape ``len(k)``)
+            * corr (np.ndarray)     : Real coherency function (shape ``len(k)``)
+            * coh (np.ndarray)      : Coherence functions (shape ``len(k)``)
+
+    """
+
+    # Te in meters
     Te = Te*1.e3
+
+    # Flexural rigidity
     D = cf.E*Te**3/12./(1.-cf.nu**2.)
+
+    # Isostatic function
     psi = D*k**4.
+
+    # Get alpha in radians
     alpha = alpha*np.pi/180.
-    theta = flexfilter1D(psi, 0., 0., 'top')
-    phi = flexfilter1D(psi, 0., 0., 'bot')
-    mu_h, mu_w, nu_h, nu_w = decon1D(theta, phi, k)
-    admit, corr, coh = tr_func(mu_h, mu_w, nu_h, nu_w, F, alpha)
+
+    # Flexural filters
+    theta = flex.flexfilter1D(psi, 0., 0., 'top')
+    phi = flex.flexfilter1D(psi, 0., 0., 'bot')
+    mu_h, mu_w, nu_h, nu_w = flex.decon1D(theta, phi, k)
+
+    # Get spectral functions
+    admit, corr, coh = flex.tr_func(mu_h, mu_w, nu_h, nu_w, F, alpha)
+
     admit = np.real(admit)
     corr = np.real(corr)
+
+    return admit, corr, coh
+
 
     return admit, corr, coh

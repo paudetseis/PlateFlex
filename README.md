@@ -1,4 +1,4 @@
-# PlateFlex: Software for estimating the effective elastic thickness of the lithosphere
+# PlateFlex: Software for mapping the effective elastic thickness of the lithosphere
 
 <!-- ![](./plateflex/examples/picture/tws_logo.png)
  -->

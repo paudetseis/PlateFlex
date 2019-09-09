@@ -1,7 +1,55 @@
+# Copyright 2019 Pascal Audet
+
+# This file is part of Telewavesim.
+
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
+"""
+
+Configuration script to set up global variables
+
+Variables are:
+    ``wavelet``:
+        - k0 (float): Internal Morlet wavenumber (5.336 or higher)
+        - p (float): Separation between adjacent wavenumbers (0.85)
+
+    ``Earth parameters``:
+        - E (float): Young's modulus (1.e11 Pa)
+        - nu (float): Poisson's ratio (0.25)
+        - g (float): Gravitational acceleration (9.81 m/s^2)
+        - G (float): Gravitational constant (6.67e-11*1.e5 mGal)
+        - zc (float): Crustal thickness (35.e3 m)
+        - drho (float): Density contrast at crust-mantle boundary (500. kg/m^3)
+        - rhoc (float): Crustal density (2700. kg/m^3)
+
+    ``bayes parameters``:
+        - samples (int): Number of samples in single MCMC chain
+        - tunes (int): Number of tuning samples
+
+"""
+
+# wavelet parameters
 global k0, p
 k0 = 5.336
 p = 0.85
 
+# Earth parameters
 global E, nu, g, G, zc, drho, rhoc
 E = 1.e11
 nu = 0.25
@@ -11,6 +59,7 @@ zc = 35.*1.e3
 drho = 500.
 rhoc = 2700.
 
+# bayes parameters
 global samples, tunes
 samples = 1000
 tunes = 1000
