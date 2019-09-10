@@ -28,20 +28,16 @@ Functions to calculate spectral quantities with given Te, F and alpha values.
 import numpy as np
 import plateflex.conf as cf
 
-def flexfilter1D(psi, zeta, sigma, typ):
+def _flexfilter(psi, typ):
     if typ=='top':
         return -((cf.rhoc-cf.rhof)/(cf.rhom-cf.rhoc))*(1. + \
-            psi/(cf.rhom-cf.rhoc)/cf.g + \
-            zeta/(cf.rhom-cf.rhoc)/cf.g + 
-            sigma/(cf.rhom-cf.rhoc)/cf.g)**(-1.)
+            psi/(cf.rhom-cf.rhoc)/cf.g)**(-1.)
     elif typ=='bot':
         return -((cf.rhoc-cf.rhof)/(cf.rhom-cf.rhoc))*(1. + \
-            psi/(cf.rhoc-cf.rhof)/cf.g + \
-            zeta/(cf.rhoc-cf.rhof)/cf.g + 
-            sigma/(cf.rhoc-cf.rhof)/cf.g)
+            psi/(cf.rhoc-cf.rhof)/cf.g)
 
 
-def decon1D(theta, phi, k, A):
+def _decon(theta, phi, k, A):
     
     mu_h = 1./(1.-theta)
     mu_w = 1./(phi-1.)
@@ -55,7 +51,7 @@ def decon1D(theta, phi, k, A):
     return mu_h, mu_w, nu_h, nu_w
 
 
-def tr_func(mu_h, mu_w, nu_h, nu_w, F, alpha):
+def _tr_func(mu_h, mu_w, nu_h, nu_w, F, alpha):
     
     r = (cf.rhoc-cf.rhof)/(cf.rhom-cf.rhoc)
     f = F/(1. - F)
@@ -63,11 +59,11 @@ def tr_func(mu_h, mu_w, nu_h, nu_w, F, alpha):
         1j*(nu_h*mu_w - nu_w*mu_h)*f*r*np.sin(alpha)
     hh = mu_h**2 + (mu_w*f*r)**2 + 2.*mu_h*mu_w*f*r*np.cos(alpha)
     gg = nu_h**2 + (nu_w*f*r)**2 + 2.*nu_h*nu_w*f*r*np.cos(alpha)
-    admit = hg/hh
-    corr = hg/np.sqrt(hh)/np.sqrt(gg)
-    coh = np.real(corr)**2
+    admittance = hg/hh
+    coherency = hg/np.sqrt(hh)/np.sqrt(gg)
+    coherence = np.real(coherency)**2
     
-    return admit, coh
+    return admittance, coherence
 
 
 def real_xspec_functions(k, Te, F, alpha=np.pi/2., wd=0.):
@@ -80,14 +76,12 @@ def real_xspec_functions(k, Te, F, alpha=np.pi/2., wd=0.):
         Te (float)      : Effective elastic thickness (km)
         F (float)       : Subruface-to-surface load ratio [0, 1[
         alpha (float, optional)   : Phase difference between initial applied loads (rad)
-        boug (bool, optional)     : Bouguer gravity used (False -> free air gravity is used)
-        water (bool, optional)    : Include water layer (False -> on land)
         wd (float, optional)      : Water layer thickness 
 
     Returns:
         (tuple): tuple containing:
-            * adm (np.ndarray)    : Real admittance function (shape ``len(k)``)
-            * coh (np.ndarray)      : Coherence functions (shape ``len(k)``)
+            * admittance (np.ndarray)    : Real admittance function (shape ``len(k)``)
+            * coherence (np.ndarray)     : Coherence functions (shape ``len(k)``)
 
     """
 
@@ -113,15 +107,15 @@ def real_xspec_functions(k, Te, F, alpha=np.pi/2., wd=0.):
     psi = D*k**4.
 
     # Flexural filters
-    theta = flexfilter1D(psi, 0., 0., 'top')
-    phi = flexfilter1D(psi, 0., 0., 'bot')
-    mu_h, mu_w, nu_h, nu_w = decon1D(theta, phi, k, A)
+    theta = _flexfilter(psi, 'top')
+    phi = _flexfilter(psi, 'bot')
+    mu_h, mu_w, nu_h, nu_w = _decon(theta, phi, k, A)
 
     # Get spectral functions
-    adm, coh = tr_func(mu_h, mu_w, nu_h, nu_w, F, alpha)
+    admittance, coherence = _tr_func(mu_h, mu_w, nu_h, nu_w, F, alpha)
 
     # Get real-valued admittance
-    adm = np.real(adm)
+    admittance = np.real(admittance)
 
-    return adm, coh
+    return admittance, coherence
 

@@ -39,12 +39,17 @@ Variables are:
         - rhoc (float): Crustal density (2700. kg/m^3)
         - rhoa (float): Air density (0. kg/m^3)
         - rhow (float): Water density (1030. kg/m^3)
-        - rhof (float): Fluid density at topo/fluid interface (rhoa or rhow)
-        - wd (float): Water depth (1.e3 m)
+        - rhof (float): Fluid density at topo/fluid interface (==rhoa or ==rhow)
+        - wd (float): Water depth (0.e3 m)
 
+    ``flex analysis``:
+        - boug (bool): True: gravity anomaly is Bouguer; False: gravity anomaly is Free-air
+        - water (bool): True: Include loading from water column; False: no water column
+        
     ``bayes parameters``:
         - samples (int): Number of samples in single MCMC chain
         - tunes (int): Number of tuning samples
+        - cores (int): Number of cores (i.e., parallel chains). For parallel runs, set conf.cores=1
 
 """
 
@@ -54,7 +59,7 @@ k0 = 5.336
 p = 0.85
 
 # Earth parameters
-global E, nu, g, G, zc, drho, rhoc, wd
+global E, nu, g, G, zc, rhom, rhoc, rhow, rhoa, rhof, wd
 E = 1.e11
 nu = 0.25
 g = 9.81
@@ -76,3 +81,4 @@ water = False
 global samples, tunes
 samples = 1000
 tunes = 1000
+cores = 4

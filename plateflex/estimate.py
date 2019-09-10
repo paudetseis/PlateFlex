@@ -93,7 +93,7 @@ def real_xspec_functions_alpha(k, Te, F, alpha):
     return adm, coh
 
 
-def bayes_real_estimate(k, adm, eadm, coh, ecoh, atyp=False, typ='admit'):
+def bayes_real_estimate(k, adm, eadm, coh, ecoh, alph=False, typ='admit'):
     """
     Function that runs ``pymc3`` to estimate the effective elastic thickness,
     load ratio and spectal 'noise' from real-valued spectral functions.
@@ -102,8 +102,8 @@ def bayes_real_estimate(k, adm, eadm, coh, ecoh, atyp=False, typ='admit'):
         k (np.ndarray)      : Wavenumbers (rad/m)
         adm (np.ndarray)    : Admittance function (mGal/m)
         coh (np.ndarray)    : Coherence functions 
-        atyp (bool)         : Is alpha a parameter to estimate?
-        typ (bool)          : Type of analysis to perform ('admit', 'coh', 'admit_coh')
+        alph (bool)         : Is alpha a parameter to estimate?
+        typ (bool)          : Type of analysis to perform ('admit', 'coh', 'joint')
 
 
     Returns:
@@ -167,15 +167,20 @@ def bayes_real_estimate(k, adm, eadm, coh, ecoh, atyp=False, typ='admit'):
         F = pm.Uniform('F', lower=0., upper=0.99999)
 
         # Select whether to include alpha as a parameter to estimate
-        if atyp:
+        if alph:
+
+            # Prior distribution of `alpha`
             alpha = pm.Uniform('alpha', lower=0., upper=np.pi)
             admit_exp, coh_exp = real_xspec_functions_alpha(k_obs, Te, F, alpha)
+
         else:
+            
             admit_exp, coh_exp = real_xspec_functions_noalpha(k_obs, Te, F)
 
         # Select type of analysis to perform
         if typ=='admit':
 
+            # Uncertainty as observed distribution
             sigma = pm.Normal('sigma', mu=eadm, sigma=1., observed=eadm)
 
             # Likelihood of observations
@@ -184,26 +189,35 @@ def bayes_real_estimate(k, adm, eadm, coh, ecoh, atyp=False, typ='admit'):
 
         elif typ=='coh':
 
+            # Uncertainty as observed distribution
             sigma = pm.Normal('sigma', mu=ecoh, sigma=1., observed=ecoh)
 
             # Likelihood of observations
             coh_obs = pm.Normal('coh_obs', mu=coh_exp, sigma=sigma, 
                 observed=coh)
 
-        elif typ=='admit_coh':
+        elif typ=='joint':
 
-            eadm_ecoh = np.array([eadm, ecoh]).flatten()
-            sigma = pm.Normal('sigma', mu=eadm_ecoh, sigma=1., observed=eadm_ecoh)
+            # Define uncertainty as concatenated arrays
+            ejoint = np.array([eadm, ecoh]).flatten()
 
-            admit_coh = np.array([adm, coh]).flatten()
-            admit_coh_exp = tt.flatten(tt.concatenate([admit_exp, coh_exp]))
+            # Uncertainty as observed distribution
+            sigma = pm.Normal('sigma', mu=ejoint, sigma=1., observed=ejoint)
+
+            # Define array of observations and expected values as concatenated arrays
+            joint = np.array([adm, coh]).flatten()
+            joint_exp = tt.flatten(tt.concatenate([admit_exp, coh_exp]))
 
             # Likelihood of observations
-            admit_coh_obs = pm.Normal('admit_coh_obs', mu=admit_coh_exp, sigma=sigma, 
-                observed=admit_coh)
+            joint_obs = pm.Normal('admit_coh_obs', mu=joint_exp, sigma=sigma, 
+                observed=joint)
+
+        else:
+            raise(Exception('Type of analysis not supported. Please choose among: \
+                "admit", "coh", or "joint"'))
 
         # Sample the Posterior distribution
-        trace = pm.sample(cf.samples, tune=cf.tunes, cores=4)
+        trace = pm.sample(cf.samples, tune=cf.tunes, cores=cf.cores)
 
         # Get Max a porteriori estimate
         map_estimate = pm.find_MAP()
@@ -214,8 +228,48 @@ def bayes_real_estimate(k, adm, eadm, coh, ecoh, atyp=False, typ='admit'):
     return trace, map_estimate, summary
 
 
+def estimate_parallel(k, admit, eadmit, cohere, ecohere, x, y):
+    """
+    Run pymc models in parallel from a loop through the x,y coordinates.
 
-def get_Te_F(map_estimate, summary):
+    Note:
+        This implementation is faulty at the moment. Will freeze the CPU and 
+        prevent completion of the loop.
+
+    Args:
+        k (np.ndarray)      : Wavenumbers (rad/m)
+        admit (np.ndarray)  : Wavelet admittance (shape ``(nx, ny, ns)``)
+        eadmit (np.ndarray) : Admittance uncertainty (shape ``(nx, ny, ns)``)
+        corr (np.ndarray)   : Wavelet coherency (shape ``(nx, ny, ns)``)
+        ecorr (np.ndarray)  : Coherency uncertainty (shape ``(nx, ny, ns)``)
+        coh (np.ndarray)    : Wavelet coherence (shape ``(nx, ny, ns)``)
+        ecoh (np.ndarray)   : Coherence uncertainty (shape ``(nx, ny, ns)``)
+        x (int)             : x-index of grid
+        y (int)             : y-index of grid
+
+    Returns:
+        (tuple): results: tuple containing the mean, std, 95% CI and MAP estimates.
+
+    """
+
+    # Extract 1-D spectral functions and errors at single grid location
+    adm = admit[x,y,:]
+    coh = cohere[x,y,:]
+    eadm = eadmit[x,y,:]
+    ecoh = ecohere[x,y,:]
+
+    # Run the pymc3 model
+    trace, map_estimate, summary = \
+        pf.estimate.bayes_real_estimate(\
+            k, adm, eadm, coh, ecoh, alph=True, typ='joint')
+
+    # Store the estimates into a tuple
+    results = pf.estimate.get_estimates(summary, map_estimate)
+
+    return results
+
+
+def get_estimates(summary, map_estimate):
     """
     Extract useful estimates from the Posterior distributions.
 
@@ -241,13 +295,32 @@ def get_Te_F(map_estimate, summary):
 
     """
 
+    mean_a = None
 
-    mean_te = summary.values[0][0]
-    std_te = summary.values[0][1]
-    best_te = np.float(map_estimate['Te'])
+    for index, row in summary.iterrows():
+        if index=='Te':
+            mean_te = row['mean']
+            std_te = row['sd']
+            C2_5_te = row['hpd_2.5']
+            C97_5_te = row['hpd_97.5']
+            best_te = np.float(map_estimate['Te'])
+        elif index=='F':
+            mean_F = row['mean']
+            std_F = row['sd']
+            C2_5_F = row['hpd_2.5']
+            C97_5_F = row['hpd_97.5']
+            best_F = np.float(map_estimate['F'])
+        elif index=='alpha':
+            mean_a = row['mean']
+            std_a = row['sd']
+            C2_5_a = row['hpd_2.5']
+            C97_5_a = row['hpd_97.5']
+            best_a = np.float(map_estimate['alpha'])
 
-    mean_F = summary.values[1][0]
-    std_F = summary.values[1][1]
-    best_F = np.float(map_estimate['F'])
-
-    return mean_te, std_te, best_te, mean_F, std_F, best_F
+    if mean_a:
+        return mean_te, std_te, C2_5_te, C97_5_te, best_te, \
+            mean_F, std_F, C2_5_F, C97_5_F, best_F, \
+            mean_a, std_a, C2_5_a, C97_5_a, best_a
+    else:
+        return mean_te, std_te, C2_5_te, C97_5_te, best_te, \
+            mean_F, std_F, C2_5_F, C97_5_F, best_F
