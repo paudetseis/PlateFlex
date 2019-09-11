@@ -28,7 +28,7 @@ import seaborn as sns
 sns.set()
 
 
-def plot_real_grid(grid, title=None, log=False, mask=None, save=None):
+def plot_real_grid(grid, log=False, mask=None, title=None, save=None, clabel=None):
 
     # Take log of real values
     if log:
@@ -44,7 +44,11 @@ def plot_real_grid(grid, title=None, log=False, mask=None, save=None):
     # Plot figure and add colorbar
     plt.figure()
     plt.imshow(grid, origin='lower', cmap='viridis')
-    plt.colorbar()
+    cbar = plt.colorbar()
+
+    # Add units on colorbar label
+    if clabel is not None:
+        cbar.set_label(clabel)
 
     # Add title
     if title:
@@ -165,7 +169,7 @@ def plot_trace_stats(trace, summary, map_estimate, title=None):
     plt.show()
 
 
-def plot_fitted(k, adm, eadm, coh, ecoh, summary, map_estimate, est='mean', title=None):
+def plot_fitted(k, adm, eadm, coh, ecoh, summary, map_estimate, est='MAP', title=None):
 
     import plateflex.flexure as flex
 
@@ -177,7 +181,7 @@ def plot_fitted(k, adm, eadm, coh, ecoh, summary, map_estimate, est='mean', titl
         else:
             ma = np.pi/2.
 
-    elif est=='best':
+    elif est=='MAP':
         mte = np.float(map_estimate['Te'])
         mF = np.float(map_estimate['F'])
         if 'alpha' in map_estimate:
@@ -186,7 +190,7 @@ def plot_fitted(k, adm, eadm, coh, ecoh, summary, map_estimate, est='mean', titl
             ma = np.pi/2.
 
     else:
-        raise(Exception('estimate does not exist. Choose among: "mean" or "best"'))
+        raise(Exception('estimate does not exist. Choose among: "mean" or "MAP"'))
 
     padm, pcoh = flex.real_xspec_functions(k, mte, mF, ma)
 
@@ -197,7 +201,7 @@ def plot_fitted(k, adm, eadm, coh, ecoh, summary, map_estimate, est='mean', titl
 
     ax2.errorbar(k*1.e3,coh,yerr=ecoh)
     ax2.plot(k*1.e3,pcoh)
-    ax2.set_ylabel('Coherence)')
+    ax2.set_ylabel('Coherence')
     ax2.set_xlabel('Wavenumber (rad/km)')
 
     ax1.set_xscale('log')

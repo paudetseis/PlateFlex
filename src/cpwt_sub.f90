@@ -63,7 +63,8 @@
       REAL :: pi = 3.141592653589793
       INTEGER :: nx, ny, ix, iy
       REAL :: k0, s, a 
-      REAL :: norm, expntx, expnty, kx(nx), ky(ny), kx0, ky0
+      REAL :: norm, expntx, expnty, expnt
+      REAL :: kx(nx), ky(ny), kx0, ky0
       COMPLEX :: daughter(nx,ny)
 
 !
@@ -77,10 +78,10 @@
         expntx = -0.5*((s*kx(ix) - kx0)**2)
         expnty = -0.5*((s*ky(iy) - ky0)**2)
         daughter(ix,iy) = CMPLX(norm*EXP(expntx)*EXP(expnty))
-!        norm=norm+ABS(daughter(ix,iy))**2
+        expnt = -0.5*((kx(ix)**2 + ky(iy)**2) + (kx0**2 + ky0**2))
+        daughter(ix,iy) = daughter(ix,iy) - CMPLX(norm*EXP(expnt))
       END DO
       END DO
-!      daughter=daughter*SQRT((nx*ny)/norm)
 
       RETURN
       END SUBROUTINE wave_function

@@ -1,11 +1,11 @@
 import numpy as np
-import matplotlib.pyplot as plt
 from plateflex.cpwt import cpwt
 from plateflex.cpwt import conf as cf_f
 import plateflex.conf as cf
+from plateflex import TopoGrid, BougGrid, Project, Estimate
 import plateflex as pf
 
-cf.k0 = 7.2
+cf.k0 = 5.336
 cf_f.k0 = cf.k0
 cf.samples = 500
 cf.tunes = 500
@@ -22,25 +22,17 @@ dy = float(pars[2])
 grid1 = grid1.reshape(nx, ny)[::-1]
 grid2 = grid2.reshape(nx, ny)[::-1]
 
-# pf.plotting.plot_real_grid(grid1)
-# pf.plotting.plot_real_grid(grid2)
+x = np.linspace(0., nx*dx, nx)
+y = np.linspace(0., ny*dy, ny)
 
-ns, k = pf.utils.lam2k(nx, ny, dx, dy)
+xmin, xmax = x.min(), x.max()
+ymin, ymax = y.min(), y.max()
 
-nnx = pf.utils.npow2(nx)   # Integrate this into cpwt
-nny = pf.utils.npow2(ny)
+topo = TopoGrid(grid1, xmin, xmax, ymin, ymax)
+boug = BougGrid(grid2, xmin, xmax, ymin, ymax)
 
-wl_trans1 = cpwt.wlet_transform(grid1, nnx, nny, dx, dy, k)
-wl_trans2 = cpwt.wlet_transform(grid2, nnx, nny, dx, dy, k)
-
-wl_sg1, ewl_sg1 = cpwt.wlet_scalogram(wl_trans1)
-wl_sg2, ewl_sg2 = cpwt.wlet_scalogram(wl_trans2)
-
-# pf.plotting.plot_real_grid(wl_sg1[:,:,10], log=True, title='Rock-equivalent topo (m^2)/m^2')
-# pf.plotting.plot_real_grid(wl_sg2[:,:,10], log=True, title='Bouguer anomaly (mGal^2)/m^2')
-
-wl_admit, ewl_admit, wl_coh, ewl_coh = cpwt.wlet_admit_coh(wl_trans1, wl_trans2)
-
+project = Project(grids=[topo, boug])
+k, wl_admit, ewl_admit, wl_coh, ewl_coh = project.wlet_admit_coh()
 
 # One sample from 2D grid
 (x,y) = (200,200)
@@ -49,29 +41,35 @@ eadm = ewl_admit[x,y,:]
 coh = wl_coh[x,y,:]
 ecoh = ewl_coh[x,y,:]
 
-trace, map_estimate, summary = \
-    pf.estimate.bayes_real_estimate(k, adm, eadm, coh, ecoh, alph=False, typ='coh')
+estimate = Estimate(k, adm, eadm, coh, ecoh, alph=False, atype='coh')
+estimate.bayes_real_estimate()
+estimate.plot_stats(title='No alpha, coherence')
+estimate.plot_fitted(est='MAP', title='No alpha, coherence')
 
-print(summary)
-pf.plotting.plot_fitted(k, adm, eadm, coh, ecoh, summary, map_estimate, est='mean', \
-    title='No alpha, coherence')
-pf.plotting.plot_trace_stats(trace, summary, map_estimate, \
-    title='No alpha, coherence')
 
 trace, map_estimate, summary = \
     pf.estimate.bayes_real_estimate(k, adm, eadm, coh, ecoh, alph=True, typ='coh')
 
 print(summary)
-pf.plotting.plot_fitted(k, adm, eadm, coh, ecoh, summary, map_estimate, est='mean', \
+pf.plotting.plot_fitted(k, adm, eadm, coh, ecoh, summary, map_estimate, est='best', \
     title='With alpha, coherence')
 pf.plotting.plot_trace_stats(trace, summary, map_estimate, \
     title='With alpha, coherence')
 
 trace, map_estimate, summary = \
+    pf.estimate.bayes_real_estimate(k, adm, eadm, coh, ecoh, alph=False, typ='joint')
+
+print(summary)
+pf.plotting.plot_fitted(k, adm, eadm, coh, ecoh, summary, map_estimate, est='best', \
+    title='With alpha, joint admittance and coherence')
+pf.plotting.plot_trace_stats(trace, summary, map_estimate, \
+    title='With alpha, joint admittance and coherence')
+
+trace, map_estimate, summary = \
     pf.estimate.bayes_real_estimate(k, adm, eadm, coh, ecoh, alph=True, typ='joint')
 
 print(summary)
-pf.plotting.plot_fitted(k, adm, eadm, coh, ecoh, summary, map_estimate, est='mean', \
+pf.plotting.plot_fitted(k, adm, eadm, coh, ecoh, summary, map_estimate, est='best', \
     title='With alpha, joint admittance and coherence')
 pf.plotting.plot_trace_stats(trace, summary, map_estimate, \
     title='With alpha, joint admittance and coherence')

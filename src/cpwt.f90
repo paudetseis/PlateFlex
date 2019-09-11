@@ -8,7 +8,7 @@
       IMPLICIT NONE
 
       REAL, PARAMETER :: pi = 3.141592653589793
-      INTEGER, PARAMETER :: na = 23
+      INTEGER, PARAMETER :: na = 11
 
       REAL :: k0
 
@@ -70,9 +70,9 @@
 !
         CALL defk(nnx,nny,dx,dy,kx,ky)
 !
-! Define angle parameters
+! Define angle parameters as per Kirby (2005)
 !
-        da = REAL(pi/na)
+        da = 2.*SQRT(-2.*LOG(0.75))/k0
 !_______________________________________________
 !     
 !     MAIN WAVELET TANSFORM LOOP

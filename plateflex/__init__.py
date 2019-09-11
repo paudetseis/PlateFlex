@@ -1,5 +1,5 @@
 from . import conf
-from . import estimate
 from . import flexure
 from . import plotting
-from . import utils
+from .grids import TopoGrid, BougGrid, FairGrid, Project
+from .estimate import Estimate
