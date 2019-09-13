@@ -48,7 +48,7 @@ class Estimate(object):
         if not isinstance(alph,bool):
             raise(Exception("'alph' should be a boolean"))
         self.alph = alph
-        if not atype in ['admit', 'coh', 'joint']:
+        if atype not in ['admit', 'coh', 'joint']:
             raise(Exception("'atype' should be one among: 'admit', 'coh', or 'joint'"))
         self.atype = atype
 
@@ -122,7 +122,7 @@ class Estimate(object):
             k_obs = pm.Normal('k', mu=self.k, sigma=1., observed=self.k)
 
             # Prior distributions
-            Te = pm.Uniform('Te', lower=2., upper=250.)
+            Te = pm.Uniform('Te', lower=1., upper=250.)
             F = pm.Uniform('F', lower=0., upper=0.99999)
 
             # Select whether to include alpha as a parameter to estimate
@@ -201,7 +201,7 @@ class Estimate(object):
 
     def plot_fitted(self, est='MAP', title=None):
 
-        if not in ['mean', 'MAP']:
+        if est not in ['mean', 'MAP']:
             raise(Exception("Choose one among: 'mean', or 'MAP'"))
             
         try:

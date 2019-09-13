@@ -1,3 +1,51 @@
+# Copyright 2019 Pascal Audet
+#
+# This file is part of PlateFlex.
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+"""
+This PlateFlex module contains the following ``FlexGrid`` classes, with inheritance in parentheses:
+
+- ``plateflex.classes.FlexGrid``
+- ``plateflex.classes.TopoGrid(FlexGrid)``
+- ``plateflex.classes.GravGriv(FlexGrid)``
+- ``plateflex.classes.BougGrid(GravGrid)``
+- ``plateflex.classes.FairGrid(GravGrid)``
+
+These classes can be initiatlized with a grid of topography/bathymetry or gravity
+anomaly (Bouguer/Free-air) data. These classes contain methods for the following functionality:
+
+- Performing a wavelet transform using a Morlet wavelet
+- Obtaining the wavelet scalogram from the wavelet transform
+- Plotting the grids, wavelet transform components, and scalograms
+
+This module further contains the class ``plateflex.classes.Project``, which itself is a container
+of ``FlexGrid`` objects (two at most and one each of ``TopoGrid`` and ``GravGrid``). Methods are available to:
+
+- Add ``FlexGrid`` objects to the project
+- Iterate over ``FlexGrid`` objects
+- Perform the wavelet admittance and coherence between topography (``TopoGrid`` object) and gravity anomalies (``GravGrid`` object)
+- Plot the wavelet admnittance and coherence spectra
+
+"""
+
+# -*- coding: utf-8 -*-
 import numpy as np
 from plateflex.cpwt import cpwt
 from plateflex import conf as cf
@@ -7,8 +55,57 @@ sns.set()
 
 
 class FlexGrid(object):
+    """
+    Accepts a 2D array and Cartesian coordinates specifying the
+    bounding box of the array
+
+    Grid must be projected in km.
+
+    Attributes:
+        data (np.ndarray): 2D array of topography/gravity data
+        xmin (float): minimum x bound in km
+        xmax (float): maximum x bound in km
+        ymin (float): minimum y bound in km
+        ymax (float): maximum y bound in km
+        dx (float): grid spacing in the x-direction in km
+        dy (float): grid spacing in the y-direction in km
+        nx (int): number of nodes in the x-direction
+        ny (int): number of nodes in the y-direction
+        xcoords (np.ndarray): 1D array of coordinates in the x-direction
+        ycoords (np.ndarray): 1D array of coordinates in the y-direction
+        units (str): units of data set
+        ns (int): number of wavenumber samples
+        k (np.ndarray): 1D array of wavenumbers
+
+    Notes:
+        In all instances `x` indicates eastings in metres and `y` indicates northings.
+        Using a grid of longitude / latitudinal coordinates (degrees) will result
+        in incorrect calculations.
+
+    Examples:
+        >>> import numpy as np
+        >>> from plateflex import FlexGrid
+        >>> # Create zero-valued square grid
+        >>> nn = 100; dd = 10.
+        >>> x = y = np.linspace(0., nn*dd, nn)
+        >>> xmin, xmax = x.min(), x.max()
+        >>> ymin, ymax = y.min(), y.max()
+        >>> grid = np.zeros((nn, nn))
+        >>> flexgrid = FlexGrid(grid, xmin, xmax, ymin, ymax)
+        >>> flexgrid
+        <plateflex.grids.FlexGrid object at 0x10613fe10>
+
+    """
 
     def __init__(self, grid, xmin, xmax, ymin, ymax):
+        """
+        Args:
+            grid (np.ndarray): 2D array of topography/gravity data
+            xmin (float): minimum x bound in km
+            xmax (float): maximum x bound in km
+            ymin (float): minimum y bound in km
+            ymax (float): maximum y bound in km
+        """
 
         if np.any(np.isnan(np.array(grid))):
             raise(Exception('grid contains NaN values: abort'))
@@ -27,6 +124,31 @@ class FlexGrid(object):
 
 
     def wlet_transform(self):
+        """Calculates the wavelet transform of grid.
+
+        This method uses the module ``plateflex.cpwt.cpwt`` to calculate the wavelet transform
+        of the grid. By default the method pads the array with zeros to the next power of 2.
+        The wavelet transform is stored as an attribute of the object.
+
+        Attributes:
+            wl_trans (np.ndarray): Wavelet transform of the grid (shape (`nx,ny,na,ns`))
+        
+        Examples:
+            >>> import numpy as np
+            >>> from plateflex import FlexGrid
+            >>> # Create zero-valued square grid
+            >>> nn = 100; dd = 1.
+            >>> x = y = np.linspace(0., nn*dd, nn)
+            >>> xmin, xmax = x.min(), x.max()
+            >>> ymin, ymax = y.min(), y.max()
+            >>> grid = np.zeros((nn, nn))
+            >>> flexgrid = FlexGrid(grid, xmin, xmax, ymin, ymax)
+            >>> flexgrid.wlet_transform()
+             #loops = 13:  1  2  3  4  5  6  7  8  9 10 11 12 13
+            >>> flexgrid.wl_trans.shape
+            (100, 100, 11, 13)
+
+        """
 
         nnx, nny = _npow2(self.nx), _npow2(self.ny)
 
@@ -36,6 +158,43 @@ class FlexGrid(object):
         return
 
     def wlet_scalogram(self):
+        """Calculates the wavelet scalogram of grid.
+
+        This method uses the module ``plateflex.cpwt.cpwt`` to calculate the wavelet scalogram
+        of the grid. If the attribute ``wl_trans`` cannot be found, the method automatically
+        calculates the wavelet transform first. The wavelet scalogram is stored as an 
+        attribute of the object.
+
+        Attributes:
+            wl_sg (np.ndarray): Wavelet scalogram of the grid (shape (`nx,ny,ns`))
+
+        Examples:
+            >>> import numpy as np
+            >>> from plateflex import FlexGrid
+            >>> # Create random-valued square grid
+            >>> nn = 200; dd = 10.
+            >>> x = y = np.linspace(0., nn*dd, nn)
+            >>> xmin, xmax = x.min(), x.max()
+            >>> ymin, ymax = y.min(), y.max()
+            >>> # set random seed
+            >>> np.random.seed(0)
+            >>> grid = 100.*np.random.randn(nn, nn)
+            >>> flexgrid = FlexGrid(grid, xmin, xmax, ymin, ymax)
+            >>> flexgrid.wlet_scalogram()
+             #loops = 13:  1  2  3  4  5  6  7  8  9 10 11 12 13
+            >>> flexgrid.wl_sg.shape
+            (100, 100, 13)
+
+            >>> # Perform wavelet transform first
+            >>> flexgrid_2 = FlexGrid(grid, xmin, xmax, ymin, ymax)
+            >>> flexgrid_2.wlet_transform()
+              #loops = 13:  1  2  3  4  5  6  7  8  9 10 11 12 13
+            >>> flexgrid_2.wlet_scalogram()
+            >>> np.allclose(flexgrid.wl_sg, flexgrid_2.wl_sg)
+            False
+            >>> # FIGURE THIS OUT!!!
+
+       """
 
         nnx, nny = 2**(self.nx-1).bit_length(), 2**(self.ny-1).bit_length()
 
@@ -51,6 +210,20 @@ class FlexGrid(object):
         return
 
     def plot_transform(self, kindex=None, aindex=None, log=False, mask=None, title='Wavelet transform', save=None, clabel=None):
+        """Plot the real and imaginary components of the wavelet transform
+
+        This method plots the real and imaginary components of the wavelet transform of a
+        ``FlexGrid`` object at wavenumber and angle indices (int). Raises ``Exception`` for the 
+        cases where:
+
+        - no wavenumber OR angle index is specified (kindex and aindex)
+        - wavenumber index is lower than 0 or larger than self.ns
+        - angle index is lower than 0 or larger than 11 (hardcoded)
+
+        If no ``FlexGrid.wl_trans`` attribute is found, the method automatically calculates
+        the wavelet transform first.
+
+        """
 
         if kindex is None or aindex is None:
             raise(Exception('Specify index of wavenumber and angle to plot the transform'))
@@ -75,6 +248,19 @@ class FlexGrid(object):
 
 
     def plot_scalogram(self, kindex=None, log=True, mask=None, title='Wavelet scalogram', save=None, clabel=None):
+        """Plot the wavelet scalogram
+
+        This method plots the wavelet scalogram of a
+        ``FlexGrid`` object at a wavenumber index (int). Raises ``Exception`` for the 
+        cases where:
+
+        - no wavenumber index is specified (kindex)
+        - wavenumber index is lower than 0 or larger than self.ns
+
+        If no ``FlexGrid.wl_sg`` attribute is found, the method automatically calculates
+        the wavelet scalogram (and maybe also the wavelet transform) first.
+        
+        """
 
         if kindex is None:
             raise(Exception('Specify index of wavenumber for plotting'))
@@ -106,6 +292,7 @@ class FlexGrid(object):
 class GravGrid(FlexGrid):
 
     def __init__(self, grid, xmin, xmax, ymin, ymax):
+
         FlexGrid.__init__(self, grid, xmin, xmax, ymin, ymax)
 
 
@@ -114,9 +301,6 @@ class BougGrid(GravGrid):
     def __init__(self, grid, xmin, xmax, ymin, ymax):
 
         GravGrid.__init__(self, grid, xmin, xmax, ymin, ymax)
-
-        # if not isinstance(units, str):
-        #     raise(Exception('units must be of `str` type'))
 
         self.units = 'mGal'
 
@@ -131,9 +315,6 @@ class FairGrid(GravGrid):
 
         GravGrid.__init__(self, grid, xmin, xmax, ymin, ymax)
 
-        # if not isinstance(units, str):
-        #     raise(Exception('units must be of `str` type'))
-        
         self.units = 'mGal'
 
     def plot(self, mask=None, title='Free air anomaly', save=None, clabel=None):
@@ -146,9 +327,6 @@ class TopoGrid(FlexGrid):
     def __init__(self, grid, xmin, xmax, ymin, ymax):
 
         FlexGrid.__init__(self, grid, xmin, xmax, ymin, ymax)
-
-        # if not isinstance(units, str):
-        #     raise(Exception('units must be of `str` type'))
 
         if np.std(self.data) < 20.:
             self.data *= 1.e3
@@ -174,7 +352,8 @@ class Project(object):
 
     def __add__(self, other):
         """
-        Add two grids or a project with a single grid.
+        Add two ``FlexGrid`` objects or a ``Project`` object with a single grid.
+
         """
         if isinstance(other, FlexGrid):
             other = Project([other])
@@ -207,6 +386,25 @@ class Project(object):
         return self
 
     def wlet_admit_coh(self):
+        """Calculates the wavelet admittance and coherence of two ``FlexGrid`` objects.
+
+        This method uses the module ``plateflex.cpwt.cpwt`` to calculate the wavelet admittance and
+        coherence. The object needs to contain exactly two ``FlexGrid`` objects, one of each
+        of ``TopoGrid`` and ``GravGrid`` objects. If the wavelet transforms attributes
+        don't exist, they are calculated first.
+
+        Attributes:
+            wl_admit (np.ndarray): Wavelet admittance (shape (`nx,ny,ns`))
+            wl_eadmit (np.ndarray): Error of wavelet admittance (shape (`nx,ny,ns`))
+            wl_coh (np.ndarray): Wavelet coherence (shape (`nx,ny,ns`))
+            wl_ecoh (np.ndarray): Error of wavelet coherence (shape (`nx,ny,ns`))
+
+        Returns:
+            wl_admit (np.ndarray): Wavelet admittance (shape (`nx,ny,ns`))
+            wl_eadmit (np.ndarray): Error of wavelet admittance (shape (`nx,ny,ns`))
+            wl_coh (np.ndarray): Wavelet coherence (shape (`nx,ny,ns`))
+            wl_ecoh (np.ndarray): Error of wavelet coherence (shape (`nx,ny,ns`))
+        """
 
         if len(self.grids)!=2:
             raise(Exception('There needs to be exactly two FlexGrid objects in Project'))
