@@ -62,7 +62,7 @@ def plot_real_grid(grid, log=False, mask=None, title=None, save=None, clabel=Non
     plt.show()
 
 
-def plot_trace_stats(trace, summary, map_estimate, title=None):
+def plot_stats(trace, summary, map_estimate, title=None):
 
     import plateflex.estimate as est
 

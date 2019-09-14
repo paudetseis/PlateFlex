@@ -33,185 +33,137 @@ from plateflex import conf as cf
 from plateflex import plotting
 from theano.compile.ops import as_op
 import theano.tensor as tt
-import seaborn as sns
-sns.set()
 
 
-class Estimate(object):
+def set_model(k, adm, eadm, coh, ecoh, alph=False, atype='joint'):
 
-    def __init__(self, k, adm, eadm, coh, ecoh, alph=False, atype='joint'):
-        self.k = k
-        self.adm = adm
-        self.eadm = eadm
-        self.coh = coh
-        self.ecoh = ecoh
-        if not isinstance(alph,bool):
-            raise(Exception("'alph' should be a boolean"))
-        self.alph = alph
-        if atype not in ['admit', 'coh', 'joint']:
-            raise(Exception("'atype' should be one among: 'admit', 'coh', or 'joint'"))
-        self.atype = atype
+    with pm.Model() as model:
 
-    def bayes_real_estimate(self):
-        """
-        Function that runs ``pymc3`` to estimate the effective elastic thickness,
-        load ratio and spectal 'noise' from real-valued spectral functions.
+        # k is an array - needs to be passed as distribution
+        k_obs = pm.Normal('k', mu=k, sigma=1., observed=k)
 
-        Args:
-            k (np.ndarray)      : Wavenumbers (rad/m)
-            adm (np.ndarray)    : Admittance function (mGal/m)
-            coh (np.ndarray)    : Coherence functions 
-            alph (bool)         : Is alpha a parameter to estimate?
-            typ (bool)          : Type of analysis to perform ('admit', 'coh', 'joint')
+        # Prior distributions
+        Te = pm.Uniform('Te', lower=1., upper=250.)
+        F = pm.Uniform('F', lower=0., upper=0.99999)
 
+        # Select whether to include alpha as a parameter to estimate
+        if alph:
 
-        Returns:
-            (tuple): tuple containing:
-                * trace (pymc3.backends.base.MultiTrace): Posterior samples from the MCMC chains
-                * map_estimate (dict): Container for Maximum a Posteriori (MAP) estimates
-                * summary (pandas.core.frame.DataFrame): Summary of Posterior distributions
+            # Prior distribution of `alpha`
+            alpha = pm.Uniform('alpha', lower=0., upper=np.pi)
+            admit_exp, coh_exp = real_xspec_functions_alpha(k_obs, Te, F, alpha)
 
-        Note:
-            Uses ``plateflex.estimate.real_xspec_functions``.
-
-        Example
-        -------
-        
-        >>> import plateflex.estimate as est
-        >>> import plateflex.flexure as flex
-        >>> import numpy as np
-        >>> # First define a fake data set or 300 points with sampling of 20 km 
-        >>> x = np.linspace(0.,20.e3*300,300)
-        >>> # Get wavenumbers
-        >>> k = np.fft.fftfreq(300, 20.e3)
-        >>> # Calculate error-free analytical spectral functions
-        >>> Te = 40.
-        >>> F = 0.5
-        >>> alpha = 90. # For real functions this is the correct value
-        >>> admit, corr, coh = flex.real_xspec_functions(k, Te, F, alpha)
-        >>> # Add artificial noise - this is obviously incorrect as admittance and coherence
-        ... # noise are not gaussian
-        >>> admit += 0.005*np.random.randn(len(k))
-        >>> coh += 0.1*np.random.randn(len(k))
-        >>> # Estimate Te and F from the joint inversion of admittance and coherence
-        >>> trace, map_estimate, summary = est.bayes_real_estimate(k, admit, corr, coh, typ='admit_coh')
-        Auto-assigning NUTS sampler...
-        Initializing NUTS using jitter+adapt_diag...
-        Initializing NUTS failed. Falling back to elementwise auto-assignment.
-        Multiprocess sampling (8 chains in 8 jobs)
-        CompoundStep
-        >CompoundStep
-        >>Slice: [F]
-        >>Slice: [Te]
-        >NUTS: [sigma]
-        Sampling 8 chains: 100%|█████████████| 16000/16000 [00:15<00:00, 1047.24draws/s]
-        The estimated number of effective samples is smaller than 200 for some parameters.
-        Warning: gradient not available.(E.g. vars contains discrete variables). MAP estimates may not be accurate for the default parameters. Defaulting to non-gradient minimization 'Powell'.
-        logp = 468.38: 100%|████████████████████████| 274/274 [00:00<00:00, 2883.91it/s]
-        >>> summary
-                mean    sd  mc_error  hpd_2.5  hpd_97.5    n_eff  Rhat
-        Te     39.14  1.07      0.06    37.02     41.22   171.02  1.03
-        F       0.49  0.02      0.00     0.45      0.54   171.31  1.03
-        sigma   0.07  0.00      0.00     0.07      0.07  3338.10  1.00
-
-        """
-
-        with pm.Model() as admit_model:
-
-            # k is an array - needs to be passed as distribution
-            k_obs = pm.Normal('k', mu=self.k, sigma=1., observed=self.k)
-
-            # Prior distributions
-            Te = pm.Uniform('Te', lower=1., upper=250.)
-            F = pm.Uniform('F', lower=0., upper=0.99999)
-
-            # Select whether to include alpha as a parameter to estimate
-            if self.alph:
-
-                # Prior distribution of `alpha`
-                alpha = pm.Uniform('alpha', lower=0., upper=np.pi)
-                admit_exp, coh_exp = real_xspec_functions_alpha(k_obs, Te, F, alpha)
-
-            else:
-                
-                admit_exp, coh_exp = real_xspec_functions_noalpha(k_obs, Te, F)
-
-            # Select type of analysis to perform
-            if self.atype=='admit':
-
-                # Uncertainty as observed distribution
-                sigma = pm.Normal('sigma', mu=self.eadm, sigma=1., \
-                    observed=self.eadm)
-
-                # Likelihood of observations
-                admit_obs = pm.Normal('admit_obs', mu=admit_exp, \
-                    sigma=sigma, observed=self.adm)
-
-            elif self.atype=='coh':
-
-                # Uncertainty as observed distribution
-                sigma = pm.Normal('sigma', mu=self.ecoh, sigma=1., \
-                    observed=self.ecoh)
-
-                # Likelihood of observations
-                coh_obs = pm.Normal('coh_obs', mu=coh_exp, \
-                    sigma=sigma, observed=self.coh)
-
-            elif self.atype=='joint':
-
-                # Define uncertainty as concatenated arrays
-                ejoint = np.array([self.eadm, self.ecoh]).flatten()
-
-                # Uncertainty as observed distribution
-                sigma = pm.Normal('sigma', mu=ejoint, sigma=1., observed=ejoint)
-
-                # Define array of observations and expected values as concatenated arrays
-                joint = np.array([self.adm, self.coh]).flatten()
-                joint_exp = tt.flatten(tt.concatenate([admit_exp, coh_exp]))
-
-                # Likelihood of observations
-                joint_obs = pm.Normal('admit_coh_obs', mu=joint_exp, sigma=sigma, 
-                    observed=joint)
-
-            # Sample the Posterior distribution
-            trace = pm.sample(cf.samples, tune=cf.tunes, cores=cf.cores)
-
-            # Get Max a porteriori estimate
-            map_estimate = pm.find_MAP()
-
-            # Get Summary
-            summary = pm.summary(trace).round(2)
-
-            self.trace = trace
-            self.map_estimate = map_estimate
-            self.summary = summary
-
-        return
-
-
-    def plot_stats(self, title=None):
-
-        try:
-            plotting.plot_trace_stats(self.trace, self.summary, self.map_estimate, title=title)
-        except:
-            print('No estimate yet available - analyzing...')
-            self.bayes_real_estimate()
-            plotting.plot_trace_stats(self.trace, self.summary, self.map_estimate, title=title)
-
-
-    def plot_fitted(self, est='MAP', title=None):
-
-        if est not in ['mean', 'MAP']:
-            raise(Exception("Choose one among: 'mean', or 'MAP'"))
+        else:
             
-        try:
-            plotting.plot_fitted(self.k, self.adm, self.eadm, self.coh, self.ecoh, self.summary, \
-                self.map_estimate, est=est, title=title)
-        except:
-            print('No estimate yet available - analyzing...')
-            self.bayes_real_estimate()
-            plotting.plot_fitted(self.k, self.adm, self.eadm, self.coh, self.ecoh, self.summary, \
-                self.map_estimate, est=est, title=title)
+            admit_exp, coh_exp = real_xspec_functions_noalpha(k_obs, Te, F)
+
+        # Select type of analysis to perform
+        if atype=='admit':
+
+            # Uncertainty as observed distribution
+            sigma = pm.Normal('sigma', mu=eadm, sigma=1., \
+                observed=eadm)
+
+            # Likelihood of observations
+            admit_obs = pm.Normal('admit_obs', mu=admit_exp, \
+                sigma=sigma, observed=adm)
+
+        elif atype=='coh':
+
+            # Uncertainty as observed distribution
+            sigma = pm.Normal('sigma', mu=ecoh, sigma=1., \
+                observed=ecoh)
+
+            # Likelihood of observations
+            coh_obs = pm.Normal('coh_obs', mu=coh_exp, \
+                sigma=sigma, observed=coh)
+
+        elif atype=='joint':
+
+            # Define uncertainty as concatenated arrays
+            ejoint = np.array([eadm, ecoh]).flatten()
+
+            # Uncertainty as observed distribution
+            sigma = pm.Normal('sigma', mu=ejoint, sigma=1., observed=ejoint)
+
+            # Define array of observations and expected values as concatenated arrays
+            joint = np.array([adm, coh]).flatten()
+            joint_exp = tt.flatten(tt.concatenate([admit_exp, coh_exp]))
+
+            # Likelihood of observations
+            joint_obs = pm.Normal('admit_coh_obs', mu=joint_exp, sigma=sigma, 
+                observed=joint)
+
+    return model
+
+
+# def bayes_real_estimate(self):
+    """
+
+    https://stackoverflow.com/questions/45914962/sample-the-same-model-with-many-sets-of-data
+
+
+    Function that runs ``pymc3`` to estimate the effective elastic thickness,
+    load ratio and spectal 'noise' from real-valued spectral functions.
+
+    Args:
+        k (np.ndarray)      : Wavenumbers (rad/m)
+        adm (np.ndarray)    : Admittance function (mGal/m)
+        coh (np.ndarray)    : Coherence functions 
+        alph (bool)         : Is alpha a parameter to estimate?
+        typ (bool)          : Type of analysis to perform ('admit', 'coh', 'joint')
+
+
+    Returns:
+        (tuple): tuple containing:
+            * trace (pymc3.backends.base.MultiTrace): Posterior samples from the MCMC chains
+            * map_estimate (dict): Container for Maximum a Posteriori (MAP) estimates
+            * summary (pandas.core.frame.DataFrame): Summary of Posterior distributions
+
+    Note:
+        Uses ``plateflex.estimate.real_xspec_functions``.
+
+    Example
+    -------
+    
+    >>> import plateflex.estimate as est
+    >>> import plateflex.flexure as flex
+    >>> import numpy as np
+    >>> # First define a fake data set or 300 points with sampling of 20 km 
+    >>> x = np.linspace(0.,20.e3*300,300)
+    >>> # Get wavenumbers
+    >>> k = np.fft.fftfreq(300, 20.e3)
+    >>> # Calculate error-free analytical spectral functions
+    >>> Te = 40.
+    >>> F = 0.5
+    >>> alpha = 90. # For real functions this is the correct value
+    >>> admit, corr, coh = flex.real_xspec_functions(k, Te, F, alpha)
+    >>> # Add artificial noise - this is obviously incorrect as admittance and coherence
+    ... # noise are not gaussian
+    >>> admit += 0.005*np.random.randn(len(k))
+    >>> coh += 0.1*np.random.randn(len(k))
+    >>> # Estimate Te and F from the joint inversion of admittance and coherence
+    >>> trace, map_estimate, summary = est.bayes_real_estimate(k, admit, corr, coh, typ='admit_coh')
+    Auto-assigning NUTS sampler...
+    Initializing NUTS using jitter+adapt_diag...
+    Initializing NUTS failed. Falling back to elementwise auto-assignment.
+    Multiprocess sampling (8 chains in 8 jobs)
+    CompoundStep
+    >CompoundStep
+    >>Slice: [F]
+    >>Slice: [Te]
+    >NUTS: [sigma]
+    Sampling 8 chains: 100%|█████████████| 16000/16000 [00:15<00:00, 1047.24draws/s]
+    The estimated number of effective samples is smaller than 200 for some parameters.
+    Warning: gradient not available.(E.g. vars contains discrete variables). MAP estimates may not be accurate for the default parameters. Defaulting to non-gradient minimization 'Powell'.
+    logp = 468.38: 100%|████████████████████████| 274/274 [00:00<00:00, 2883.91it/s]
+    >>> summary
+            mean    sd  mc_error  hpd_2.5  hpd_97.5    n_eff  Rhat
+    Te     39.14  1.07      0.06    37.02     41.22   171.02  1.03
+    F       0.49  0.02      0.00     0.45      0.54   171.31  1.03
+    sigma   0.07  0.00      0.00     0.07      0.07  3338.10  1.00
+
+    """
 
 
 @as_op(itypes=[tt.dvector, tt.dscalar, tt.dscalar], 

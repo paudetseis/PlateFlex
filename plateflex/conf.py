@@ -79,6 +79,6 @@ water = False
 
 # bayes parameters
 global samples, tunes
-samples = 1000
-tunes = 1000
+samples = 200
+tunes = 200
 cores = 4
