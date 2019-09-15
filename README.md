@@ -27,14 +27,18 @@ and cross-spectral quantities of 2D gridded data of topography and gravity anoma
 Once obtained, the wavelet cross-spectral quantities (admittance and coherence) are
 used to determine the parameters of the effectively elastic plate, such as the 
 effective elastic thickness (<i>T<sub>e</sub></i>), the initial subsurface-to-surface
-load ratio (<i>F</i>i>) and optionally the initial phase difference between
-surface and subsurface loads (<i>alpha</i>i>). The software uses the analytical
+load ratio (<i>F</i>) and optionally the initial phase difference between
+surface and subsurface loads (<i>alpha</i>). The software uses the analytical
 functions with *uniform F and alpha* to fit the admittance and/or coherence functions 
 using a probabilistic inference method. 
 
 The analysis can be done using either the Bouguer or Free air gravity anomalies, and
 over land or ocean areas. Common computational 
 workflows are covered in the Jupyter notebooks bundled with this package.
+
+.. note::
+    
+    The cross-spectral quantities calculated here are the real-valued admittance and real-squared-coherency, as discussed in the [references](#references)
 
 ## Installation
 
