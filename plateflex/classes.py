@@ -20,7 +20,8 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 """
-This PlateFlex module contains the following ``FlexGrid`` classes, with inheritance in parentheses:
+This ``PlateFlex`` module contains the following ``FlexGrid`` classes, with inheritance 
+in parentheses:
 
 - ``plateflex.classes.FlexGrid``
 - ``plateflex.classes.TopoGrid(FlexGrid)``
@@ -29,19 +30,26 @@ This PlateFlex module contains the following ``FlexGrid`` classes, with inherita
 - ``plateflex.classes.FairGrid(GravGrid)``
 
 These classes can be initiatlized with a grid of topography/bathymetry or gravity
-anomaly (Bouguer/Free-air) data. These classes contain methods for the following functionality:
+anomaly (Bouguer/Free-air) data, and contain methods for the following functionality:
 
 - Performing a wavelet transform using a Morlet wavelet
 - Obtaining the wavelet scalogram from the wavelet transform
-- Plotting the grids, wavelet transform components, and scalograms
+- Plotting the input grids, wavelet transform components, and scalograms
 
 This module further contains the class ``plateflex.classes.Project``, which itself is a container
-of ``FlexGrid`` objects (two at most and one each of ``TopoGrid`` and ``GravGrid``). Methods are available to:
+of ``FlexGrid`` objects (two at most and one each of ``TopoGrid`` and ``GravGrid``). 
+Methods are available to:
 
-- Add ``FlexGrid`` objects to the project
+- Add ``FlexGrid`` or ``Project`` objects to the project
 - Iterate over ``FlexGrid`` objects
-- Perform the wavelet admittance and coherence between topography (``TopoGrid`` object) and gravity anomalies (``GravGrid`` object)
+- Perform the wavelet admittance and coherence between topography 
+(``TopoGrid`` object) and gravity anomalies (``GravGrid`` object)
 - Plot the wavelet admnittance and coherence spectra
+- Estimate model parameters at single grid cell
+- Estimate model parameters at every (or decimated) grid cell
+- Plot the statistics of the estimated parameters at single grid cell
+- Plot the fitted admittance and coherence functions at single grid cell
+- Plot the final grids of model parameters
 
 """
 
@@ -57,59 +65,77 @@ sns.set()
 
 
 class FlexGrid(object):
-    """Basic grid class of ``plateflex`` with useful methods for wavelet analysis
-
-    Accepts a 2D array and Cartesian coordinates specifying the
+    """
+    An object containing a 2D array of data and Cartesian coordinates specifying the
     bounding box of the array. Contains methods to calculate the wavelet transform, 
     wavelet scalogram and to plot those quantities at a specified wavenumber index.
 
+    :type grid: :class:`~numpy.ndarray`
+    :param grid: 2D array of of topography/gravity data
+    :type xmin: float
+    :param xmin: Minimum x bound in km
+    :type xmax: float
+    :param xmax: Maximum x bound in km
+    :type ymin: float
+    :param ymin: Minimum y bound in km
+    :type ymax: float
+    :param ymax: Maximum y bound in km
+
     Grid must be projected in km.
 
-    Attributes:
-        data (np.ndarray): 2D array of topography/gravity data
-        xmin (float): minimum x bound in km
-        xmax (float): maximum x bound in km
-        ymin (float): minimum y bound in km
-        ymax (float): maximum y bound in km
-        dx (float): grid spacing in the x-direction in km
-        dy (float): grid spacing in the y-direction in km
-        nx (int): number of nodes in the x-direction
-        ny (int): number of nodes in the y-direction
-        xcoords (np.ndarray): 1D array of coordinates in the x-direction
-        ycoords (np.ndarray): 1D array of coordinates in the y-direction
-        units (str): units of data set
-        ns (int): number of wavenumber samples
-        k (np.ndarray): 1D array of wavenumbers
+    .. rubric:: Default Attributes
 
-    Notes:
+    ``data`` : :class:`~numpy.ndarray`
+        2D array of topography/gravity data (shape (`nx,ny`))
+    ``xmin`` : float 
+        Minimum x bound in km
+    ``xmax`` : float 
+        Maximum x bound in km
+    ``ymin`` : float 
+        Minimum y bound in km
+    ``ymax`` : float) 
+        Maximum y bound in km
+    ``dx`` : float 
+        Grid spacing in the x-direction in km
+    ``dy`` : float 
+        Grid spacing in the y-direction in km
+    ``nx`` : int 
+        Number of nodes in the x-direction
+    ``ny`` : int 
+        Number of nodes in the y-direction
+    ``xcoords`` : np.ndarray 
+        1D array of coordinates in the x-direction
+    ``ycoords`` : np.ndarray 
+        1D array of coordinates in the y-direction
+    ``units`` str 
+        Units of data set
+    ``ns`` int 
+        Number of wavenumber samples
+    ``k`` : np.ndarray 
+        1D array of wavenumbers
+
+    .. note:
+
         In all instances `x` indicates eastings in metres and `y` indicates northings.
         Using a grid of longitude / latitudinal coordinates (degrees) will result
         in incorrect calculations.
 
-    Examples:
-        >>> import numpy as np
-        >>> from plateflex import FlexGrid
-        >>> # Create zero-valued square grid
-        >>> nn = 100; dd = 10.
-        >>> x = y = np.linspace(0., nn*dd, nn)
-        >>> xmin, xmax = x.min(), x.max()
-        >>> ymin, ymax = y.min(), y.max()
-        >>> grid = np.zeros((nn, nn))
-        >>> flexgrid = FlexGrid(grid, xmin, xmax, ymin, ymax)
-        >>> flexgrid
-        <plateflex.grids.FlexGrid object at 0x10613fe10>
+    .. rubric: Example
+
+    >>> import numpy as np
+    >>> from plateflex import FlexGrid
+    >>> # Create zero-valued square grid
+    >>> nn = 200; dd = 10.
+    >>> xmin = ymin = 0.
+    >>> xmax = ymax = (nn-1)*dd
+    >>> grid = np.zeros((nn, nn))
+    >>> flexgrid = FlexGrid(grid, xmin, xmax, ymin, ymax)
+    >>> flexgrid
+    <plateflex.grids.FlexGrid object at 0x10613fe10>
 
     """
 
     def __init__(self, grid, xmin, xmax, ymin, ymax):
-        """
-        Args:
-            grid (np.ndarray): 2D array of topography/gravity data
-            xmin (float): minimum x bound in km
-            xmax (float): maximum x bound in km
-            ymin (float): minimum y bound in km
-            ymax (float): maximum y bound in km
-        """
 
         if np.any(np.isnan(np.array(grid))):
             raise(Exception('grid contains NaN values: abort'))
@@ -128,76 +154,81 @@ class FlexGrid(object):
 
 
     def wlet_transform(self):
-        """Calculates the wavelet transform of grid.
-
+        """
         This method uses the module ``plateflex.cpwt.cpwt`` to calculate the wavelet transform
         of the grid. By default the method pads the array with zeros to the next power of 2.
         The wavelet transform is stored as an attribute of the object.
 
-        Attributes:
-            wl_trans (np.ndarray): Wavelet transform of the grid (shape (`nx,ny,na,ns`))
+        .. rubric:: Additional Attributes
+
+        ``wl_trans`` : :class:`~numpy.ndarray`
+            Wavelet transform of the grid (shape (`nx,ny,na,ns`))
         
-        Examples:
-            >>> import numpy as np
-            >>> from plateflex import FlexGrid
-            >>> # Create zero-valued square grid
-            >>> nn = 100; dd = 1.
-            >>> x = y = np.linspace(0., nn*dd, nn)
-            >>> xmin, xmax = x.min(), x.max()
-            >>> ymin, ymax = y.min(), y.max()
-            >>> grid = np.zeros((nn, nn))
-            >>> flexgrid = FlexGrid(grid, xmin, xmax, ymin, ymax)
-            >>> flexgrid.wlet_transform()
-             #loops = 13:  1  2  3  4  5  6  7  8  9 10 11 12 13
-            >>> flexgrid.wl_trans.shape
-            (100, 100, 11, 13)
+        .. rubric:: Example
+
+        >>> import numpy as np
+        >>> from plateflex import FlexGrid
+        >>> # Create zero-valued square grid
+        >>> nn = 200; dd = 10.
+        >>> xmin = ymin = 0.
+        >>> xmax = ymax = (nn-1)*dd
+        >>> grid = np.zeros((nn, nn))
+        >>> flexgrid = FlexGrid(grid, xmin, xmax, ymin, ymax)
+        >>> flexgrid.wlet_transform()
+         #loops = 13:  1  2  3  4  5  6  7  8  9 10 11 12 13
+        >>> flexgrid.wl_trans.shape
+        (100, 100, 11, 13)
 
         """
 
+        # Get next power of 2 for grid size
         nnx, nny = _npow2(self.nx), _npow2(self.ny)
 
+        # Calculate wavelet transform
         wl_trans = cpwt.wlet_transform(self.data, nnx, nny, self.dx, self.dy, self.k)
+
+        # Save coeficients as attribute
         self.wl_trans = wl_trans
 
         return
 
     def wlet_scalogram(self):
-        """Calculates the wavelet scalogram of grid.
-
+        """
         This method uses the module ``plateflex.cpwt.cpwt`` to calculate the wavelet scalogram
         of the grid. If the attribute ``wl_trans`` cannot be found, the method automatically
         calculates the wavelet transform first. The wavelet scalogram is stored as an 
         attribute of the object.
 
-        Attributes:
-            wl_sg (np.ndarray): Wavelet scalogram of the grid (shape (`nx,ny,ns`))
+        .. rubric:: Additional Attributes
 
-        Examples:
-            >>> import numpy as np
-            >>> from plateflex import FlexGrid
-            >>> # Create random-valued square grid
-            >>> nn = 200; dd = 10.
-            >>> x = y = np.linspace(0., nn*dd, nn)
-            >>> xmin, xmax = x.min(), x.max()
-            >>> ymin, ymax = y.min(), y.max()
-            >>> # set random seed
-            >>> np.random.seed(0)
-            >>> grid = 100.*np.random.randn(nn, nn)
-            >>> flexgrid = FlexGrid(grid, xmin, xmax, ymin, ymax)
-            >>> flexgrid.wlet_scalogram()
-             #loops = 13:  1  2  3  4  5  6  7  8  9 10 11 12 13
-            >>> flexgrid.wl_sg.shape
-            (100, 100, 13)
+        ``wl_sg`` : :class:`~numpy.ndarray`
+            Wavelet scalogram of the grid (shape (`nx,ny,na,ns`))
 
-            >>> # Perform wavelet transform first
-            >>> flexgrid_2 = FlexGrid(grid, xmin, xmax, ymin, ymax)
-            >>> flexgrid_2.wlet_transform()
-              #loops = 13:  1  2  3  4  5  6  7  8  9 10 11 12 13
-            >>> flexgrid_2.wlet_scalogram()
-            >>> np.allclose(flexgrid.wl_sg, flexgrid_2.wl_sg)
-            False
-            >>> # FIGURE THIS OUT!!! - ok, define cf_f.k0 at _init__
+        .. rubric:: Examples
 
+        >>> import numpy as np
+        >>> from plateflex import FlexGrid
+ 
+        >>> # Create random-valued square grid
+        >>> nn = 200; dd = 10.
+        >>> xmin = ymin = 0.
+        >>> xmax = ymax = (nn-1)*dd
+        >>> # set random seed
+        >>> np.random.seed(0)
+        >>> grid = np.random.randn(nn, nn)
+        >>> flexgrid1 = FlexGrid(grid, xmin, xmax, ymin, ymax)
+        >>> flexgrid1.wlet_scalogram()
+         #loops = 17:  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17
+        >>> flexgrid1.wl_sg.shape
+        (200, 200, 17)
+
+        >>> # Perform wavelet transform first
+        >>> flexgrid2 = FlexGrid(grid, xmin, xmax, ymin, ymax)
+        >>> flexgrid2.wlet_transform()
+         #loops = 17:  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17
+        >>> flexgrid2.wlet_scalogram()
+        >>> np.allclose(flexgrid1.wl_sg, flexgrid2.wl_sg)
+        True
        """
 
         nnx, nny = 2**(self.nx-1).bit_length(), 2**(self.ny-1).bit_length()
@@ -224,8 +255,10 @@ class FlexGrid(object):
         - wavenumber index is lower than 0 or larger than self.ns
         - angle index is lower than 0 or larger than 11 (hardcoded)
 
-        If no ``FlexGrid.wl_trans`` attribute is found, the method automatically calculates
-        the wavelet transform first.
+        .. note::
+
+            If no ``FlexGrid.wl_trans`` attribute is found, the method automatically calculates
+            the wavelet transform first.
 
         """
 
@@ -261,9 +294,11 @@ class FlexGrid(object):
         - no wavenumber index is specified (kindex)
         - wavenumber index is lower than 0 or larger than self.ns
 
-        If no ``FlexGrid.wl_sg`` attribute is found, the method automatically calculates
-        the wavelet scalogram (and maybe also the wavelet transform) first.
-        
+        .. note::
+
+            If no ``FlexGrid.wl_sg`` attribute is found, the method automatically calculates
+            the wavelet scalogram (and maybe also the wavelet transform) first.
+
         """
 
         if kindex is None:
@@ -294,8 +329,17 @@ class FlexGrid(object):
 
 
 class GravGrid(FlexGrid):
-    """Basic grid class of ``plateflex`` for gravity data that inherits from FlexGrid
+    """
+    Basic grid class of ``plateflex`` for gravity data that inherits from FlexGrid
 
+    .. rubric: Example
+
+    >>> import numpy as np
+    >>> from plateflex import FlexGrid, GravGrid
+    >>> nn = 200; dd = 10.
+    >>> gravgrid = GravGrid(np.random.randn(nn, nn), 0., (nn-1)*dd, 0., (nn-1)*dd)
+    >>> isinstance(gravgrid, FlexGrid)
+    True
     """
 
     def __init__(self, grid, xmin, xmax, ymin, ymax):
@@ -303,10 +347,28 @@ class GravGrid(FlexGrid):
         FlexGrid.__init__(self, grid, xmin, xmax, ymin, ymax)
 
 class BougGrid(GravGrid):
-    """Basic grid class of ``plateflex`` for Bouguer gravity data that inherits from GravGrid
+    """
+    Basic grid class of ``plateflex`` for Bouguer gravity data that inherits from GravGrid
 
-    Contains method to plot the grid data with default title and units using module 
+    Contains method to plot the grid data with default title and units using function 
     ``plateflex.plotting.plot_real_grid``.
+
+    .. rubric:: Additional Attributes
+
+    ``units`` : str
+        Units of Gravity anomaly ('mGal')
+
+    .. rubric: Example
+
+    >>> import numpy as np
+    >>> from plateflex import FlexGrid, BougGrid, GravGrid
+    >>> nn = 200; dd = 10.
+    >>> bouggrid = BougGrid(np.random.randn(nn, nn), 0., (nn-1)*dd, 0., (nn-1)*dd)
+    >>> isinstance(bouggrid, GravGrid)
+    True
+    >>> isinstance(bouggrid, FlexGrid)
+    True
+
     """
 
     def __init__(self, grid, xmin, xmax, ymin, ymax):
@@ -320,10 +382,27 @@ class BougGrid(GravGrid):
         plotting.plot_real_grid(self.data, title=title, mask=mask, save=save, clabel=self.units)
 
 class FairGrid(GravGrid):
-    """Basic grid class of ``plateflex`` for Free-air gravity data that inherits from GravGrid
+    """
+    Basic grid class of ``plateflex`` for Free-air gravity data that inherits from GravGrid
 
-    Contains method to plot the grid data with default title and units using module 
+    Contains method to plot the grid data with default title and units using function 
     ``plateflex.plotting.plot_real_grid``.
+
+    .. rubric:: Additional Attributes
+
+    ``units`` : str
+        Units of Gravity anomaly ('mGal')
+
+    .. rubric: Example
+
+    >>> import numpy as np
+    >>> from plateflex import FlexGrid, FairGrid, GravGrid
+    >>> nn = 200; dd = 10.
+    >>> fairgrid = FaiorGrid(np.random.randn(nn, nn), 0., (nn-1)*dd, 0., (nn-1)*dd)
+    >>> isinstance(fairgrid, GravGrid)
+    True
+    >>> isinstance(fairgrid, FlexGrid)
+    True
     """
 
     def __init__(self, grid, xmin, xmax, ymin, ymax):
@@ -338,10 +417,30 @@ class FairGrid(GravGrid):
 
 
 class TopoGrid(FlexGrid):
-    """Basic grid class of ``plateflex`` for Topography data that inherits from FlexGrid
+    """
+    Basic grid class of ``plateflex`` for Topography data that inherits from FlexGrid
 
-    Contains method to plot the grid data with default title and units using module 
+    Contains method to plot the grid data with default title and units using function 
     ``plateflex.plotting.plot_real_grid``.
+
+    .. rubric:: Additional Attributes
+
+    ``units`` : str
+        Units of Topography ('meters')
+
+    .. rubric: Example
+    
+    >>> import numpy as np
+    >>> from plateflex import FlexGrid, TopoGrid
+    >>> nn = 200; dd = 10.
+    >>> topogrid = TopoGrid(np.random.randn(nn, nn), 0., (nn-1)*dd, 0., (nn-1)*dd)
+    >>> isinstance(topogrid, FlexGrid)
+    True
+
+    .. note::
+
+        Automatically converts grid values to 'meters' if standard deviation is lower 
+        than 20
     """
 
     def __init__(self, grid, xmin, xmax, ymin, ymax):
@@ -358,31 +457,87 @@ class TopoGrid(FlexGrid):
         plotting.plot_real_grid(self.data, title=title, mask=mask, save=save, clabel=self.units)
 
 class Project(object):
-    """List like object of multiple ``FlexGrid`` objects.
-
+    """
     Contains methods to calculate the wavelet admittance and coherence and 
     estimate flexural model parameters and plot various results. 
 
-    Attributes:
-        grids (List): List of ``FlexGrid`` objects
+    :type grids: list of :class:`~plateflex.classes.FlexGrid`, optional
+    :param grids: Initial list of PlateFlex :class:`~plateflex.classes.FlexGrid`
+        objects.
 
-    Note:
+    .. rubric:: Default Attributes
+
+    ``grids`` : List
+        List of ``FlexGrid`` objects
+
+    .. note:::
+
         Can hold a list of any length with any type of ``FlexGrid`` objects - 
         however the wavelet calculations will not execute unless the project holds exactly 2 
         ``FlexGrid`` objects in the list, one each of ``GravGrid`` and ``TopoGrid``. 
 
-    Examples:
-        >>> import numpy as np
-        >>> from plateflex import FlexGrid
-        >>> # Create zero-valued square grid
-        >>> nn = 100; dd = 10.
-        >>> x = y = np.linspace(0., nn*dd, nn)
-        >>> xmin, xmax = x.min(), x.max()
-        >>> ymin, ymax = y.min(), y.max()
-        >>> grid = np.zeros((nn, nn))
-        >>> flexgrid = FlexGrid(grid, xmin, xmax, ymin, ymax)
-        >>> flexgrid
-        <plateflex.grids.FlexGrid object at 0x10613fe10>
+    .. rubric:: Examples
+
+    Create zero-valued square grid
+
+    >>> import numpy as np
+    >>> from plateflex import FlexGrid, TopoGrid, BougGrid, GravGrid, Project
+    >>> nn = 200; dd = 10.
+    >>> topogrid = TopoGrid(np.random.randn(nn, nn), 0., (nn-1)*dd, 0., (nn-1)*dd)
+    >>> bouggrid = BougGrid(np.random.randn(nn, nn), 0., (nn-1)*dd, 0., (nn-1)*dd)
+    >>> isinstance(bouggrid, GravGrid)
+    True
+    >>> isinstance(bouggrid, FlexGrid)
+    True
+
+    Initialize project with list of grids
+
+    >>> Project(grids=[topogrid, bouggrid])
+    <plateflex.classes.Project object at 0x10c62b320>
+
+    Add FlexGrid to project
+
+    >>> project = Project()
+    >>> project += topogrid
+    >>> project += bouggrid
+    >>> project.grids
+    [<plateflex.classes.TopoGrid object at 0x1176b4240>, <plateflex.classes.BougGrid object at 0x1176b42e8>]
+
+    Append FlexGrid to project
+
+    >>> project = Project()
+    >>> project.append(topogrid)
+    <plateflex.classes.Project object at 0x1176b9400>
+    >>> project.grids[0]
+    <plateflex.classes.TopoGrid object at 0x1176b4240>
+
+    Calculate wavelet transform
+
+    >>> project = Project(grids=[topogrid, bouggrid])
+    >>> project.wlet_admit_coh()
+     #loops = 17:  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17
+     #loops = 17:  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17
+     Calculation jackknife error on admittance and coherence
+
+    Check that project contains one TopoGrid and one GravGrid
+
+    >>> project = Project(grids=[topogrid, topogrid])
+    >>> project.wlet_admit_coh()
+    Traceback (most recent call last):
+      File "<stdin>", line 1, in <module>
+      File "/Users/pascalaudet/Softwares/Python/plateflex-dev/PlateFlex/plateflex/classes.py", line 492, in wlet_admit_coh
+        grids = self.grids + other.grids
+    Exception: There needs to be one GravGrid object in Project
+
+    Check that only two FlexGrid objects are contained in project
+
+    >>> project = Project(grids=[topogrid, topogrid, bouggrid])
+    >>> project.wlet_admit_coh()
+    Traceback (most recent call last):
+      File "<stdin>", line 1, in <module>
+      File "[...]/plateflex/classes.py", line 484, in wlet_admit_coh
+        if isinstance(grid_list, list):
+    Exception: There needs to be exactly two FlexGrid objects in Project
 
     """
 
@@ -414,8 +569,48 @@ class Project(object):
         """
         return list(self.grids).__iter__()
 
-    def extend(self, grid_list):
+    def append(self, grid):
+        """Append a single ``FlexGrid`` object to the current ``Project`` object.
 
+        :param grid: object of :class:`~plateflex.classes.FlexGrid`.
+
+            grid (plateflex.clases.FlexGrid): Object to append to project
+
+        .. rubric:: Example
+            
+        >>> import numpy as np
+        >>> from plateflex import FlexGrid, Project
+        >>> nn = 200; dd = 10.
+        >>> grid = FlexGrid(np.random.randn(nn, nn), 0., (nn-1)*dd, 0., (nn-1)*dd)
+        >>> project = Project()
+        >>> project.append(grid)
+        """
+        
+        if isinstance(grid, FlexGrid):
+            self.grids.append(grid)
+        else:
+            msg = 'Append only supports a single FlexGrid object as an argument.'
+            raise TypeError(msg)
+        return self
+
+    def extend(self, grid_list):
+        """
+        Extend the current Project object with a list of FlexGrid objects.
+
+        :param trace_list: list of :class:`~plateflex.classes.FlexGrid` objects or
+            :class:`~plateflex.classes.Project`.
+
+        .. rubric:: Example
+
+        >>> import numpy as np
+        >>> from plateflex import FlexGrid, Project
+        >>> nn = 200; dd = 10.
+        >>> grid1 = FlexGrid(np.random.randn(nn, nn), 0., (nn-1)*dd, 0., (nn-1)*dd)
+        >>> grid2 = FlexGrid(np.random.randn(nn, nn), 0., (nn-1)*dd, 0., (nn-1)*dd)
+        >>> project = Project()
+        >>> project.extend(grids=[grid1, grid2])
+
+        """
         if isinstance(grid_list, list):
             for _i in grid_list:
                 # Make sure each item in the list is a FlexGrid object.
@@ -431,20 +626,25 @@ class Project(object):
         return self
 
     def wlet_admit_coh(self):
-        """Calculates the wavelet admittance and coherence of two ``FlexGrid`` objects.
-
-        This method uses the module ``plateflex.cpwt.cpwt`` to calculate the wavelet admittance and
-        coherence. The object needs to contain exactly two ``FlexGrid`` objects, one of each
-        of ``TopoGrid`` and ``GravGrid`` objects. If the wavelet transforms attributes
+        """
+        This method uses the module `plateflex.cpwt.cpwt` to calculate the wavelet admittance and
+        coherence. The object needs to contain exactly two :class:`~plateflex.classes.FlexGrid` 
+        objects, one of each of :class:`~plateflex.classes.RopoGrid` and 
+        :class:`~plateflex.classes.GravGrid` objects. If the wavelet transforms attributes
         don't exist, they are calculated first.
 
         Stores the wavelet admittance, coherence and their error as attributes
 
-        Attributes:
-            wl_admit (np.ndarray): Wavelet admittance (shape (`nx,ny,ns`))
-            wl_eadmit (np.ndarray): Error of wavelet admittance (shape (`nx,ny,ns`))
-            wl_coh (np.ndarray): Wavelet coherence (shape (`nx,ny,ns`))
-            wl_ecoh (np.ndarray): Error of wavelet coherence (shape (`nx,ny,ns`))
+        .. rubric:: Additional Attributes
+
+        ``wl_admit`` : :class:`~numpy.ndarray`
+            Wavelet admittance (shape (`nx,ny,ns`))
+        ``wl_eadmit`` : :class:`~numpy.ndarray`
+            Error of wavelet admittance (shape (`nx,ny,ns`))
+        ``wl_coh`` : :class:`~numpy.ndarray`
+            Wavelet coherence (shape (`nx,ny,ns`))
+        ``wl_ecoh`` : :class:`~numpy.ndarray`
+            Error of wavelet coherence (shape (`nx,ny,ns`))
 
         """
 
@@ -493,7 +693,23 @@ class Project(object):
 
         return 
 
-    def plot_admit_coh(self, kindex=None, log=False, mask=None, title=None, save=None, clabel=None):
+    def plot_admit_coh(self, kindex=None, mask=None, title=None, save=None, clabel=None):
+        """
+        Method to plot grids of wavelet admittance and coherence at a given  wavenumber index. 
+
+        :type xmin: float
+        :param xmin: Minimum x bound in km
+        :type kindex: int
+        :param kindex: Index of wavenumber array
+        :type mask: :class:`~numpy.ndarray`, optional 
+        :param mask: Array of booleans for masking data points
+        :type title: str, optional
+        :param title: Title of plot
+        :type save: str, optional
+        :param save: Name of file for to save figure
+        :type clabel: str, optional    
+        :param clabel: Label for colorbar
+       """
 
         if kindex is None:
             raise(Exception('Specify index of wavenumber for plotting'))
@@ -514,18 +730,30 @@ class Project(object):
         plotting.plot_real_grid(coh, log=log, mask=mask, title=title, save=save, clabel=None)
 
     def estimate_cell(self, cell=(0,0), alph=False, atype='joint'):
-        """Estimate model parameters at single cell location
-
+        """
         Method to estimate the parameters of the flexural model at a single cell location
         of the input grids. 
 
-        Args:
-            cell (tuple): Indices of cell location within grid
-            alph (bool): Whether or not to estimate parameter ``alpha``
-            atype (str): Whether to use the admittance ('admit'), coherence ('coh') or both ('joint')
+        :type cell: tuple
+        :param cell: Indices of cell location within grid
+        :type alph: bool, optional
+        :param alph: Whether or not to estimate parameter ``alpha``
+        :type atype: str, optional
+        :param atype: Whether to use the admittance ('admit'), coherence ('coh') or both ('joint')
 
-        Results are stored as attributes of project.
+        .. rubric:: Additional Attributes
 
+        ``trace`` : :class:`~pymc3.backends.base.MultiTrace`
+            Posterior samples from the MCMC chains
+        ``summary`` : :class:`~pandas.core.frame.DataFrame`
+            Summary statistics from Posterior distributions
+        ``map_estimate`` : dict
+            Container for Maximum a Posteriori (MAP) estimates
+        ``cell`` : tuple 
+            Indices of cell location within grid
+
+        
+        Results are stored as attributes of ``Project`` object.
         """
 
         # Delete attributes to release some memory
@@ -565,22 +793,45 @@ class Project(object):
             summary = pm.summary(trace).round(2)
 
             # Store the pymc results as object attributes for later plotting
-            self.cell_trace = trace
-            self.cell_map_estimate = map_estimate
-            self.cell_summary = summary
+            self.trace = trace
+            self.map_estimate = map_estimate
+            self.summary = summary
 
     def estimate_grid(self, nn=10, alph=False, atype='joint'):
-        """Estimate model parameters at all (possibly decimated) locations on the grid
-
+        """
         Method to estimate the parameters of the flexural model at all grid point locations.
         It is also possible to decimate the number of grid cells at which to estimate parameters. 
 
-        Args:
-            nn (int): Decimator. If grid shape is ``(nx, ny)``, resulting grids will have shape of ``(int(nx/nn), int(ny/nn))``. 
-            alph (bool): Whether or not to estimate parameter ``alpha``
-            atype (str): Whether to use the admittance ('admit'), coherence ('coh') or both ('joint')
+        :type nn: int
+        :param nn: Decimator. If grid shape is ``(nx, ny)``, resulting grids will have shape of ``(int(nx/nn), int(ny/nn))``. 
+        :type alph: bool, optional 
+        :param alph: Whether or not to estimate parameter ``alpha``
+        :type atype: str, optional
+        :param atype: Whether to use the admittance ('admit'), coherence ('coh') or both ('joint')
 
-        Final grids of estimated parameters are stored as attributes of project.
+        .. rubric:: Additional Attributes
+
+        ``mean_Te_grid`` : :class:`~numpy.ndarray` 
+            Grid with mean Te estimates (shape ``(nx, ny``))
+        ``MAP_Te_grid`` : :class:`~numpy.ndarray` 
+            Grid with MAP Te estimates (shape ``(nx, ny``))
+        ``std_Te_grid`` : :class:`~numpy.ndarray` 
+            Grid with std Te estimates (shape ``(nx, ny``))
+        ``mean_F_grid`` : :class:`~numpy.ndarray` 
+            Grid with mean F estimates (shape ``(nx, ny``))
+        ``MAP_F_grid`` : :class:`~numpy.ndarray` 
+            Grid with MAP F estimates (shape ``(nx, ny``))
+        ``std_F_grid`` : :class:`~numpy.ndarray` 
+            Grid with std F estimates (shape ``(nx, ny``))
+
+        .. rubric:: Optional Additional Attributes
+
+        ``mean_a_grid`` : :class:`~numpy.ndarray` 
+            Grid with mean alpha estimates (shape ``(nx, ny``))
+        ``MAP_a_grid`` : :class:`~numpy.ndarray` 
+            Grid with MAP alpha estimates (shape ``(nx, ny``))
+        ``std_a_grid`` : :class:`~numpy.ndarray` 
+            Grid with std alpha estimates (shape ``(nx, ny``))
 
         """
 
@@ -589,6 +840,7 @@ class Project(object):
 
         # Delete attributes to release some memory
         try:
+            del self.mean_Te_grid
             del self.MAP_Te_grid
             del self.std_Te_grid            
             del self.mean_F_grid
@@ -623,7 +875,7 @@ class Project(object):
             MAP_a_grid = np.zeros((int(self.nx/nn),int(self.ny/nn)))
             std_a_grid = np.zeros((int(self.nx/nn),int(self.ny/nn)))
 
-        # Extract topo grid to avoid computing ocean areas
+        # Extract topo grid to avoid computing over ocean areas
         if isinstance(self.grids[0], TopoGrid):
             grid = self.grids[0]
         else:
@@ -702,34 +954,38 @@ class Project(object):
             self.MAP_a_grid = MAP_a_grid
             self.std_a_grid = std_a_griod
 
-    def plot_stats(self, title=None):
-        """Plot statistics of estimating parameters of a single cell
-
+    def plot_stats(self, title=None, save=None):
+        """
         Method to plot the marginal and joint distributions of samples drawn from the 
         posterior distribution as well as the extracted statistics. Calls the function 
-        ``plateflex.plotting.plot_stats`` with attributes as arguments.
+        :func:`~plateflex.plotting.plot_stats` with attributes as arguments.
 
-        Args:
-            est (bool): type of inference estimate to use for predicting admittance and coherence
-            title (str): title of plot
+        :type title: str, optional 
+        :param title: Title of plot
+        :type save: str, optional
+        :param save: Name of file for to save figure
+
         """
 
         try:
-            plotting.plot_stats(self.cell_trace, self.cell_summary, \
-                self.cell_map_estimate, title=title)
+            plotting.plot_stats(self.trace, self.summary, \
+                self.map_estimate, title=title, save=save)
         except:
             raise(Exception("No 'cell' estimate available"))
 
-    def plot_fitted(self, est='MAP', title=None):
-        """Plot fitted admittance and coherence functions
-
+    def plot_fitted(self, est='MAP', title=None, save=None):
+        """
         Method to plot observed and fitted admittance and coherence functions using 
-        one of ``MAP`` or ``mean`` estimates. Calls the function ``plateflex.plotting.plot_fitted``
+        one of ``MAP`` or ``mean`` estimates. Calls the function :func:`~plateflex.plotting.plot_fitted`
         with attributes as arguments.
 
-        Args:
-            est (bool): type of inference estimate to use for predicting admittance and coherence
-            title (str): title of plot
+        :type est: str, optional
+        :param est: Type of inference estimate to use for predicting admittance and coherence
+        :type title: str, optional 
+        :param title: Title of plot
+        :type save: str, optional
+        :param save: Name of file for to save figure
+        
         """
 
         if est not in ['mean', 'MAP']:
@@ -745,59 +1001,59 @@ class Project(object):
 
             # Call function from ``plotting`` module
             plotting.plot_fitted(k, adm, eadm, coh, ecoh, self.cell_summary, \
-                self.cell_map_estimate, est=est, title=title)
+                self.cell_map_estimate, est=est, title=title, save=save)
 
         except:
             raise(Exception("No estimate yet available"))
 
     def plot_results(self, mean_Te=False, MAP_Te=False, std_Te=False, \
         mean_F=False, MAP_F=False, std_F=False, mean_a=False, MAP_a=False, \
-        std_a=False, mask=None):
-        """Plot grids of estimated parameters
-
+        std_a=False, mask=None, save=None):
+        """
         Method to plot grids of estimated parameters with fixed labels and titles. 
         To have more control over the plot rendering, use the function 
-        ``plateflex.plotting.plot_real_grid`` with the relevant quantities and 
+        :func:`~plateflex.plotting.plot_real_grid` with the relevant quantities and 
         plotting options.
 
-        Args:
-            mean/MAP/std_Te/F/a (bool): all variables default to False (no plot generated)
+        :type mean/MAP/std_Te/F/a: bool
+        :param mean/MAP/std_Te/F/a: Type of plot to produce. 
+            All variables default to False (no plot generated)
         """
 
         if mean_Te:
             plotting.plot_real_grid(self.mean_Te_grid, mask=mask, \
-                title='Mean of posterior', clabel='Te (km)')
+                title='Mean of posterior', clabel='Te (km)', save=save)
         if MAP_Te:
             plotting.plot_real_grid(self.MAP_Te_grid, mask=mask, \
-                title='MAP estimate', clabel='Te (km)')
+                title='MAP estimate', clabel='Te (km)', save=save)
         if std_Te:
             plotting.plot_real_grid(self.std_Te_grid, mask=mask, \
-                title='Std of posterior', clabel='Te (km)')
+                title='Std of posterior', clabel='Te (km)', save=save)
         if mean_F:
             plotting.plot_real_grid(self.mean_F_grid, mask=mask, \
-                title='Mean of posterior', clabel='F')
+                title='Mean of posterior', clabel='F', save=save)
         if MAP_F:
             plotting.plot_real_grid(self.MAP_F_grid, mask=mask, \
-                title='MAP estimate', clabel='F')
+                title='MAP estimate', clabel='F', save=save)
         if std_F:
             plotting.plot_real_grid(self.std_F_grid, mask=mask, \
-                title='Std of posterior', clabel='F')
+                title='Std of posterior', clabel='F', save=save)
         if mean_a:
             try:
                 plotting.plot_real_grid(self.mean_a_grid, mask=mask, \
-                    title='Mean of posterior', clabel=r'$\alpha$')
+                    title='Mean of posterior', clabel=r'$\alpha$', save=save)
             except:
                 print("parameter 'alpha' was not estimated")
         if MAP_a:
             try:
                 plotting.plot_real_grid(self.MAP_a_grid, mask=mask, \
-                    title='MAP estimate', clabel=r'$\alpha$')
+                    title='MAP estimate', clabel=r'$\alpha$', save=save)
             except:
                 print("parameter 'alpha' was not estimated")
         if std_a:
             try:
                 plotting.plot_real_grid(self.std_a_grid, mask=mask, \
-                    title='Std of posterior', clabel=r'$\alpha$')
+                    title='Std of posterior', clabel=r'$\alpha$', save=save)
             except:
                 print("parameter 'alpha' was not estimated")
 
@@ -805,34 +1061,33 @@ def _npow2(x):
     return 1 if x==0 else 2**(x-1).bit_length()
 
 def _lam2k(nx, ny, dx, dy):
-    """Obtain optimal wavenumbers from grid parameters
-
+    """
     Calculate the optimal set of equally-spaced equivalent wavenumbers for given grid 
     parameters to be used in the wavelet analysis through the ``plateflex.cpwt`` 
     module. 
 
-    Args:
-        nx: int   
-            Size of grid in x direction
-        ny: int
-            Size of grid in y direction
-        dx: float 
-            Sample distance in x direction (km)
-        dy: float 
-            Sample distance in y direction (km)
+    :type nx: int
+    :param nx: Size of grid in x direction
+    :type ny: int
+    :param ny: Size of grid in y direction
+    :type dx: float 
+    :param dx: Sample distance in x direction (km)
+    :type dy: float 
+    :param dy: Sample distance in y direction (km)
 
-    Return:
-        (tuple): tuple containing:
+    :return: tuple 
+        Tuple containing:
             * ns (int): Size of wavenumber array
             * k (np.ndarray): Wavenumbers (rad/m)
 
-    Note:
+    .. note::
+
         This is different from the exact Fourier wavenumbers calculated for 
-        the grid using ``numpy.fft.fftfreq``, as the continuous wavelet
+        the grid using :func:`~numpy.fft.fftfreq`, as the continuous wavelet
         transform can be defined at arbitrary wavenumbers.
 
-    Example
-    -------
+    .. rubric:: Example
+
     >>> from plateflex import classes
     >>> # Define fake grid
     >>> nx = ny = 300
@@ -846,8 +1101,10 @@ def _lam2k(nx, ny, dx, dy):
 
     """
 
-    # Calculate min and max wavelengths from grid
+    # Max is quarter of maximum possible wavelength from grid size
     maxlam = np.sqrt((nx*dx)**2. + (ny*dy)**2.)/4.*1.e3
+    
+    # Min is twice the minimum possible wavelength from grid size
     minlam = np.sqrt((2.*dx)**2. + (2.*dy)**2.)*1.e3
 
     # Assign first wavenumber

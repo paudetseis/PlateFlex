@@ -19,37 +19,57 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-
 """
 
 Configuration module to set up global variables
 
 Variables are:
-    ``wavelet``:
-        - k0 (float): Internal Morlet wavenumber (5.336 or higher)
-        - p (float): Separation between adjacent wavenumbers (0.85)
 
-    ``Earth parameters``:
-        - E (float): Young's modulus (1.e11 Pa)
-        - nu (float): Poisson's ratio (0.25)
-        - g (float): Gravitational acceleration (9.81 m/s^2)
-        - G (float): Gravitational constant (6.67e-11*1.e5 mGal)
-        - zc (float): Crustal thickness (35.e3 m)
-        - rhom (float): Uppermost mantle density (3200. kg/m^3)
-        - rhoc (float): Crustal density (2700. kg/m^3)
-        - rhoa (float): Air density (0. kg/m^3)
-        - rhow (float): Water density (1030. kg/m^3)
-        - rhof (float): Fluid density at topo/fluid interface (==rhoa or ==rhow)
-        - wd (float): Water depth (0.e3 m)
+.. rubric:: Wavelet parameters
 
-    ``flex analysis``:
-        - boug (bool): True: gravity anomaly is Bouguer; False: gravity anomaly is Free-air
-        - water (bool): True: Include loading from water column; False: no water column
+``k0``: float
+    Internal Morlet wavenumber (5.336 or higher)
+``p`` : float 
+    Separation between adjacent wavenumbers (0.85)
+
+.. rubric:: Earth parameters
+
+``E`` : float
+    Young's modulus (100 GPa)
+``nu`` : float
+    Poisson's ratio (0.25)
+``g`` : float
+    Gravitational acceleration (9.81 m/s^2)
+``G`` : float)
+    Gravitational constant (6.67e-11*1.e5 mGal)
+``zc`` : float
+    Crustal thickness (35.e3 m)
+``rhom``: float
+    Uppermost mantle density (3200. kg/m^3)
+``rhoc`` : float
+    Crustal density (2700. kg/m^3)
+``rhoa`` : float
+    Air density (0. kg/m^3)
+``rhow`` : float
+    Water density (1030. kg/m^3)
+``rhof`` : float
+    Fluid density at topo/fluid interface (==rhoa or ==rhow)
+``wd`` : float
+    Water depth (0.e3 m)
+
+.. rubric:: Flexure analysis
+
+``water`` : bool 
+    Whether or not to include loading from water column
         
-    ``bayes parameters``:
-        - samples (int): Number of samples in single MCMC chain
-        - tunes (int): Number of tuning samples
-        - cores (int): Number of cores (i.e., parallel chains). For parallel runs, set conf.cores=1
+.. rubric:: Bayes inference
+
+``samples`` : int 
+    Number of samples in single MCMC chain
+``tunes`` : int
+    Number of tuning samples
+``cores`` : int
+    Number of cores (i.e., parallel chains). For parallel runs, set conf.cores=1
 
 """
 
@@ -73,8 +93,7 @@ rhof = rhoa
 wd = 0.
 
 # flex analysis
-global boug, water
-boug = True
+global water
 water = False
 
 # bayes parameters

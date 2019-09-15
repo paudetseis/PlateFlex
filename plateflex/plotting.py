@@ -1,17 +1,17 @@
 # Copyright 2019 Pascal Audet
-
+#
 # This file is part of Telewavesim.
-
+#
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
 # in the Software without restriction, including without limitation the rights
 # to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 # copies of the Software, and to permit persons to whom the Software is
 # furnished to do so, subject to the following conditions:
-
+#
 # The above copyright notice and this permission notice shall be included in all
 # copies or substantial portions of the Software.
-
+#
 # THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 # IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 # FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -19,7 +19,16 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
+"""
+This ``PlateFlex`` module contains the following functions for plotting:
 
+- ``plateflex.plotting.plot_real_grid``
+- ``plateflex.plotting.plot_stats``
+- ``plateflex.plotting.plot_fitted``
+
+"""
+
+# -*- coding: utf-8 -*-
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
@@ -29,6 +38,28 @@ sns.set()
 
 
 def plot_real_grid(grid, log=False, mask=None, title=None, save=None, clabel=None):
+    """
+    Plot 2D image of any real-valued 2D array, used in several context throughout
+    ``plateflex``. For example, it can be used to plot the input grids of topography
+    or gravity anomalies, the real or imaginary values of the wavelet transform at a
+    giben wavenumber index, the wavelet scalograms at a given wavenumber index, the
+    wavelet admittance or coherence at a given wavenumber index, or the final grids of
+    results.
+
+    :type grid: :class:`~numpy.ndarray` 
+    :param grid: Array of real-valued data
+    :type log: bool, optional 
+    :param log: Whether or not to take the log of the array values (useful in scalogram)
+    :type mask: np.ndarray, optional 
+    :param mask: Array of booleans for masking data points 
+    :type title: str, optional
+    :param title: Title of plot
+    :type save: str, optional
+    :param save: Name of file for to save figure
+    :type clabel: str, optional
+    :param clabel: Label for colorbar
+
+    """
 
     # Take log of real values
     if log:
@@ -50,75 +81,104 @@ def plot_real_grid(grid, log=False, mask=None, title=None, save=None, clabel=Non
     if clabel is not None:
         cbar.set_label(clabel)
 
-    # Add title
-    if title:
+    # Plot title if requested
+    if title is not None:
         plt.title(title)
     
     # Save figure
-    if save:
+    if save is not None:
         plt.savefig(save+'.png')
 
     # Show
     plt.show()
 
 
-def plot_stats(trace, summary, map_estimate, title=None):
+def plot_stats(trace, summary, map_estimate, title=None, save=None):
+    """
+    Extract results from variables ``trace``, ``summary`` and ``map_estimate`` to 
+    plot marginal and joint posterior distributions. Automatically determines
+    how to plot results from those variables.
+
+    :type trace: :class:`~pymc3.backends.base.MultiTrace`
+    :param trace: Posterior samples from the MCMC chains
+    :type summary: :class:`~pandas.core.frame.DataFrame`
+    :param summary: Summary statistics from Posterior distributions
+    :type map_estimate: dict
+    :param map_estimate: Container for Maximum a Posteriori (MAP) estimates
+    :type title: str, optional 
+    :param title: Title of plot
+    :type save: str, optional
+    :param save: Name of file for to save figure
+
+    """
 
     import plateflex.estimate as est
 
+    # Extract results from summary and map_estimate
     results = est.get_estimates(summary, map_estimate)
 
+    # Collect keys in trace object
     keys = []
     for var in trace.varnames:
         if var[-1]=='_':
             continue
         keys.append(var)
 
-    # this means we searched for Te and F only
+    # This means we searched for Te and F only
     if len(keys)==2:
 
+        # Collect pymc chains as ``pandas.DataFrame`` object
         data = np.array([trace['Te'], trace['F']]).transpose()
         data = pd.DataFrame(data, columns=['Te (km)', 'F'])
 
+        # Plot marginal and joint distributions as histograms and kernel density functions
         g = sns.PairGrid(data)
         g.map_diag(plt.hist, lw=1)
         g.map_lower(sns.kdeplot)
 
+        # Set unused plot axes to invisible
         ax = g.axes[0][1]
         ax.set_visible(False)
 
+        # Text for Te statistics
         tetext = '\n'.join((
             r'$\mu$ = {0:.0f} km'.format(results[0]),
             r'$\sigma$ = {0:.0f} km'.format(results[1]),
             r'$95\%$ CI = [{0:.0f}, {1:.0f}] km'.format(results[2], results[3]),
             r'MAP = {0:.0f} km'.format(results[4])))
 
+        # Insert text as box
         ax1 = g.axes[0][0]
         props = dict(boxstyle='round', facecolor='wheat', alpha=0.5)
         ax1.text(1.05, 0.9, tetext, transform=ax1.transAxes, fontsize=10,
         verticalalignment='top', bbox=props)
 
+        # Text for F statistics
         Ftext = '\n'.join((
             r'$\mu$ = {0:.2f}'.format(results[5]),
             r'$\sigma$ = {0:.2f}'.format(results[6]),
             r'$95\%$ CI = [{0:.2f}, {1:.2f}]'.format(results[7], results[8]),
             r'MAP = {0:.2f}'.format(results[9])))
 
+        # Insert text as box
         ax2 = g.axes[1][1]
         props = dict(boxstyle='round', facecolor='wheat', alpha=0.5)
         ax2.text(0.135, 1.4, Ftext, transform=ax2.transAxes, fontsize=10,
         verticalalignment='top', bbox=props)
 
+    # This means we searched for Te, F and alpha
     elif len(keys)==3:
 
+        # Collect pymc chains as ``pandas.DataFrame`` object
         data = np.array([trace['Te'], trace['F'], trace['alpha']]).transpose()
         data = pd.DataFrame(data, columns=['Te (km)', 'F', r'$\alpha$'])
 
+        # Plot marginal and joint distributions as histograms and kernel density functions
         g = sns.PairGrid(data)
         g.map_diag(plt.hist, lw=1)
         g.map_lower(sns.kdeplot)
 
-        # g.axes[0][0].set_ylim(0.,0.1)
+        # Set unused plot axes to invisible
         ax = g.axes[0][1]
         ax.set_visible(False)
         ax = g.axes[0][2]
@@ -126,53 +186,90 @@ def plot_stats(trace, summary, map_estimate, title=None):
         ax = g.axes[1][2]
         ax.set_visible(False)
 
+        # Text for Te statistics
         tetext = '\n'.join((
             r'$\mu$ = {0:.0f} km'.format(results[0]),
             r'$\sigma$ = {0:.0f} km'.format(results[1]),
             r'$95\%$ CI = [{0:.0f}, {1:.0f}] km'.format(results[2], results[3]),
             r'MAP = {0:.0f} km'.format(results[4])))
 
+        # Insert text as box
         ax1 = g.axes[0][0]
         props = dict(boxstyle='round', facecolor='wheat', alpha=0.5)
         ax1.text(1.05, 0.9, tetext, transform=ax1.transAxes, fontsize=10,
         verticalalignment='top', bbox=props)
 
+        # Text for F statistics
         Ftext = '\n'.join((
             r'$\mu$ = {0:.2f}'.format(results[5]),
             r'$\sigma$ = {0:.2f}'.format(results[6]),
             r'$95\%$ CI = [{0:.2f}, {1:.2f}]'.format(results[7], results[8]),
             r'MAP = {0:.2f}'.format(results[9])))
 
+        # Insert text as box
         ax2 = g.axes[1][1]
         props = dict(boxstyle='round', facecolor='wheat', alpha=0.5)
         ax2.text(0.135, 1.4, Ftext, transform=ax2.transAxes, fontsize=10,
         verticalalignment='top', bbox=props)
 
+        # Text for alpha statistics
         atext = '\n'.join((
             r'$\mu$ = {0:.2f}'.format(results[10]),
             r'$\sigma$ = {0:.2f}'.format(results[11]),
             r'$95\%$ CI = [{0:.2f}, {1:.2f}]'.format(results[12], results[13]),
             r'MAP = {0:.2f}'.format(results[14])))
 
+        # Insert text as box
         ax3 = g.axes[2][2]
         props = dict(boxstyle='round', facecolor='wheat', alpha=0.5)
         ax3.text(0.135, 1.4, atext, transform=ax3.transAxes, fontsize=10,
         verticalalignment='top', bbox=props)
 
     else:
-
         raise(Exception('there are less than 2 or more than 3 variables in pymc3 chains'))
 
-    if title:
+    # Plot title if requested
+    if title is not None:
         plt.suptitle(title)
+
+    # Save figure
+    if save is not None:
+        plt.savefig(save+'.png')
 
     plt.show()
 
 
-def plot_fitted(k, adm, eadm, coh, ecoh, summary, map_estimate, est='MAP', title=None):
+def plot_fitted(k, adm, eadm, coh, ecoh, summary, map_estimate, est='MAP', title=None, save=None):
+    """
+    Function to plot observed and fitted admittance and coherence functions using 
+    one of ``MAP`` or ``mean`` estimates. Both admittance and coherence are plotted
+    regardless of method to estimate the model paramters. 
+
+    :type k: :class:`~numpy.ndarray`
+    :param k: 1D array of wavenumbers
+    :type adm: :class:`~numpy.ndarray`
+    :param adm: 1D array of wavelet admittance
+    :type eadm: :class:`~numpy.ndarray`
+    :param eadm: 1D array of error on wavelet admittance
+    :type coh: :class:`~numpy.ndarray`
+    :param coh: 1D array of wavelet coherence
+    :type ecoh: :class:`~numpy.ndarray`
+    :param ecoh: 1D array of error on wavelet coherence
+    :type summary: :class:`~pandas.core.frame.DataFrame`
+    :param summary: Summary statistics from Posterior distributions
+    :type map_estimate: dict
+    :param map_estimate: Container for Maximum a Posteriori (MAP) estimates
+    :type est: bool, optional
+    :param est: Type of inference estimate to use for predicting admittance and coherence
+    :type title: str, optional 
+    :param title: Title of plot
+    :type save: str, optional
+    :param save: Name of file for to save figure
+    """
 
     import plateflex.flexure as flex
 
+    # Extract statistics from summary object
     if est=='mean':
         mte = summary.loc['Te',est]
         mF = summary.loc['F',est]
@@ -181,6 +278,7 @@ def plot_fitted(k, adm, eadm, coh, ecoh, summary, map_estimate, est='MAP', title
         else:
             ma = np.pi/2.
 
+    # Extract MAP from map_estimate object
     elif est=='MAP':
         mte = np.float(map_estimate['Te'])
         mF = np.float(map_estimate['F'])
@@ -188,26 +286,41 @@ def plot_fitted(k, adm, eadm, coh, ecoh, summary, map_estimate, est='MAP', title
             ma = np.float(map_estimate['alpha'])
         else:
             ma = np.pi/2.
-
     else:
         raise(Exception('estimate does not exist. Choose among: "mean" or "MAP"'))
 
+    # Calculate predicted admittance and coherence from estimates
     padm, pcoh = flex.real_xspec_functions(k, mte, mF, ma)
 
+    # Plot as 2 subplots
     f, (ax1, ax2) = plt.subplots(2, 1, sharex=True)
-    ax1.errorbar(k*1.e3,adm,yerr=eadm)
-    ax1.plot(k*1.e3,padm)
-    ax1.set_ylabel('Admittance (mGal/m)')
 
+    # Plot observed admittance with error bars
+    ax1.errorbar(k*1.e3,adm,yerr=eadm)
+
+    # Plot predicted admittance
+    ax1.plot(k*1.e3,padm)
+
+    # Plot observed coherence with error bars
     ax2.errorbar(k*1.e3,coh,yerr=ecoh)
+
+    # Plot predicted coherence
     ax2.plot(k*1.e3,pcoh)
+
+    # Add all labels
+    ax1.set_ylabel('Admittance (mGal/m)')
+    ax1.set_xscale('log')
+
     ax2.set_ylabel('Coherence')
     ax2.set_xlabel('Wavenumber (rad/km)')
-
-    ax1.set_xscale('log')
     ax2.set_xscale('log')
 
-    if title:
+    # Plot title if requested
+    if title is not None:
         plt.suptitle(title)
+
+    # Save figure
+    if save is not None:
+        plt.savefig(save+'.png')
 
     plt.show()
