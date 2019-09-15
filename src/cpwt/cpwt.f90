@@ -3,7 +3,7 @@
 !================================================================
 
    
-      MODULE conf
+      MODULE conf_cpwt
 
       IMPLICIT NONE
 
@@ -12,7 +12,7 @@
 
       REAL :: k0
 
-      END MODULE conf
+      END MODULE conf_cpwt
 
 
 
@@ -20,44 +20,57 @@
 
       CONTAINS
 
-      SUBROUTINE wlet_transform(grid, nx, ny, nnx, nny, dx, dy, kf, ns, &
-        wt_grid)     
+      SUBROUTINE wlet_transform(grid, nx, ny, dx, dy, kf, ns, wt_grid)     
 
-      USE conf
+      USE conf_cpwt
 
       IMPLICIT NONE
 
       INTEGER :: nx, ny, nnx, nny, ns, nn(2)
       REAL    :: dx, dy
-      REAL    :: grid(nx,ny), grid_pad(nnx,nny), kf(ns)
+      REAL    :: grid(nx,ny), grid_mirror(2*nx, 2*ny), kf(ns)
       COMPLEX :: wt_grid(nx,ny,na,ns)
-      REAL    :: kx(nnx), ky(nny)
-      COMPLEX :: ft_grid(nnx,nny), ft2_grid(nnx,nny), daughter(nnx,nny) 
 
       INTEGER :: is, ia
       REAL    :: da, scales, angle, lam, kk
       CHARACTER(LEN=1) :: trail
       CHARACTER(LEN=30) :: progress
+
+! Allocatable work arrays
+      REAL, ALLOCATABLE :: grid_pad(:,:), kx(:), ky(:)
+      COMPLEX, ALLOCATABLE :: ft_grid(:,:), ft2_grid(:,:), daughter(:,:) 
 !
 ! Python bindings
 !
 !f2py REAL, intent(in) :: grid
 !f2py INTEGER, intent(hide),depend(grid) :: nx=shape(grid,0), ny=shape(grid,1)
-!f2py INTEGER, intent(in) :: nnx, nny
 !f2py REAL, intent(in) :: dx, dy
 !f2py REAL, intent(in) :: kf
 !f2py INTEGER, intent(hide),depend(kf) :: ns=shape(kf,0)
 !f2py COMPLEX, intent(out) :: wt_grid
 
-        CALL taper_data(grid,nx,ny,10)
+        CALL npow2(2*nx, nnx)
+        CALL npow2(2*ny, nny)
+        ALLOCATE(grid_pad(nnx,nny))
+! 
+! Mirror data
+!
+        grid_mirror = 0.
+        grid_mirror(1:nx,1:ny) = grid
+        CALL mirror_data(grid_mirror,nx,ny,2*nx,2*ny)
+! 
+! Taper data
+!
+        CALL taper_data(grid_mirror,2*nx,2*ny,10)
+!
+! Pad with zeros and remove mean value
+!
         grid_pad = 0.
-!
-! Remove mean value
-!
-        grid_pad(1:nx,1:ny) = grid - sum(grid)/nx/ny
+        grid_pad(1:2*nx,1:2*ny) = grid_mirror - sum(grid_mirror)/2./2./nx/ny
 !
 ! Complex form
 !
+        ALLOCATE(ft_grid(nnx,nny), ft2_grid(nnx,nny), daughter(nnx,nny))
         ft_grid = CMPLX(grid_pad)
 !
 ! Fourier transform
@@ -68,6 +81,7 @@
 !
 ! Define wavenumbers
 !
+        ALLOCATE(kx(nnx), ky(nny))
         CALL defk(nnx,nny,dx,dy,kx,ky)
 !
 ! Define angle parameters as per Kirby (2005)
@@ -140,7 +154,7 @@
 
       SUBROUTINE wlet_scalogram(wl_trans, nx, ny, ns, wl_sg, ewl_sg)
 
-      USE conf
+      USE conf_cpwt
 
       IMPLICIT NONE
 
@@ -187,7 +201,7 @@
 
       SUBROUTINE wlet_xscalogram(wl_trans1, wl_trans2, nx, ny, ns, wl_xsg, ewl_xsg)
 
-      USE conf
+      USE conf_cpwt
 
       IMPLICIT NONE
 
@@ -237,7 +251,7 @@
       SUBROUTINE wlet_admit_coh(wl_trans1, wl_trans2, nx, ny, ns, &
         wl_admit, ewl_admit, wl_coh, ewl_coh)
 
-      USE conf
+      USE conf_cpwt
 
       IMPLICIT NONE
 

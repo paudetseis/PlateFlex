@@ -267,7 +267,7 @@ def plot_fitted(k, adm, eadm, coh, ecoh, summary, map_estimate, est='MAP', title
     :param save: Name of file for to save figure
     """
 
-    import plateflex.flexure as flex
+    import plateflex.estimate as est
 
     # Extract statistics from summary object
     if est=='mean':
@@ -290,7 +290,7 @@ def plot_fitted(k, adm, eadm, coh, ecoh, summary, map_estimate, est='MAP', title
         raise(Exception('estimate does not exist. Choose among: "mean" or "MAP"'))
 
     # Calculate predicted admittance and coherence from estimates
-    padm, pcoh = flex.real_xspec_functions(k, mte, mF, ma)
+    padm, pcoh = est.real_xspec_functions(k, mte, mF, ma)
 
     # Plot as 2 subplots
     f, (ax1, ax2) = plt.subplots(2, 1, sharex=True)

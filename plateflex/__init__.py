@@ -117,13 +117,47 @@ Once the previous steps are performed, you can install ``telewavesim`` using pip
 # -*- coding: utf-8 -*-
 from . import conf as cf
 from . import estimate
-from . import flexure
 from . import plotting
 from .classes import FlexGrid, TopoGrid, GravGrid, BougGrid, FairGrid, Project
-from .cpwt import conf as cf_f
+from .cpwt import conf_cpwt as cf_wt
+from .flex import conf_flex as cf_fl
 
-def set_conf():
-    cf_f.k0 = cf.k0
-    cf_f.p = cf.p
+def set_conf_cpwt():
+    cf_wt.k0 = 5.336
 
-set_conf()
+def set_conf_flex():
+    cf_fl.zc = 35.*1.e3
+    cf_fl.rhom = 3200. 
+    cf_fl.rhoc = 2700.
+    cf_fl.rhow = 1030.
+    cf_fl.rhoa = 0.
+    cf_fl.rhof = cf_fl.rhoa
+    cf_fl.wd = 0.
+    cf_fl.boug = 1
+    cf_fl.water = 0
+
+set_conf_cpwt()
+set_conf_flex()
+
+def get_conf_cpwt():
+    print('\n'.join((
+        ' ',
+        'Wavelet parameter used in plateflex.cpwt:',
+        '-----------------------------------------',
+        '[Internal wavenumber]      k0 (float):     {0:.3f}'.format(cf_wt.k0))))
+
+def get_conf_flex():
+    print('\n'.join((
+        ' ',
+        'Global model parameters currently in use by plateflex:',
+        '------------------------------------------------------',
+        '[Crustal thickness]        zc (float):     {0:.0f} m'.format(cf_fl.zc), 
+        '[Mantle density]           rhom (float):   {0:.0f} kg/m^3'.format(cf_fl.rhom),
+        '[Crustal density]          rhoc (float):   {0:.0f} kg/m^3'.format(cf_fl.rhoc),
+        '[Water density]            rhow (float):   {0:.0f} kg/m^3'.format(cf_fl.rhow),
+        '[Air density]              rhoa (float):   {0:.0f} kg/m^3'.format(cf_fl.rhoa),
+        '[Fluid density]            rhof (float):   {0:.0f} kg/m^3'.format(cf_fl.rhof),
+        '[Water depth]              wd (float):     {0:.0f} m'.format(cf_fl.wd),
+        '[Bouguer analysis?]        boug (int):     {0} ; {1}'.format(cf_fl.boug, bool(cf_fl.boug)),
+        '[Include water column?]    water (int):    {0} ; {1}'.format(cf_fl.water, bool(cf_fl.water)))))
+

@@ -30,14 +30,14 @@ with ``theano`` decorators to be incorporated as pymc variables. These functions
 used within :class:`~plateflex.classes.Project` methods as with ``plateflex.plotting``
 functions.
 
+http://mattpitkin.github.io/samplers-demo/pages/pymc3-blackbox-likelihood/
+
 """
 
 # -*- coding: utf-8 -*-
 import numpy as np
 import pymc3 as pm
-from plateflex import flexure
-from plateflex import conf as cf
-from plateflex import plotting
+from plateflex.flex import flex
 from theano.compile.ops import as_op
 import theano.tensor as tt
 
@@ -76,7 +76,6 @@ def set_model(k, adm, eadm, coh, ecoh, alph=False, atype='joint'):
         Te = pm.Uniform('Te', lower=1., upper=250.)
         F = pm.Uniform('F', lower=0., upper=0.99999)
 
-        # Select whether to include alpha as a parameter to estimate
         if alph:
 
             # Prior distribution of `alpha`
@@ -84,7 +83,6 @@ def set_model(k, adm, eadm, coh, ecoh, alph=False, atype='joint'):
             admit_exp, coh_exp = real_xspec_functions_alpha(k_obs, Te, F, alpha)
 
         else:
-            
             admit_exp, coh_exp = real_xspec_functions_noalpha(k_obs, Te, F)
 
         # Select type of analysis to perform
@@ -113,16 +111,17 @@ def set_model(k, adm, eadm, coh, ecoh, alph=False, atype='joint'):
             # Define uncertainty as concatenated arrays
             ejoint = np.array([eadm, ecoh]).flatten()
 
-            # Uncertainty as observed distribution
-            sigma = pm.Normal('sigma', mu=ejoint, sigma=1., observed=ejoint)
-
             # Define array of observations and expected values as concatenated arrays
             joint = np.array([adm, coh]).flatten()
             joint_exp = tt.flatten(tt.concatenate([admit_exp, coh_exp]))
 
+            # Uncertainty as observed distribution
+            sigma = pm.Normal('sigma', mu=ejoint, sigma=1., \
+                observed=ejoint)
+
             # Likelihood of observations
-            joint_obs = pm.Normal('admit_coh_obs', mu=joint_exp, sigma=sigma, 
-                observed=joint)
+            joint_obs = pm.Normal('admit_coh_obs', mu=joint_exp, \
+                sigma=sigma, observed=joint)
 
     return model
 
@@ -148,12 +147,13 @@ def get_estimates(summary, map_estimate):
     .. rubric:: Example
 
     >>> from plateflex import estimate
-    >>> # CONTINUE EXAMPLE
+    >>> # MAKE THIS FUNCTION FASTER
 
     """
 
     mean_a = None
 
+    # Go through all estimates
     for index, row in summary.iterrows():
         if index=='Te':
             mean_te = row['mean']
@@ -174,7 +174,7 @@ def get_estimates(summary, map_estimate):
             C97_5_a = row['hpd_97.5']
             best_a = np.float(map_estimate['alpha'])
 
-    if mean_a:
+    if mean_a is not None:
         return mean_te, std_te, C2_5_te, C97_5_te, best_te, \
             mean_F, std_F, C2_5_F, C97_5_F, best_F, \
             mean_a, std_a, C2_5_a, C97_5_a, best_a
@@ -183,34 +183,45 @@ def get_estimates(summary, map_estimate):
             mean_F, std_F, C2_5_F, C97_5_F, best_F
 
 
+def real_xspec_functions(k, Te, F, alpha=np.pi/2., wd=0.):
+    """
+    Calculate analytical expressions for the real component of admittance, 
+    coherency and coherence functions. 
+
+    :type k: np.ndarray
+    :param k: Wavenumbers (rad/m)
+    :type Te: float
+    :param Te: Effective elastic thickness (km)
+    :type F: float
+    :param F: Subruface-to-surface load ratio [0, 1[
+    :type alpha: float, optional
+    :param alpha: Phase difference between initial applied loads (rad)
+    :type wd: float, optional
+    :param wd: Thickness of water layer (km)
+
+    :return:  
+        (tuple): tuple containing:
+            * admittance (:class:`~numpy.ndarray`): Real admittance function (shape ``len(k)``)
+            * coherence (:class:`~numpy.ndarray`): Coherence functions (shape ``len(k)``)
+
+    """
+
+    admittance, coherence = flex.real_xspec_functions(k, Te, F, alpha, wd)
+
+    return admittance, coherence
+
+
 @as_op(itypes=[tt.dvector, tt.dscalar, tt.dscalar], 
     otypes=[tt.dvector, tt.dvector])
 def real_xspec_functions_noalpha(k, Te, F):
     """
     Calculate analytical expressions for the real component of admittance, 
     coherency and coherence functions. 
-
-    Args:
-        k (np.ndarray)  : Wavenumbers (rad/m)
-        Te (float)      : Effective elastic thickness (km)
-        F (float)       : Subruface-to-surface load ratio [0, 1[
-
-    Returns:
-        (tuple): tuple containing:
-            * adm (np.ndarray)    : Real admittance function (shape ``len(k)``)
-            * coh (np.ndarray)      : Coherence functions (shape ``len(k)``)
-
-    Note:
-        This function has a ``theano.compile.ops.as_op`` decorator, which
-        enables its use as ``pymc3`` variable.
-
     """
 
-    # Get spectral functions
-    adm, coh = flexure.real_xspec_functions(k, Te, F)
+    adm, coh = real_xspec_functions(k, Te, F)
 
     return adm, coh
-
 
 @as_op(itypes=[tt.dvector, tt.dscalar, tt.dscalar, tt.dscalar], 
     otypes=[tt.dvector, tt.dvector])
@@ -218,26 +229,9 @@ def real_xspec_functions_alpha(k, Te, F, alpha):
     """
     Calculate analytical expressions for the real component of admittance, 
     coherency and coherence functions. 
-
-    Args:
-        k (np.ndarray)  : Wavenumbers (rad/m)
-        Te (float)      : Effective elastic thickness (km)
-        F (float)       : Subruface-to-surface load ratio [0, 1[
-        alpha (float)   : Phase difference between initial applied loads (deg)
-
-    Returns:
-        (tuple): tuple containing:
-            * adm (np.ndarray)    : Real admittance function (shape ``len(k)``)
-            * coh (np.ndarray)      : Coherence functions (shape ``len(k)``)
-
-    Note:
-        This function has a ``theano.compile.ops.as_op`` decorator, which
-        enables its use as ``pymc3`` variable.
-
     """
 
-    # Get spectral functions
-    adm, coh = flexure.real_xspec_functions(k, Te, F, alpha)
+    adm, coh = real_xspec_functions(k, Te, F, alpha)
 
     return adm, coh
 

@@ -1,8 +1,10 @@
 import setuptools
 from numpy.distutils.core import setup, Extension
 
-ext = [Extension(name='plateflex.cpwt',
-                sources=['src/cpwt.f90', 'src/cpwt_sub.f90'])]
+ext_cpwt = Extension(name='plateflex.cpwt',
+                sources=['src/cpwt/cpwt.f90', 'src/cpwt/cpwt_sub.f90'])
+ext_flex = Extension(name='plateflex.flex',
+                sources=['src/flex/flex.f90'])
 
 setup(
     name                = 'plateflex',
@@ -23,7 +25,7 @@ setup(
     install_requires    = ['numpy>=1.15', 'pymc3', 'matplotlib', 'seaborn'],
     python_requires     = '>=3.5',
     tests_require       = ['pytest'],
-    ext_modules         = ext,
+    ext_modules         = [ext_cpwt, ext_flex],
     packages            = ['plateflex'],
     package_data        = {
         'plateflex': [

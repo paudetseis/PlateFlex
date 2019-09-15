@@ -56,6 +56,7 @@ Methods are available to:
 # -*- coding: utf-8 -*-
 import numpy as np
 import pymc3 as pm
+import plateflex
 from plateflex.cpwt import cpwt
 from plateflex import conf as cf
 from plateflex import plotting
@@ -181,13 +182,10 @@ class FlexGrid(object):
 
         """
 
-        # Get next power of 2 for grid size
-        nnx, nny = _npow2(self.nx), _npow2(self.ny)
-
         # Calculate wavelet transform
-        wl_trans = cpwt.wlet_transform(self.data, nnx, nny, self.dx, self.dy, self.k)
+        wl_trans = cpwt.wlet_transform(self.data, self.dx, self.dy, self.k)
 
-        # Save coeficients as attribute
+        # Save coefficients as attribute
         self.wl_trans = wl_trans
 
         return
@@ -231,14 +229,13 @@ class FlexGrid(object):
         True
        """
 
-        nnx, nny = 2**(self.nx-1).bit_length(), 2**(self.ny-1).bit_length()
-
         try:
             wl_sg, ewl_sg = cpwt.wlet_scalogram(self.wl_trans)
         except:
             self.wlet_transform()
             wl_sg, ewl_sg = cpwt.wlet_scalogram(self.wl_trans)
 
+        # Save as attributes
         self.wl_sg = wl_sg
         self.ewl_sg = ewl_sg
 
@@ -591,6 +588,7 @@ class Project(object):
         else:
             msg = 'Append only supports a single FlexGrid object as an argument.'
             raise TypeError(msg)
+
         return self
 
     def extend(self, grid_list):
@@ -660,6 +658,11 @@ class Project(object):
         if not any(isinstance(g, GravGrid) for g in self.grids):
             raise(Exception('There needs to be one GravGrid object in Project'))
 
+        # Check whether gravity grid is Free air or Bouguer, and set global variable accordingly
+        if any(isinstance(g, BougGrid) for g in self.grids):
+            cf.boug = True
+            plateflex.set_conf_flex()
+
         self.k = self.grids[0].k
         self.ns = self.grids[0].ns
         self.nx = self.grids[0].nx
@@ -714,9 +717,6 @@ class Project(object):
         if kindex is None:
             raise(Exception('Specify index of wavenumber for plotting'))
 
-        if kindex>self.ns or kindex<0:
-            raise(Exception('Invalid index: should be between 0 and '+str(self.ns)))
-
         try:
             adm = self.wl_admit[:,:,kindex]
             coh = self.wl_coh[:,:,kindex]
@@ -726,8 +726,11 @@ class Project(object):
             adm = self.wl_admit[:,:,kindex]
             coh = self.wl_coh[:,:,kindex]
 
-        plotting.plot_real_grid(adm, log=log, mask=mask, title=title, save=save, clabel='mGal/m')
-        plotting.plot_real_grid(coh, log=log, mask=mask, title=title, save=save, clabel=None)
+        if kindex>self.ns or kindex<0:
+            raise(Exception('Invalid index: should be between 0 and '+str(self.ns)))
+
+        plotting.plot_real_grid(adm, mask=mask, title=title, save=save, clabel='mGal/m')
+        plotting.plot_real_grid(coh, mask=mask, title=title, save=save, clabel=None)
 
     def estimate_cell(self, cell=(0,0), alph=False, atype='joint'):
         """
@@ -784,7 +787,8 @@ class Project(object):
         with estimate.set_model(self.k, adm, eadm, coh, ecoh, alph, atype):
 
             # Sample the Posterior distribution
-            trace = pm.sample(cf.samples, tune=cf.tunes, cores=cf.cores)
+            trace = pm.sample(cf.samples, tune=cf.tunes, cores=cf.cores, \
+                discard_tuned_samples=True)
 
             # Get Max a porteriori estimate
             map_estimate = pm.find_MAP(method='powell')
@@ -1000,8 +1004,8 @@ class Project(object):
             ecoh = self.ewl_coh[cell[0], cell[1], :]
 
             # Call function from ``plotting`` module
-            plotting.plot_fitted(k, adm, eadm, coh, ecoh, self.cell_summary, \
-                self.cell_map_estimate, est=est, title=title, save=save)
+            plotting.plot_fitted(k, adm, eadm, coh, ecoh, self.summary, \
+                self.map_estimate, est=est, title=title, save=save)
 
         except:
             raise(Exception("No estimate yet available"))
@@ -1056,9 +1060,6 @@ class Project(object):
                     title='Std of posterior', clabel=r'$\alpha$', save=save)
             except:
                 print("parameter 'alpha' was not estimated")
-
-def _npow2(x):
-    return 1 if x==0 else 2**(x-1).bit_length()
 
 def _lam2k(nx, ny, dx, dy):
     """

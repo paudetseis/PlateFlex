@@ -4,31 +4,38 @@
  -->
 The flexure of elastic plates is a central concept in the theory of plate tectonics,
 where the Earth's lithosphere (crust and uppermost mantle) reacts to applied loads 
-by bending (i.e., flexural isostasy). The plate elasticity is parameterized by the 
-*flexural rigidity*, which is the product of Young's modulus with the elastic plate 
-thickness. Estimating the *effective* elastic thickness 
-(<i>T<sub>e</sub></i>) of the lithosphere (thickness 
-of an equivalent ideal elastic plate) can be done by modeling the cross-spectral 
-properties (admittance and coherence) between topography and gravity anomaly data, 
+by bending, a process referred to as flexural isostasy. The plate elasticity is 
+parameterized by the *flexural rigidity*, which is proportional to the product of 
+Young's modulus with the cube of the elastic plate thickness. Estimating the *effective* 
+elastic thickness (<i>T<sub>e</sub></i>) of the lithosphere (thickness 
+of an equivalent ideal elastic plate) gives important clues on the rheology of the 
+lithosphere and its thermal state. 
+
+Estimating <i>T<sub>e</sub></i> can be done by modeling the cross-spectral properties 
+(admittance and coherence) between topography and gravity anomaly data, 
 which are proxies for the distribution of flexurally compensated surface and subsurface 
 loads. These spectral properties can be calculated using different spectral
 estimation techniques - however, to map <i>T<sub>e</sub></i> variations it is 
-important to use
-analysis windows small enough for good spatial resolution, but large enough
-to capture the effect of flexure at long wavelengths. 
+important to use analysis windows small enough for good spatial resolution, but 
+large enough to capture the effect of flexure at long wavelengths. The wavelet 
+transform is particularly well suited for this analysis because it avoids splitting
+the grids into small windows and can therefore produce cross-spectral functions
+at each point of the input grid.
 
-<!-- This package contains `python` and `fortran` modules to synthesize teleseismic 
-body-wave propagation through stacks of generally anisotropic and strictly horizontal 
-layers using the matrix propagator approach of [Kennett (1983)](#references). 
-The software also properly models reverberations from an overlying column of water, 
-effectively simulating ocean-bottom seismic (OBS) station recordings. The software 
-will be useful in a variety of teleseismic receiver-based studies, such as P or S 
-receiver functions, long-period P-wave polarization, shear-wave splitting from 
-core-refracted shear waves (i.e., SKS, SKKS), etc. It may also be the starting point 
-for stochastic inverse methods (e.g., Monte Carlo sampling). The main part of the
-code is written in `fortran` with `python` wrappers. Common computational 
+This package contains `python` and `fortran` modules to calculate the wavelet spectral
+and cross-spectral quantities of 2D gridded data of topography and gravity anomalies.
+Once obtained, the wavelet cross-spectral quantities (admittance and coherence) are
+used to determine the parameters of the effectively elastic plate, such as the 
+effective elastic thickness (<i>T<sub>e</sub></i>), the initial subsurface-to-surface
+load ratio (<i>F</i>i>) and optionally the initial phase difference between
+surface and subsurface loads (<i>alpha</i>i>). The software uses the analytical
+functions with *uniform F and alpha* to fit the admittance and/or coherence functions 
+using a probabilistic inference method. 
+
+The analysis can be done using either the Bouguer or Free air gravity anomalies, and
+over land or ocean areas. Common computational 
 workflows are covered in the Jupyter notebooks bundled with this package.
- -->
+
 ## Installation
 
 ### Dependencies
@@ -40,6 +47,7 @@ Also, the following packages are required:
 - [`numpy`](https://numpy.org)
 - [`pymc3`](https://docs.pymc.io)
 - [`matplotlib`](https://matplotlib.org)
+- [`seaborn`](https://seaborn.pydata.org)
 
 ### Installing using pip
 
@@ -74,7 +82,7 @@ where `plateflex` can be installed along with its dependencies.
 - Create a environment called `pflex` and install all dependencies:
 
 ```bash
-conda create -n pflex python=3.7 numpy pymc3 matplotlib -c conda-forge
+conda create -n pflex python=3.7 numpy pymc3 matplotlib seaborn -c conda-forge
 ```
 
 - or create it from the `pflex_env.yml` file by first checking out the repository:
@@ -175,5 +183,8 @@ The API for all functions in `plateflex` can be accessed from https://paudetseis
 
 ## References
 
-- Audet, P. (2016). Receiver functions using OBS data: promises and limitations from numerical modelling and examples from the Cascadia Initiative. Geophysical Journal International, 205, 1740-1755. https://doi.org/10.1093/gji/ggw111
+- Audet, P. (2014). Toward mapping the effective elastic thickness of planetary lithospheres
+from a spherical wavelet analysis of gravity and topography. Physics of the Earth and Planetary Interiors, 226, 48-82. https://doi.org/10.1016/j.pepi.2013.09.011
+
+- Kirby, J.F. (2014). Estimation of the effective elastic thickness of the lithosphere using inverse spectral methods: The state of the art. Tectonophysics, 631, 87-116. https://doi.org/10.1016/j.tecto.2014.04.021
 

@@ -93,7 +93,8 @@ rhof = rhoa
 wd = 0.
 
 # flex analysis
-global water
+global boug, water
+boug = True
 water = False
 
 # bayes parameters
