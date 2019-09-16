@@ -1,23 +1,73 @@
+! Copyright 2019 Pascal Audet
+!
+! This file is part of PlateFlex.
+!
+! Permission is hereby granted, free of charge, to any person obtaining a copy
+! of this software and associated documentation files (the "Software"), to deal
+! in the Software without restriction, including without limitation the rights
+! to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+! copies of the Software, and to permit persons to whom the Software is
+! furnished to do so, subject to the following conditions:
+!
+! The above copyright notice and this permission notice shall be included in all
+! copies or substantial portions of the Software.
+!
+! THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+! IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+! FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+! AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+! LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+! OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+! SOFTWARE.
+!
+!===========================================================================
+!
+! MODULE conf)flex
+!
+! Configuration module defining global variables used in modules to 
+! interface with the Python codes.
+!
+!===========================================================================
+
       MODULE conf_flex
 
       IMPLICIT NONE
 
+!
+! Hard coded parameters
+!
       DOUBLE PRECISION, PARAMETER :: pi = 3.141592653589793d0
       DOUBLE PRECISION, PARAMETER :: g = 9.81d0
       DOUBLE PRECISION, PARAMETER :: Em = 1.d11
       DOUBLE PRECISION, PARAMETER :: nu = 0.25d0
       DOUBLE PRECISION, PARAMETER :: Gc = 6.67d-6
-
+!
+! Global parameters that are allowed to vary
+!
       DOUBLE PRECISION :: rhoc, rhom, rhof, rhow, rhoa, wd, zc
       INTEGER :: water, boug
 
       END MODULE conf_flex
 
-
+!===========================================================================
+!
+! MODULE flex
+!
+! Contains subroutines to calculate predicted admittance and coherence
+! functions using analytical expressions (i.e., assuming uniform load ratio
+! f and initial phase difference alpha)
+!
+!===========================================================================
 
       MODULE flex
 
       CONTAINS
+
+!---------------------------------------------------------------------------
+! Subroutine flexfilter_top
+!
+! Subroutine to calculate the flexural filter for top loading
+!---------------------------------------------------------------------------
 
       SUBROUTINE flexfilter_top(ns, psi, filt)     
 
@@ -34,6 +84,11 @@
 
       END SUBROUTINE flexfilter_top      
 
+!---------------------------------------------------------------------------
+! Subroutine flexfilter_bot
+!
+! Subroutine to calculate the flexural filter for bottom loading
+!---------------------------------------------------------------------------
 
       SUBROUTINE flexfilter_bot(ns, psi, filt)     
 
@@ -50,6 +105,12 @@
 
       END SUBROUTINE flexfilter_bot      
 
+!---------------------------------------------------------------------------
+! Subroutine decon
+!
+! Subroutine to calculate the deconvolution matrix between observed
+! h and dg and initial h_i and w_i
+!---------------------------------------------------------------------------
 
       SUBROUTINE decon(ns, theta, phi, k, A, mu_h, mu_w, nu_h, nu_w)
 
@@ -72,6 +133,12 @@
 
       END SUBROUTINE decon
 
+!---------------------------------------------------------------------------
+! Subroutine tr_func
+!
+! Subroutine to calculate the transfer functions (admittance and coherence)
+! from the components of the deconvolution matrix
+!---------------------------------------------------------------------------
 
       SUBROUTINE tr_func(ns, mu_h, mu_w, nu_h, nu_w, F, alpha, admit, coh)
 
@@ -104,6 +171,12 @@
 
       END SUBROUTINE tr_func
 
+!---------------------------------------------------------------------------
+! Subroutine real_xspec_functions
+!
+! Subroutine to calculate the transfer functions (admittance and coherence)
+! from input values of Te, F and alpha
+!---------------------------------------------------------------------------
 
       SUBROUTINE real_xspec_functions(ns, k, Te, F, alpha, wdepth, admit, coh)
 
@@ -127,12 +200,14 @@
 !f2py DOUBLE PRECISION, intent(in) :: Te, F, alpha, wd
 !f2py DOUBLE PRECISION, intent(out) :: admit, coh
 
+        ! Is this a Bouguer analysis?
         IF (boug.eq.1) THEN
           A = 0.
         ELSE
           A = 1.
         END IF
 
+        ! Analysis includes water column?
         IF (water.eq.1) THEN
           rhof = rhow
           wd = wdepth*1.e3

@@ -1,24 +1,66 @@
-!===============================================================
+! Copyright 2019 Pascal Audet
 !
-!================================================================
+! This file is part of PlateFlex.
+!
+! Permission is hereby granted, free of charge, to any person obtaining a copy
+! of this software and associated documentation files (the "Software"), to deal
+! in the Software without restriction, including without limitation the rights
+! to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+! copies of the Software, and to permit persons to whom the Software is
+! furnished to do so, subject to the following conditions:
+!
+! The above copyright notice and this permission notice shall be included in all
+! copies or substantial portions of the Software.
+!
+! THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+! IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+! FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+! AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+! LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+! OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+! SOFTWARE.
+!
+!===========================================================================
+!
+! MODULE conf_cpwt
+!
+! Configuration module defining global variables used in modules to 
+! interface with the Python codes.
+!
+!===========================================================================
 
-   
       MODULE conf_cpwt
 
       IMPLICIT NONE
 
       REAL, PARAMETER :: pi = 3.141592653589793
       INTEGER, PARAMETER :: na = 11
-
+!
+! Wavelet parameter
+!
       REAL :: k0
 
       END MODULE conf_cpwt
 
-
+!===========================================================================
+!
+! MODULE cpwt
+!
+! Contains subroutines to calculate the wavelet transform, scalogram and 
+! cross-spectral quantities with errors
+!
+!===========================================================================
 
       MODULE cpwt
 
       CONTAINS
+
+!---------------------------------------------------------------------------
+! Subroutine wlet_transform
+!
+! Subroutine to compute the complex-valued wavelet transform coefficients
+! obtained from directional Morlet wavelets
+!---------------------------------------------------------------------------
 
       SUBROUTINE wlet_transform(grid, nx, ny, dx, dy, kf, ns, wt_grid)     
 
@@ -148,9 +190,12 @@
 
       END SUBROUTINE wlet_transform
 
-!===============================================================
+!---------------------------------------------------------------------------
+! Subroutine wlet_scalogram
 !
-!================================================================
+! Subroutine to compute the real-valued wavelet scalogram obtained from 
+! azimuthal-averaging of wavelet transform coefficients
+!---------------------------------------------------------------------------
 
       SUBROUTINE wlet_scalogram(wl_trans, nx, ny, ns, wl_sg, ewl_sg)
 
@@ -195,9 +240,12 @@
         RETURN
       END SUBROUTINE wlet_scalogram
 
-!===============================================================
+!---------------------------------------------------------------------------
+! Subroutine wlet_xscalogram
 !
-!================================================================
+! Subroutine to compute the complex-valued wavelet cross-scalogram obtained 
+! from azimuthal-averaging of wavelet transform coefficients
+!---------------------------------------------------------------------------
 
       SUBROUTINE wlet_xscalogram(wl_trans1, wl_trans2, nx, ny, ns, wl_xsg, ewl_xsg)
 
@@ -244,9 +292,13 @@
         RETURN
       END SUBROUTINE wlet_xscalogram
 
-!===============================================================
+!---------------------------------------------------------------------------
+! Subroutine wlet_admit_coh
 !
-!================================================================
+! Subroutine to compute the complex-valued wavelet admittance and real-valued
+! wavelet coherence obtained from azimuthal-averaging of wavelet transform 
+! coefficients
+!---------------------------------------------------------------------------
 
       SUBROUTINE wlet_admit_coh(wl_trans1, wl_trans2, nx, ny, ns, &
         wl_admit, ewl_admit, wl_coh, ewl_coh)

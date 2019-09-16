@@ -33,9 +33,9 @@ functions with *uniform F and alpha* to fit the admittance and/or coherence func
 using a probabilistic inference method. 
 
 The analysis can be done using either the Bouguer or Free air gravity anomalies, and
-over land or ocean areas. Common computational 
-workflows are covered in the Jupyter notebooks bundled with this package.
-
+over land or ocean areas. Common computational workflows are covered in the Jupyter 
+notebooks bundled with this package. The software contains methods to make beautiful and
+insightful plots using the `seaborn` package.
     
 > **_NOTE:_**  The cross-spectral quantities calculated here are the real-valued admittance and real-squared-coherency, as discussed in the [references](#references)
 
@@ -49,7 +49,6 @@ Also, the following packages are required:
 - [`gfortran`](https://gcc.gnu.org/wiki/GFortran) (or any Fortran compiler)
 - [`numpy`](https://numpy.org)
 - [`pymc3`](https://docs.pymc.io)
-- [`matplotlib`](https://matplotlib.org)
 - [`seaborn`](https://seaborn.pydata.org)
 
 ### Installing using pip
@@ -180,9 +179,9 @@ cd PlateFlex
 pytest -v
 ```
 
-### API Documentation
+### Documentation
 
-The API for all functions in `plateflex` can be accessed from https://paudetseis.github.io/PlateFlex/.
+The documentation for all classes and functions in `plateflex` can be accessed from https://paudetseis.github.io/PlateFlex/.
 
 ## References
 

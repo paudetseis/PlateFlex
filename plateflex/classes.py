@@ -508,7 +508,7 @@ class Project(object):
     >>> project.grids[0]
     <plateflex.classes.TopoGrid object at 0x1176b4240>
 
-    Calculate wavelet transform
+    Calculate wavelet admittance and coherence
 
     >>> project = Project(grids=[topogrid, bouggrid])
     >>> project.wlet_admit_coh()
@@ -516,7 +516,7 @@ class Project(object):
      #loops = 17:  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17
      Calculation jackknife error on admittance and coherence
 
-    Check that project contains one TopoGrid and one GravGrid
+    Exception if project does not contain exactly one TopoGrid and one GravGrid
 
     >>> project = Project(grids=[topogrid, topogrid])
     >>> project.wlet_admit_coh()
@@ -526,7 +526,7 @@ class Project(object):
         grids = self.grids + other.grids
     Exception: There needs to be one GravGrid object in Project
 
-    Check that only two FlexGrid objects are contained in project
+    Exception if more than two FlexGrid objects are contained in project
 
     >>> project = Project(grids=[topogrid, topogrid, bouggrid])
     >>> project.wlet_admit_coh()
@@ -658,7 +658,7 @@ class Project(object):
         if not any(isinstance(g, GravGrid) for g in self.grids):
             raise(Exception('There needs to be one GravGrid object in Project'))
 
-        # Check whether gravity grid is Free air or Bouguer, and set global variable accordingly
+        # Check whether gravity grid is Free air or Bouguer and set global variable accordingly
         if any(isinstance(g, BougGrid) for g in self.grids):
             cf.boug = True
             plateflex.set_conf_flex()
@@ -894,8 +894,8 @@ class Project(object):
                 # tuple of cell indices
                 cell = (i,j)
 
-                # Skip cell for which topo is < -200 meters
-                if grid.data[i,j] < -200.:
+                # Skip cell for which topo is < -500 meters
+                if grid.data[i,j] < -500.:
                     continue
 
                 # Extract admittance and coherence at cell indices

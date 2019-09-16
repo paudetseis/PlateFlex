@@ -140,6 +140,19 @@ set_conf_cpwt()
 set_conf_flex()
 
 def get_conf_cpwt():
+    """
+    Print global variable that controls the spatio-spectral resolution of the
+    wavelet transform
+
+    .. rubric:: Example
+
+    >>> import plateflex 
+    >>> plateflex.get_conf_cpwt()
+    Wavelet parameter used in plateflex.cpwt:
+    -----------------------------------------
+    [Internal wavenumber]      k0 (float):     5.336
+    """
+
     print('\n'.join((
         ' ',
         'Wavelet parameter used in plateflex.cpwt:',
@@ -147,6 +160,26 @@ def get_conf_cpwt():
         '[Internal wavenumber]      k0 (float):     {0:.3f}'.format(cf_wt.k0))))
 
 def get_conf_flex():
+    """
+    Print global variables that control the setup of the flexural isostatic model
+
+    .. rubric:: Example
+
+    >>> import plateflex 
+    >>> plateflex.get_conf_flex()
+    Global model parameters currently in use by plateflex:
+    ------------------------------------------------------
+    [Crustal thickness]        zc (float):     35000 m
+    [Mantle density]           rhom (float):   3200 kg/m^3
+    [Crustal density]          rhoc (float):   2700 kg/m^3
+    [Water density]            rhow (float):   1030 kg/m^3
+    [Air density]              rhoa (float):   0 kg/m^3
+    [Fluid density]            rhof (float):   0 kg/m^3
+    [Water depth]              wd (float):     0 m
+    [Bouguer analysis?]        boug (int):     1 ; True
+    [Include water column?]    water (int):    0 ; False
+    """
+
     print('\n'.join((
         ' ',
         'Global model parameters currently in use by plateflex:',
