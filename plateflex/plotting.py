@@ -20,11 +20,11 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 """
-This ``PlateFlex`` module contains the following functions for plotting:
+This :mod:`~plateflex`` module contains the following functions for plotting:
 
-- ``plateflex.plotting.plot_real_grid``
-- ``plateflex.plotting.plot_stats``
-- ``plateflex.plotting.plot_fitted``
+- :func:`~plateflex.plotting.plot_real_grid`
+- :func:`~plateflex.plotting.plot_stats`
+- :func:`~plateflex.plotting.plot_fitted`
 
 """
 
@@ -40,7 +40,7 @@ sns.set()
 def plot_real_grid(grid, log=False, mask=None, title=None, save=None, clabel=None):
     """
     Plot 2D image of any real-valued 2D array, used in several context throughout
-    ``plateflex``. For example, it can be used to plot the input grids of topography
+    :mod:`~plateflex`. For example, it can be used to plot the input grids of topography
     or gravity anomalies, the real or imaginary values of the wavelet transform at a
     giben wavenumber index, the wavelet scalograms at a given wavenumber index, the
     wavelet admittance or coherence at a given wavenumber index, or the final grids of
@@ -112,10 +112,10 @@ def plot_stats(trace, summary, map_estimate, title=None, save=None):
 
     """
 
-    import plateflex.estimate as est
+    from plateflex import estimate
 
     # Extract results from summary and map_estimate
-    results = est.get_estimates(summary, map_estimate)
+    results = estimate.get_estimates(summary, map_estimate)
 
     # Collect keys in trace object
     keys = []
@@ -267,7 +267,9 @@ def plot_fitted(k, adm, eadm, coh, ecoh, summary, map_estimate, est='MAP', title
     :param save: Name of file for to save figure
     """
 
-    import plateflex.estimate as est
+    from plateflex import estimate
+
+    ma = np.pi/2.
 
     # Extract statistics from summary object
     if est=='mean':
@@ -275,8 +277,6 @@ def plot_fitted(k, adm, eadm, coh, ecoh, summary, map_estimate, est='MAP', title
         mF = summary.loc['F',est]
         if sum(summary.index.isin(['alpha']))==1:
             ma = summary.loc['alpha',est]
-        else:
-            ma = np.pi/2.
 
     # Extract MAP from map_estimate object
     elif est=='MAP':
@@ -284,13 +284,11 @@ def plot_fitted(k, adm, eadm, coh, ecoh, summary, map_estimate, est='MAP', title
         mF = np.float(map_estimate['F'])
         if 'alpha' in map_estimate:
             ma = np.float(map_estimate['alpha'])
-        else:
-            ma = np.pi/2.
     else:
         raise(Exception('estimate does not exist. Choose among: "mean" or "MAP"'))
 
     # Calculate predicted admittance and coherence from estimates
-    padm, pcoh = est.real_xspec_functions(k, mte, mF, ma)
+    padm, pcoh = estimate.real_xspec_functions(k, mte, mF, ma)
 
     # Plot as 2 subplots
     f, (ax1, ax2) = plt.subplots(2, 1, sharex=True)

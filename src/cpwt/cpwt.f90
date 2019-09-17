@@ -349,10 +349,11 @@
         wl_sg2 = wl_sg2/FLOAT(na)
         wl_xsg = wl_xsg/FLOAT(na)
 !
-! Admittance and coherence
+! Admittance and coherence (squared-real coherency) 
 !
         wl_admit = REAL(wl_xsg)/wl_sg1
-        wl_coh = CABS(wl_xsg*CONJG(wl_xsg))/(wl_sg1*wl_sg2)
+        wl_coh = REAL(wl_xsg)**2/(wl_sg1*wl_sg2)
+        ! wl_coh = wl_xsg/SQRT(wl_sg1*wl_sg2)
 !
 ! Jackknife estimation
 !

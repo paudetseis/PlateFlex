@@ -163,7 +163,7 @@
 !----------------------------------------------------------
 !     Subroutine jackknife_1d_admit
 !
-!     !alculates Jackknife error on admittance.
+!     Calculates Jackknife error on admittance.
 !----------------------------------------------------------
       SUBROUTINE jackknife_1d_admit(sxp,ss1,nx,ny,na,ns,sad)
       IMPLICIT NONE
@@ -327,7 +327,7 @@
           xp=xp+sxp(ix,iy,ia2,is)
 
           IF ((p1.ne.0).and.(p2.ne.0)) THEN
-            co(i_k)=CABS(xp*CONJG(xp))/(p1*p2)
+            co(i_k)=REAL(xp)**2/(p1*p2)
             ad(i_k)=REAL(xp)/p1
           ELSE
             co(i_k)=0.

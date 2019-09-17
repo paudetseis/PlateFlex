@@ -118,7 +118,7 @@ Once the previous steps are performed, you can install ``telewavesim`` using pip
 from . import conf as cf
 from . import estimate
 from . import plotting
-from .classes import FlexGrid, TopoGrid, GravGrid, BougGrid, FairGrid, Project
+from .classes import Grid, TopoGrid, GravGrid, BougGrid, FairGrid, Project
 from .cpwt import conf_cpwt as cf_wt
 from .flex import conf_flex as cf_fl
 
@@ -154,7 +154,6 @@ def get_conf_cpwt():
     """
 
     print('\n'.join((
-        ' ',
         'Wavelet parameter used in plateflex.cpwt:',
         '-----------------------------------------',
         '[Internal wavenumber]      k0 (float):     {0:.3f}'.format(cf_wt.k0))))
@@ -181,7 +180,6 @@ def get_conf_flex():
     """
 
     print('\n'.join((
-        ' ',
         'Global model parameters currently in use by plateflex:',
         '------------------------------------------------------',
         '[Crustal thickness]        zc (float):     {0:.0f} m'.format(cf_fl.zc), 

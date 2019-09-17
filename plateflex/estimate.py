@@ -20,14 +20,15 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 """
-This ``PlateFlex`` module contains the following functions for setting up pymc models:
+This :mod:`~plateflex` module contains the following functions: 
 
-- ``plateflex.estimate.set_model``
-- ``plateflex.estimate.get_estimates``
+- :func:`~plateflex.estimate.set_model`: Set up :mod:`~pymc` model
+- :func:`~plateflex.estimate.get_estimates`: Explore the output of sampling the :mod:`~pymc` model
+- :func:`~plateflex.estimate.real_xspec_functions`: Calculate the analytical admittance and coherence functions. 
 
 Internal functions are available to define predicted admittance and coherence data
 with ``theano`` decorators to be incorporated as pymc variables. These functions are
-used within :class:`~plateflex.classes.Project` methods as with ``plateflex.plotting``
+used within :class:`~plateflex.classes.Project` methods as with :mod:`~plateflex.plotting`
 functions.
 
 http://mattpitkin.github.io/samplers-demo/pages/pymc3-blackbox-likelihood/
@@ -38,6 +39,7 @@ http://mattpitkin.github.io/samplers-demo/pages/pymc3-blackbox-likelihood/
 import numpy as np
 import pymc3 as pm
 from plateflex.flex import flex
+from plateflex import conf as cf
 from theano.compile.ops import as_op
 import theano.tensor as tt
 
@@ -64,7 +66,8 @@ def set_model(k, adm, eadm, coh, ecoh, alph=False, atype='joint'):
     :type atype: str, optional
     :param atype: Whether to use the admittance ('admit'), coherence ('coh') or both ('joint')
 
-    :return: New :class:`~pymc3.model.Model` object to estimate via sampling
+    :return: 
+        New :class:`~pymc3.model.Model` object to estimate via sampling
     """
 
     with pm.Model() as model:
@@ -125,6 +128,51 @@ def set_model(k, adm, eadm, coh, ecoh, alph=False, atype='joint'):
 
     return model
 
+
+def estimate_cell(k, adm, eadm, coh, ecoh, alph=False, atype='joint'):
+    """
+    Function to estimate the parameters of the flexural model at a single cell location
+    of the input grids. 
+
+    :type k: :class:`~numpy.ndarray`
+    :param k: 1D array of wavenumbers
+    :type adm: :class:`~numpy.ndarray`
+    :param adm: 1D array of wavelet admittance
+    :type eadm: :class:`~numpy.ndarray`
+    :param eadm: 1D array of error on wavelet admittance
+    :type coh: :class:`~numpy.ndarray`
+    :param coh: 1D array of wavelet coherence
+    :type ecoh: :class:`~numpy.ndarray`
+    :param ecoh: 1D array of error on wavelet coherence
+    :type alph: bool, optional
+    :param alph: Whether or not to estimate parameter ``alpha``
+    :type atype: str, optional
+    :param atype: Whether to use the admittance ('admit'), coherence ('coh') or both ('joint')
+
+    :return:
+        (tuple): Tuple containing:
+            * ``trace`` : :class:`~pymc3.backends.base.MultiTrace`
+                Posterior samples from the MCMC chains
+            * ``summary`` : :class:`~pandas.core.frame.DataFrame`
+                Summary statistics from Posterior distributions
+            * ``map_estimate`` : dict
+                Container for Maximum a Posteriori (MAP) estimates
+
+    """
+
+    # Use model returned from function ``set_model``
+    with set_model(k, adm, eadm, coh, ecoh, alph, atype):
+
+        # Sample the Posterior distribution
+        trace = pm.sample(cf.samples, tune=cf.tunes, cores=cf.cores)
+
+        # Get Max a porteriori estimate
+        map_estimate = pm.find_MAP()
+
+        # Get Summary
+        summary = pm.summary(trace).round(2)
+
+    return trace, summary, map_estimate
 
 def get_estimates(summary, map_estimate):
     """
