@@ -1,6 +1,6 @@
 # Copyright 2019 Pascal Audet
 #
-# This file is part of Telewavesim.
+# This file is part of PlateFlex.
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -37,7 +37,7 @@ import seaborn as sns
 sns.set()
 
 
-def plot_real_grid(grid, log=False, mask=None, title=None, save=None, clabel=None):
+def plot_real_grid(grid, log=False, mask=None, title=None, save=None, clabel=None, **kwargs):
     """
     Plot 2D image of any real-valued 2D array, used in several context throughout
     :mod:`~plateflex`. For example, it can be used to plot the input grids of topography
@@ -74,7 +74,7 @@ def plot_real_grid(grid, log=False, mask=None, title=None, save=None, clabel=Non
 
     # Plot figure and add colorbar
     plt.figure()
-    plt.imshow(grid, origin='lower', cmap='viridis')
+    plt.imshow(grid, origin='lower', cmap='viridis', **kwargs)
     cbar = plt.colorbar()
 
     # Add units on colorbar label
@@ -93,7 +93,7 @@ def plot_real_grid(grid, log=False, mask=None, title=None, save=None, clabel=Non
     plt.show()
 
 
-def plot_stats(trace, summary, map_estimate, title=None, save=None):
+def plot_bayes_stats(trace, summary, map_estimate, title=None, save=None):
     """
     Extract results from variables ``trace``, ``summary`` and ``map_estimate`` to 
     plot marginal and joint posterior distributions. Automatically determines
@@ -115,7 +115,7 @@ def plot_stats(trace, summary, map_estimate, title=None, save=None):
     from plateflex import estimate
 
     # Extract results from summary and map_estimate
-    results = estimate.get_estimates(summary, map_estimate)
+    results = estimate.get_bayes_estimates(summary, map_estimate)
 
     # Collect keys in trace object
     keys = []
@@ -239,7 +239,7 @@ def plot_stats(trace, summary, map_estimate, title=None, save=None):
     plt.show()
 
 
-def plot_fitted(k, adm, eadm, coh, ecoh, summary, map_estimate, est='MAP', title=None, save=None):
+def plot_fitted(k, adm, eadm, coh, ecoh, padm, pcoh, title=None, save=None):
     """
     Function to plot observed and fitted admittance and coherence functions using 
     one of ``MAP`` or ``mean`` estimates. Both admittance and coherence are plotted
@@ -268,27 +268,6 @@ def plot_fitted(k, adm, eadm, coh, ecoh, summary, map_estimate, est='MAP', title
     """
 
     from plateflex import estimate
-
-    ma = np.pi/2.
-
-    # Extract statistics from summary object
-    if est=='mean':
-        mte = summary.loc['Te',est]
-        mF = summary.loc['F',est]
-        if sum(summary.index.isin(['alpha']))==1:
-            ma = summary.loc['alpha',est]
-
-    # Extract MAP from map_estimate object
-    elif est=='MAP':
-        mte = np.float(map_estimate['Te'])
-        mF = np.float(map_estimate['F'])
-        if 'alpha' in map_estimate:
-            ma = np.float(map_estimate['alpha'])
-    else:
-        raise(Exception('estimate does not exist. Choose among: "mean" or "MAP"'))
-
-    # Calculate predicted admittance and coherence from estimates
-    padm, pcoh = estimate.real_xspec_functions(k, mte, mF, ma)
 
     # Plot as 2 subplots
     f, (ax1, ax2) = plt.subplots(2, 1, sharex=True)

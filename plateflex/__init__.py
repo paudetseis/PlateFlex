@@ -1,6 +1,6 @@
 # Copyright 2019 Pascal Audet
 #
-# This file is part of Telewavesim.
+# This file is part of PlateFlex.
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -78,7 +78,7 @@ Conda environment
 +++++++++++++++++
 
 We recommend creating a custom ``conda`` environment
-where ``telewavesim`` can be installed along with its dependencies.
+where ``plateflex`` can be installed along with its dependencies.
 
 .. sourcecode:: bash
 
@@ -99,7 +99,7 @@ Activate the newly created environment:
 Installing using pip
 ++++++++++++++++++++
 
-Once the previous steps are performed, you can install ``telewavesim`` using pip:
+Once the previous steps are performed, you can install ``plateflex`` using pip:
 
 .. sourcecode:: bash
 

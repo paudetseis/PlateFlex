@@ -55,7 +55,6 @@ which itself is a container of :class:`~plateflex.classes.Grid` objects
 
 # -*- coding: utf-8 -*-
 import numpy as np
-import pymc3 as pm
 import plateflex
 from plateflex.cpwt import cpwt
 from plateflex import conf as cf
@@ -73,14 +72,10 @@ class Grid(object):
 
     :type grid: :class:`~numpy.ndarray`
     :param grid: 2D array of of topography/gravity data
-    :type xmin: float
-    :param xmin: Minimum x bound in km
-    :type xmax: float
-    :param xmax: Maximum x bound in km
-    :type ymin: float
-    :param ymin: Minimum y bound in km
-    :type ymax: float
-    :param ymax: Maximum y bound in km
+    :type dx: float
+    :param dx: Grid spacing in the x-direction (km)
+    :type dy: float
+    :param dy: Grid spacing in the y-direction (km)
 
     Grid must be projected in km.
 
@@ -88,28 +83,22 @@ class Grid(object):
 
     ``data`` : :class:`~numpy.ndarray`
         2D array of topography/gravity data (shape (`nx,ny`))
-    ``xmin`` : float 
-        Minimum x bound in km
-    ``xmax`` : float 
-        Maximum x bound in km
-    ``ymin`` : float 
-        Minimum y bound in km
-    ``ymax`` : float) 
-        Maximum y bound in km
     ``dx`` : float 
         Grid spacing in the x-direction in km
     ``dy`` : float 
         Grid spacing in the y-direction in km
     ``nx`` : int 
-        Number of nodes in the x-direction
+        Number of grid cells in the x-direction
     ``ny`` : int 
-        Number of nodes in the y-direction
-    ``xcoords`` : np.ndarray 
-        1D array of coordinates in the x-direction
-    ``ycoords`` : np.ndarray 
-        1D array of coordinates in the y-direction
-    ``units`` str 
+        Number of grid cells in the y-direction
+    ``units`` : str 
         Units of data set
+    ``sg_units`` : str
+        Units of power-spectral density of data set
+    ``logsg_units`` : str
+        Units of power-spectral density of data set in log
+    ``title`` : str
+        Descriptor for data set - used in title of plots
     ``ns`` int 
         Number of wavenumber samples
     ``k`` : np.ndarray 
@@ -130,29 +119,50 @@ class Grid(object):
     >>> xmin = ymin = 0.
     >>> xmax = ymax = (nn-1)*dd
     >>> data = np.zeros((nn, nn))
-    >>> grid = Grid(data, xmin, xmax, ymin, ymax)
+    >>> grid = Grid(data, dx, dy)
     >>> grid
     <plateflex.grids.Grid object at 0x10613fe10>
 
     """
 
-    def __init__(self, grid, xmin, xmax, ymin, ymax):
+    def __init__(self, grid, dx, dy):
 
-        if np.any(np.isnan(np.array(grid))):
-            raise(Exception('grid contains NaN values: abort'))
-        else:
-            self.data = np.array(grid)
-            
-        ny, nx = self.data.shape
-        self.xmin, self.xmax = xmin, xmax
-        self.ymin, self.ymax = ymin, ymax
-        self.xcoords, dx = np.linspace(xmin, xmax, nx, retstep=True)
-        self.ycoords, dy = np.linspace(ymin, ymax, ny, retstep=True)
+        nx, ny = grid.shape
         self.nx, self.ny = nx, ny
         self.dx, self.dy = dx, dy
         self.units = None
-        self.ns, self.k = _lam2k(nx,ny,dx,dy)
+        self.sg_units = None
+        self.logsg_units = None
+        self.title = None
+        self.ns, self.k = _lam2k(nx, ny, dx, dy)
+        self.mask = None
 
+        if np.any(np.isnan(np.array(grid))):
+            
+            print('grid contains NaN values. Performing interpolation...')
+            
+            from scipy.interpolate import griddata
+
+            # Grab NaNs as mask
+            mask = np.ma.masked_invalid(grid).mask
+
+            # Now interpolate grid where NaNs
+            good = np.where(np.isfinite(grid))
+            xx, yy = np.mgrid[0:nx, 0:ny]
+            points = np.array([xx[good], yy[good]]).T
+            grid_int = griddata(points, grid[good], (xx, yy), method='nearest')
+            self.data = np.array(grid_int)
+
+        else:
+            self.data = np.array(grid)
+
+
+    def plot(self, mask=None, title=None, save=None, clabel=None, **kwargs):
+
+        if title is not None:
+            plotting.plot_real_grid(self.data, title=title, mask=mask, save=save, clabel=self.units, **kwargs)
+        else:
+            plotting.plot_real_grid(self.data, title=self.title, mask=mask, save=save, clabel=self.units, **kwargs)
 
     def wlet_transform(self):
         """
@@ -175,7 +185,7 @@ class Grid(object):
         >>> xmin = ymin = 0.
         >>> xmax = ymax = (nn-1)*dd
         >>> data = np.zeros((nn, nn))
-        >>> grid = Grid(data, xmin, xmax, ymin, ymax)
+        >>> grid = Grid(data, dx, dy)
         >>> grid.wlet_transform()
          #loops = 13:  1  2  3  4  5  6  7  8  9 10 11 12 13
         >>> grid.wl_trans.shape
@@ -215,14 +225,14 @@ class Grid(object):
         >>> # set random seed
         >>> np.random.seed(0)
         >>> data = np.random.randn(nn, nn)
-        >>> grid1 = Grid(data, xmin, xmax, ymin, ymax)
+        >>> grid1 = Grid(data, dx, dy)
         >>> grid1.wlet_scalogram()
          #loops = 17:  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17
         >>> grid1.wl_sg.shape
         (200, 200, 17)
 
         >>> # Perform wavelet transform first
-        >>> grid2 = Grid(data, xmin, xmax, ymin, ymax)
+        >>> grid2 = Grid(data, dx, dy)
         >>> grid2.wlet_transform()
          #loops = 17:  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17
         >>> grid2.wlet_scalogram()
@@ -242,7 +252,8 @@ class Grid(object):
 
         return
 
-    def plot_transform(self, kindex=None, aindex=None, log=False, mask=None, title='Wavelet transform', save=None, clabel=None):
+    def plot_transform(self, kindex=None, aindex=None, log=False, mask=None, title='Wavelet transform', \
+        save=None, clabel=None, **kwargs):
         """
         This method plots the real and imaginary components of the wavelet transform of a
         :class:`~plateflex.classes.Grid` object at wavenumber and angle indices (int). 
@@ -262,7 +273,7 @@ class Grid(object):
         if kindex is None or aindex is None:
             raise(Exception('Specify index of wavenumber and angle to plot the transform'))
 
-        if kindex>self.ns or kindex<0:
+        if kindex>self.ns-1 or kindex<0:
             raise(Exception('Invalid index: should be between 0 and '+str(ns)))
 
         if aindex>10 or aindex<0:
@@ -277,11 +288,12 @@ class Grid(object):
             rdata = np.real(self.wl_trans[:,:,aindex,kindex])
             idata = np.imag(self.wl_trans[:,:,aindex,kindex])
 
-        plotting.plot_real_grid(rdata, title=title, mask=mask, save=save, clabel=self.units)
-        plotting.plot_real_grid(idata, title=title, mask=mask, save=save, clabel=self.units)
+        plotting.plot_real_grid(rdata, title=title, mask=mask, save=save, clabel=self.units, **kwargs)
+        plotting.plot_real_grid(idata, title=title, mask=mask, save=save, clabel=self.units, **kwargs)
 
 
-    def plot_scalogram(self, kindex=None, log=True, mask=None, title='Wavelet scalogram', save=None, clabel=None):
+    def plot_scalogram(self, kindex=None, log=True, mask=None, title='Wavelet scalogram', \
+        save=None, clabel=None, **kwargs):
         """
         This method plots the wavelet scalogram of a
         :class:`~plateflex.classes.Grid` object at a wavenumber index (int). Raises ``Exception`` for the 
@@ -300,7 +312,7 @@ class Grid(object):
         if kindex is None:
             raise(Exception('Specify index of wavenumber for plotting'))
 
-        if kindex>self.ns or kindex<0:
+        if kindex>self.ns-1 or kindex<0:
             raise(Exception('Invalid index: should be between 0 and '+str(self.ns)))
 
         try:
@@ -310,18 +322,10 @@ class Grid(object):
             self.wlet_scalogram()
             data = self.wl_sg[:,:,kindex]
 
-        if isinstance(self, TopoGrid):
-            if log:
-                units = r'log(m$^2$)'
-            else:
-                units = r'm$^2$'
-        elif isinstance(self, GravGrid):
-            if log:
-                units = r'log(mGal$^2$)'
-            else:
-                units = r'mGal$^2$'
-
-        plotting.plot_real_grid(data, log=log, mask=mask, title=title, save=save, clabel=units)
+        if log:
+            plotting.plot_real_grid(data, log=log, mask=mask, title=title, save=save, clabel=self.logsg_units, **kwargs)
+        else:
+            plotting.plot_real_grid(data, log=log, mask=mask, title=title, save=save, clabel=self.sg_units, **kwargs)
 
 
 class GravGrid(Grid):
@@ -329,39 +333,51 @@ class GravGrid(Grid):
     Basic grid class of ``plateflex`` for gravity data that inherits 
     from :class:`~plateflex.classes.Grid`
 
+    .. rubric:: Additional Attributes
+
+    ``units`` : str
+        Units of Gravity anomaly (':math:`mGal`')
+    ``sg_units`` : str
+        Units of wavelet PSD (scalogram) (':math:`mGal^2/|k|`')
+    ``logsg_units`` : str
+        Units of log of wavelet PSD (log(scalogram)) (':math:`log(mGal^2/|k|)`')
+    ``title``: str
+        Descriptor for Gravity data
+
     .. rubric: Example
 
     >>> import numpy as np
     >>> from plateflex import Grid, GravGrid
     >>> nn = 200; dd = 10.
-    >>> gravgrid = GravGrid(np.random.randn(nn, nn), 0., (nn-1)*dd, 0., (nn-1)*dd)
+    >>> gravgrid = GravGrid(np.random.randn(nn, nn), dd, dd)
     >>> isinstance(gravgrid, Grid)
     True
     """
 
-    def __init__(self, grid, xmin, xmax, ymin, ymax):
+    def __init__(self, grid, dx, dy):
 
-        Grid.__init__(self, grid, xmin, xmax, ymin, ymax)
+        Grid.__init__(self, grid, dx, dy)
+        self.units = 'mGal'
+        self.sg_units = r'mGal$^2$/|k|'
+        self.logsg_units = r'log(mGal$^2$/|k|)'
+        self.title = 'Gravity anomaly'
 
 class BougGrid(GravGrid):
     """
     Basic grid class of ``plateflex`` for Bouguer gravity data that inherits 
     from :class:`~plateflex.classes.GravGrid`
 
-    Contains method to plot the grid data with default title and units using function 
-    :func:`~plateflex.plotting.plot_real_grid`.
-
     .. rubric:: Additional Attributes
 
-    ``units`` : str
-        Units of Gravity anomaly ('mGal')
+    ``title``: str
+        Descriptor for Bouguer gravity data
 
     .. rubric: Example
 
     >>> import numpy as np
     >>> from plateflex import Grid, BougGrid, GravGrid
     >>> nn = 200; dd = 10.
-    >>> bouggrid = BougGrid(np.random.randn(nn, nn), 0., (nn-1)*dd, 0., (nn-1)*dd)
+    >>> bouggrid = BougGrid(np.random.randn(nn, nn), dd, dd)
     >>> isinstance(bouggrid, GravGrid)
     True
     >>> isinstance(bouggrid, Grid)
@@ -369,71 +385,60 @@ class BougGrid(GravGrid):
 
     """
 
-    def __init__(self, grid, xmin, xmax, ymin, ymax):
+    def __init__(self, grid, dx, dy):
 
-        GravGrid.__init__(self, grid, xmin, xmax, ymin, ymax)
-
-        self.units = 'mGal'
-
-    def plot(self, mask=None, title='Bouguer anomaly', save=None, clabel=None):
-
-        plotting.plot_real_grid(self.data, title=title, mask=mask, save=save, clabel=self.units)
+        GravGrid.__init__(self, grid, dx, dy)
+        self.title = 'Bouguer anomaly'
 
 class FairGrid(GravGrid):
     """
     Basic grid class of ``plateflex`` for Free-air gravity data that inherits 
     from :class:`~plateflex.classes.GravGrid`
 
-    Contains method to plot the grid data with default title and units using function 
-    :func:`~plateflex.plotting.plot_real_grid`.
-
     .. rubric:: Additional Attributes
 
-    ``units`` : str
-        Units of Gravity anomaly ('mGal')
+    ``title``: str
+        Descriptor for Free-air gravity data
 
     .. rubric: Example
 
     >>> import numpy as np
     >>> from plateflex import Grid, FairGrid, GravGrid
     >>> nn = 200; dd = 10.
-    >>> fairgrid = FaiorGrid(np.random.randn(nn, nn), 0., (nn-1)*dd, 0., (nn-1)*dd)
+    >>> fairgrid = FaiorGrid(np.random.randn(nn, nn), dd, dd)
     >>> isinstance(fairgrid, GravGrid)
     True
     >>> isinstance(fairgrid, Grid)
     True
     """
 
-    def __init__(self, grid, xmin, xmax, ymin, ymax):
+    def __init__(self, grid, dx, dy):
 
-        GravGrid.__init__(self, grid, xmin, xmax, ymin, ymax)
-
-        self.units = 'mGal'
-
-    def plot(self, mask=None, title='Free air anomaly', save=None, clabel=None):
-
-        plotting.plot_real_grid(self.data, title=title, mask=mask, save=save, clabel=self.units)
-
+        GravGrid.__init__(self, grid, dx, dy)
+        self.title = 'Free-air anomaly'
 
 class TopoGrid(Grid):
     """
     Basic grid class of ``plateflex`` for Topography data that inherits 
-    from :class:`~plateflex.classes.GravGrid`
-
-    Contains method to plot the grid data with default title and units using function 
-    :func:`~plateflex.plotting.plot_real_grid`.
+    from :class:`~plateflex.classes.Grid`
 
     .. rubric:: Additional Attributes
 
     ``units`` : str
-        Units of Topography ('meters')
+        Units of Topography (':math:`m`')
+    ``sg_units`` : str
+        Units of wavelet PSD (scalogram) (':math:`m^2/|k|`')
+    ``logsg_units`` : str
+        Units of log of wavelet PSD (log(scalogram)) (':math:`log(m^2/|k|)`')
+    ``title``: str
+        Descriptor for Topography data
 
     .. rubric: Example
     
     >>> import numpy as np
     >>> from plateflex import Grid, TopoGrid
     >>> nn = 200; dd = 10.
-    >>> topogrid = TopoGrid(np.random.randn(nn, nn), 0., (nn-1)*dd, 0., (nn-1)*dd)
+    >>> topogrid = TopoGrid(np.random.randn(nn, nn), dd, dd)
     >>> isinstance(topogrid, Grid)
     True
 
@@ -443,18 +448,16 @@ class TopoGrid(Grid):
         than 20
     """
 
-    def __init__(self, grid, xmin, xmax, ymin, ymax):
+    def __init__(self, grid, dx, dy):
 
-        Grid.__init__(self, grid, xmin, xmax, ymin, ymax)
+        Grid.__init__(self, grid, dx, dy)
+        self.units = 'm'
+        self.sg_units = r'm$^2$/|k|'
+        self.logsg_units = r'log(m$^2$/|k|)'
+        self.title = 'Topography'
 
         if np.std(self.data) < 20.:
             self.data *= 1.e3
-
-        self.units = 'meters'
-
-    def plot(self, mask=None, title='Topography', save=None, clabel=None):
-
-        plotting.plot_real_grid(self.data, title=title, mask=mask, save=save, clabel=self.units)
 
 class Project(object):
     """
@@ -486,8 +489,8 @@ class Project(object):
     >>> import numpy as np
     >>> from plateflex import Grid, TopoGrid, BougGrid, GravGrid, Project
     >>> nn = 200; dd = 10.
-    >>> topogrid = TopoGrid(np.random.randn(nn, nn), 0., (nn-1)*dd, 0., (nn-1)*dd)
-    >>> bouggrid = BougGrid(np.random.randn(nn, nn), 0., (nn-1)*dd, 0., (nn-1)*dd)
+    >>> topogrid = TopoGrid(np.random.randn(nn, nn), dd, dd)
+    >>> bouggrid = BougGrid(np.random.randn(nn, nn), dd, dd)
     >>> isinstance(bouggrid, GravGrid)
     True
     >>> isinstance(bouggrid, Grid)
@@ -546,7 +549,9 @@ class Project(object):
 
     def __init__(self, grids=None):
 
+        self.inverse = 'L2'
         self.grids = []
+        self.mask = None
 
         if isinstance(grids, Grid):
             grids = [grids]
@@ -587,7 +592,7 @@ class Project(object):
         >>> import numpy as np
         >>> from plateflex import Grid, Project
         >>> nn = 200; dd = 10.
-        >>> grid = Grid(np.random.randn(nn, nn), 0., (nn-1)*dd, 0., (nn-1)*dd)
+        >>> grid = Grid(np.random.randn(nn, nn), dd, dd)
         >>> project = Project()
         >>> project.append(grid)
         """
@@ -612,8 +617,8 @@ class Project(object):
         >>> import numpy as np
         >>> from plateflex import Grid, Project
         >>> nn = 200; dd = 10.
-        >>> grid1 = Grid(np.random.randn(nn, nn), 0., (nn-1)*dd, 0., (nn-1)*dd)
-        >>> grid2 = Grid(np.random.randn(nn, nn), 0., (nn-1)*dd, 0., (nn-1)*dd)
+        >>> grid1 = Grid(np.random.randn(nn, nn), dd, dd)
+        >>> grid2 = Grid(np.random.randn(nn, nn), dd, dd)
         >>> project = Project()
         >>> project.extend(grids=[grid1, grid2])
 
@@ -631,6 +636,7 @@ class Project(object):
             msg = 'Extend only supports a list of Grid objects as argument.'
             raise TypeError(msg)
         return self
+
 
     def wlet_admit_coh(self):
         """
@@ -706,7 +712,7 @@ class Project(object):
 
         return 
 
-    def plot_admit_coh(self, kindex=None, mask=None, title=None, save=None, clabel=None):
+    def plot_admit_coh(self, kindex=None, mask=None, title=None, save=None, clabel=None, **kwargs):
         """
         Method to plot grids of wavelet admittance and coherence at a given  wavenumber index. 
 
@@ -739,8 +745,9 @@ class Project(object):
         if kindex>self.ns or kindex<0:
             raise(Exception('Invalid index: should be between 0 and '+str(self.ns)))
 
-        plotting.plot_real_grid(adm, mask=mask, title=title, save=save, clabel='mGal/m')
-        plotting.plot_real_grid(coh, mask=mask, title=title, save=save, clabel=None)
+        plotting.plot_real_grid(adm, mask=mask, title=title, save=save, clabel='mGal/m', **kwargs)
+        plotting.plot_real_grid(coh, mask=mask, title=title, save=save, clabel=None, **kwargs)
+
 
     def estimate_cell(self, cell=(0,0), alph=False, atype='joint', returned=False):
         """
@@ -771,15 +778,6 @@ class Project(object):
         object.
         """
 
-        # Delete attributes to release some memory
-        try:
-            del self.trace
-            del self.summary
-            del self.map_estimate   
-            del self.cell        
-        except:
-            print("first attempt at estimating cell parameters")
-
         if not isinstance(alph, bool):
             raise(Exception("'alph' should be a boolean: defaults to False"))
 
@@ -792,21 +790,37 @@ class Project(object):
         coh = self.wl_coh[cell[0], cell[1], :]
         ecoh = self.ewl_coh[cell[0], cell[1], :]
 
-        trace, summary, map_estimate = estimate.estimate_cell( \
-            self.k, adm, eadm, coh, ecoh, alph, atype)
+        if self.inverse=='L2':
+            summary = estimate.L2_estimate_cell( \
+                self.k, adm, eadm, coh, ecoh, alph, atype)
 
-        # Return estimates if requested
-        if returned:
-            return summary, map_estimate
+            # Return estimates if requested
+            if returned:
+                return summary
 
-        # Otherwise store as object attributes
-        else:
-            self.alph = alph
-            self.atype = atype
-            self.cell = cell
-            self.trace = trace
-            self.map_estimate = map_estimate
-            self.summary = summary
+            # Otherwise store as object attributes
+            else:
+                self.alph = alph
+                self.atype = atype
+                self.cell = cell
+                self.summary = summary
+
+        elif self.inverse=='bayes':
+            trace, summary, map_estimate = estimate.bayes_estimate_cell( \
+                self.k, adm, eadm, coh, ecoh, alph, atype)
+
+            # Return estimates if requested
+            if returned:
+                return summary, map_estimate
+
+            # Otherwise store as object attributes
+            else:
+                self.alph = alph
+                self.atype = atype
+                self.cell = cell
+                self.trace = trace
+                self.map_estimate = map_estimate
+                self.summary = summary
 
     def estimate_grid(self, nn=10, alph=False, atype='joint', parallel=False):
         """
@@ -848,26 +862,6 @@ class Project(object):
 
         """
 
-        # Import garbage collector
-        import gc
-
-        # Delete attributes to release some memory
-        try:
-            del self.mean_Te_grid
-            del self.MAP_Te_grid
-            del self.std_Te_grid            
-            del self.mean_F_grid
-            del self.MAP_F_grid
-            del self.std_F_grid
-            try:        
-                del self.mean_a_grid
-                del self.MAP_a_grid
-                del self.std_a_grid
-            except:
-                print("parameter 'alpha' was not previously estimated")
-        except:
-            pass
-
         if not isinstance(alph, bool):
             raise(Exception("'alph' should be a boolean: defaults to False"))
         self.alph = alph
@@ -878,21 +872,39 @@ class Project(object):
 
         # Initialize result grids to zoroes
         mean_Te_grid = np.zeros((int(self.nx/nn),int(self.ny/nn)))
-        MAP_Te_grid = np.zeros((int(self.nx/nn),int(self.ny/nn)))
         std_Te_grid = np.zeros((int(self.nx/nn),int(self.ny/nn)))
         mean_F_grid = np.zeros((int(self.nx/nn),int(self.ny/nn)))
-        MAP_F_grid = np.zeros((int(self.nx/nn),int(self.ny/nn)))
         std_F_grid = np.zeros((int(self.nx/nn),int(self.ny/nn)))
         if self.alph:
             mean_a_grid = np.zeros((int(self.nx/nn),int(self.ny/nn)))
-            MAP_a_grid = np.zeros((int(self.nx/nn),int(self.ny/nn)))
             std_a_grid = np.zeros((int(self.nx/nn),int(self.ny/nn)))
 
-        # Extract topo grid to avoid computing over ocean areas
-        if isinstance(self.grids[0], TopoGrid):
-            grid = self.grids[0]
-        else:
-            grid = self.grids[1]
+        if self.inverse=='bayes':
+            MAP_Te_grid = np.zeros((int(self.nx/nn),int(self.ny/nn)))
+            MAP_F_grid = np.zeros((int(self.nx/nn),int(self.ny/nn)))
+            if self.alph:
+                MAP_a_grid = np.zeros((int(self.nx/nn),int(self.ny/nn)))
+
+        # # Import garbage collector
+        # import gc
+
+        # # Delete attributes to release some memory
+        # try:
+        #     del self.mean_Te_grid
+        #     del self.MAP_Te_grid
+        #     del self.std_Te_grid            
+        #     del self.mean_F_grid
+        #     del self.MAP_F_grid
+        #     del self.std_F_grid
+        #     try:        
+        #         del self.mean_a_grid
+        #         del self.MAP_a_grid
+        #         del self.std_a_grid
+        #     except:
+        #         print("parameter 'alpha' was not previously estimated")
+        # except:
+        #     pass
+
 
         if parallel:
 
@@ -915,58 +927,102 @@ class Project(object):
                     # tuple of cell indices
                     cell = (i,j)
 
-                    # Skip cell for which topo is < -500 meters
-                    if grid.data[i,j] < -500.:
+                    # Skip masked cells
+                    if self.mask[i,j]:
                         continue
 
-                    # Carry out calculations by calling the ``estimate_cell`` method
-                    summary, map_estimate = self.estimate_cell(cell=cell, \
-                        alph=alph, atype=atype, returned=True)
+                    if self.inverse=='bayes':
 
-                    # Extract estimates from summary and map_estimate
-                    res = estimate.get_estimates(summary, map_estimate)
+                        # Carry out calculations by calling the ``estimate_cell`` method
+                        summary, map_estimate = self.estimate_cell(cell=cell, \
+                            alph=alph, atype=atype, returned=True)
 
-                    # Distribute the parameters back to space
-                    mean_Te = res[0]
-                    std_Te = res[1]
-                    MAP_Te = res[4]
-                    mean_F = res[5]
-                    std_F = res[6]
-                    MAP_F = res[9]
-                    if self.alph:
-                        mean_a = res[10]
-                        std_a = res[11]
-                        MAP_a = res[14]
+                        # Extract estimates from summary and map_estimate
+                        res = estimate.get_bayes_estimates(summary, map_estimate)
 
-                    # Store values in smaller arrays
-                    mean_Te_grid[int(i/nn),int(j/nn)] = mean_Te
-                    MAP_Te_grid[int(i/nn),int(j/nn)] = MAP_Te
-                    std_Te_grid[int(i/nn),int(j/nn)] = std_Te
-                    mean_F_grid[int(i/nn),int(j/nn)] = mean_F
-                    MAP_F_grid[int(i/nn),int(j/nn)] = MAP_F
-                    std_F_grid[int(i/nn),int(j/nn)] = std_F
-                    if self.alph:
-                        mean_a_grid[int(i/nn),int(j/nn)] = mean_a
-                        MAP_a_grid[int(i/nn),int(j/nn)] = MAP_a
-                        std_a_grid[int(i/nn),int(j/nn)] = std_a
+                        # Distribute the parameters back to space
+                        mean_Te = res[0]
+                        std_Te = res[1]
+                        MAP_Te = res[4]
+                        mean_F = res[5]
+                        std_F = res[6]
+                        MAP_F = res[9]
+                        if self.alph:
+                            mean_a = res[10]
+                            std_a = res[11]
+                            MAP_a = res[14]
 
-                    # Release garbage collector
-                    gc.collect()
+                        # Store values in smaller arrays
+                        mean_Te_grid[int(i/nn),int(j/nn)] = mean_Te
+                        MAP_Te_grid[int(i/nn),int(j/nn)] = MAP_Te
+                        std_Te_grid[int(i/nn),int(j/nn)] = std_Te
+                        mean_F_grid[int(i/nn),int(j/nn)] = mean_F
+                        MAP_F_grid[int(i/nn),int(j/nn)] = MAP_F
+                        std_F_grid[int(i/nn),int(j/nn)] = std_F
+                        if self.alph:
+                            mean_a_grid[int(i/nn),int(j/nn)] = mean_a
+                            MAP_a_grid[int(i/nn),int(j/nn)] = MAP_a
+                            std_a_grid[int(i/nn),int(j/nn)] = std_a
 
-        # Store grids as attributes
-        self.mean_Te_grid = mean_Te_grid
-        self.MAP_Te_grid = MAP_Te_grid
-        self.std_Te_grid = std_Te_grid
-        self.mean_F_grid = mean_F_grid
-        self.MAP_F_grid = MAP_F_grid
-        self.std_F_grid = std_F_grid
-        if self.alph:
-            self.mean_a_grid = mean_a_grid
-            self.MAP_a_grid = MAP_a_grid
-            self.std_a_grid = std_a_griod
+                        # # Release garbage collector
+                        # gc.collect()
+
+                    elif self.inverse=='L2':
+
+                        # Carry out calculations by calling the ``estimate_cell`` method
+                        summary = self.estimate_cell(cell=cell, \
+                            alph=alph, atype=atype, returned=True)
+
+                        # Extract estimates from summary and map_estimate
+                        res = estimate.get_L2_estimates(summary)
+
+                        # Distribute the parameters back to space
+                        mean_Te = res[0]
+                        std_Te = res[1]
+                        mean_F = res[2]
+                        std_F = res[3]
+                        if self.alph:
+                            mean_a = res[4]
+                            std_a = res[5]
+
+                        # Store values in smaller arrays
+                        mean_Te_grid[int(i/nn),int(j/nn)] = mean_Te
+                        std_Te_grid[int(i/nn),int(j/nn)] = std_Te
+                        mean_F_grid[int(i/nn),int(j/nn)] = mean_F
+                        std_F_grid[int(i/nn),int(j/nn)] = std_F
+                        if self.alph:
+                            mean_a_grid[int(i/nn),int(j/nn)] = mean_a
+                            std_a_grid[int(i/nn),int(j/nn)] = std_a
+
+                        # # Release garbage collector
+                        # gc.collect()
+
+        if self.inverse=='bayes':
+
+            # Store grids as attributes
+            self.mean_Te_grid = mean_Te_grid
+            self.MAP_Te_grid = MAP_Te_grid
+            self.std_Te_grid = std_Te_grid
+            self.mean_F_grid = mean_F_grid
+            self.MAP_F_grid = MAP_F_grid
+            self.std_F_grid = std_F_grid
+            if self.alph:
+                self.mean_a_grid = mean_a_grid
+                self.MAP_a_grid = MAP_a_grid
+                self.std_a_grid = std_a_grid
+
+        elif self.inverse=='L2':
+            # Store grids as attributes
+            self.mean_Te_grid = mean_Te_grid
+            self.std_Te_grid = std_Te_grid
+            self.mean_F_grid = mean_F_grid
+            self.std_F_grid = std_F_grid
+            if self.alph:
+                self.mean_a_grid = mean_a_grid
+                self.std_a_grid = std_a_grid
 
 
-    def plot_stats(self, title=None, save=None):
+    def plot_bayes_stats(self, title=None, save=None):
         """
         Method to plot the marginal and joint distributions of samples drawn from the 
         posterior distribution as well as the extracted statistics. Calls the function 
@@ -980,12 +1036,12 @@ class Project(object):
         """
 
         try:
-            plotting.plot_stats(self.trace, self.summary, \
+            plotting.plot_bayes_stats(self.trace, self.summary, \
                 self.map_estimate, title=title, save=save)
         except:
             raise(Exception("No 'cell' estimate available"))
 
-    def plot_fitted(self, est='MAP', title=None, save=None):
+    def plot_fitted(self, est='mean', title=None, save=None):
         """
         Method to plot observed and fitted admittance and coherence functions using 
         one of ``MAP`` or ``mean`` estimates. Calls the function :func:`~plateflex.plotting.plot_fitted`
@@ -1011,16 +1067,46 @@ class Project(object):
             coh = self.wl_coh[cell[0], cell[1], :]
             ecoh = self.ewl_coh[cell[0], cell[1], :]
 
+            ma = np.pi/2.
+
+            if self.inverse=='bayes':
+                # Extract statistics from summary object
+                if est=='mean':
+                    mte = self.summary.loc['Te', est]
+                    mF = self.summary.loc['F', est]
+                    if sum(self.summary.index.isin(['alpha']))==1:
+                        ma = self.summary.loc['alpha', est]
+
+                # Extract MAP from map_estimate object
+                elif est=='MAP':
+                    mte = np.float(self.map_estimate['Te'])
+                    mF = np.float(self.map_estimate['F'])
+                    if 'alpha' in self.map_estimate:
+                        ma = np.float(self.map_estimate['alpha'])
+                else:
+                    raise(Exception('estimate does not exist. Choose among: "mean" or "MAP"'))
+
+            elif self.inverse=='L2':
+
+                # Extract statistics from summary object
+                mte = self.summary.loc['Te', 'mean']
+                mF = self.summary.loc['F', 'mean']
+                if sum(self.summary.index.isin(['alpha']))==1:
+                    ma = self.summary.loc['alpha', 'mean']
+
+            # Calculate predicted admittance and coherence from estimates
+            padm, pcoh = estimate.real_xspec_functions(k, mte, mF, ma)
+
             # Call function from ``plotting`` module
-            plotting.plot_fitted(k, adm, eadm, coh, ecoh, self.summary, \
-                self.map_estimate, est=est, title=title, save=save)
+            plotting.plot_fitted(k, adm, eadm, coh, ecoh, \
+                padm, pcoh, title=title, save=save)
 
         except:
             raise(Exception("No estimate yet available"))
 
     def plot_results(self, mean_Te=False, MAP_Te=False, std_Te=False, \
         mean_F=False, MAP_F=False, std_F=False, mean_a=False, MAP_a=False, \
-        std_a=False, mask=None, save=None):
+        std_a=False, mask=None, save=None, **kwargs):
         """
         Method to plot grids of estimated parameters with fixed labels and titles. 
         To have more control over the plot rendering, use the function 
@@ -1034,40 +1120,42 @@ class Project(object):
 
         if mean_Te:
             plotting.plot_real_grid(self.mean_Te_grid, mask=mask, \
-                title='Mean of posterior', clabel='Te (km)', save=save)
+                title='Mean of posterior', clabel='Te (km)', save=save, **kwargs)
         if MAP_Te:
             plotting.plot_real_grid(self.MAP_Te_grid, mask=mask, \
-                title='MAP estimate', clabel='Te (km)', save=save)
+                title='MAP estimate', clabel='Te (km)', save=save, **kwargs)
         if std_Te:
             plotting.plot_real_grid(self.std_Te_grid, mask=mask, \
-                title='Std of posterior', clabel='Te (km)', save=save)
+                title='Std of posterior', clabel='Te (km)', save=save, **kwargs)
         if mean_F:
             plotting.plot_real_grid(self.mean_F_grid, mask=mask, \
-                title='Mean of posterior', clabel='F', save=save)
+                title='Mean of posterior', clabel='F', save=save, **kwargs)
         if MAP_F:
             plotting.plot_real_grid(self.MAP_F_grid, mask=mask, \
-                title='MAP estimate', clabel='F', save=save)
+                title='MAP estimate', clabel='F', save=save, **kwargs)
         if std_F:
             plotting.plot_real_grid(self.std_F_grid, mask=mask, \
-                title='Std of posterior', clabel='F', save=save)
+                title='Std of posterior', clabel='F', save=save, **kwargs)
         if mean_a:
             try:
                 plotting.plot_real_grid(self.mean_a_grid, mask=mask, \
-                    title='Mean of posterior', clabel=r'$\alpha$', save=save)
+                    title='Mean of posterior', clabel=r'$\alpha$', save=save, **kwargs)
             except:
                 print("parameter 'alpha' was not estimated")
         if MAP_a:
             try:
                 plotting.plot_real_grid(self.MAP_a_grid, mask=mask, \
-                    title='MAP estimate', clabel=r'$\alpha$', save=save)
+                    title='MAP estimate', clabel=r'$\alpha$', save=save, **kwargs)
             except:
                 print("parameter 'alpha' was not estimated")
         if std_a:
             try:
                 plotting.plot_real_grid(self.std_a_grid, mask=mask, \
-                    title='Std of posterior', clabel=r'$\alpha$', save=save)
+                    title='Std of posterior', clabel=r'$\alpha$', save=save, **kwargs)
             except:
                 print("parameter 'alpha' was not estimated")
+
+
 
 def _lam2k(nx, ny, dx, dy):
     """
@@ -1101,7 +1189,7 @@ def _lam2k(nx, ny, dx, dy):
     >>> # Define fake grid
     >>> nx = ny = 300
     >>> dx = dy = 20.
-    >>> classes._lam2k(nx,ny,dx,dy)
+    >>> classes._lam2k(nx, ny, dx, dy)
     (18, array([2.96192196e-06, 3.67056506e-06, 4.54875180e-06, 5.63704569e-06,
            6.98571509e-06, 8.65705514e-06, 1.07282651e-05, 1.32950144e-05,
            1.64758613e-05, 2.04177293e-05, 2.53026936e-05, 3.13563910e-05,

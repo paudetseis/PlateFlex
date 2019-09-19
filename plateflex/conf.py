@@ -1,6 +1,6 @@
 # Copyright 2019 Pascal Audet
 #
-# This file is part of Telewavesim.
+# This file is part of PlateFlex.
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal

@@ -122,7 +122,7 @@ pip install .
 ``` 
 
 ---
-**NOTE**
+**_NOTE_**
 
 If you are actively working on the code, or making frequent edits, it is advisable to perform 
 installation from source with the `-e` flag: 

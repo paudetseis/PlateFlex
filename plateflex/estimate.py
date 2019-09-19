@@ -31,8 +31,6 @@ with ``theano`` decorators to be incorporated as pymc variables. These functions
 used within :class:`~plateflex.classes.Project` methods as with :mod:`~plateflex.plotting`
 functions.
 
-http://mattpitkin.github.io/samplers-demo/pages/pymc3-blackbox-likelihood/
-
 """
 
 # -*- coding: utf-8 -*-
@@ -43,7 +41,7 @@ from plateflex import conf as cf
 from theano.compile.ops import as_op
 import theano.tensor as tt
 
-def set_model(k, adm, eadm, coh, ecoh, alph=False, atype='joint'):
+def set_bayes_model(k, adm, eadm, coh, ecoh, alph=False, atype='joint'):
     """
     Function to set up a ``pymc3`` model using default bounds on the prior
     distribution of parameters and observed data. Can incorporate 2 ('Te' and 'F')
@@ -129,7 +127,7 @@ def set_model(k, adm, eadm, coh, ecoh, alph=False, atype='joint'):
     return model
 
 
-def estimate_cell(k, adm, eadm, coh, ecoh, alph=False, atype='joint'):
+def bayes_estimate_cell(k, adm, eadm, coh, ecoh, alph=False, atype='joint'):
     """
     Function to estimate the parameters of the flexural model at a single cell location
     of the input grids. 
@@ -161,7 +159,7 @@ def estimate_cell(k, adm, eadm, coh, ecoh, alph=False, atype='joint'):
     """
 
     # Use model returned from function ``set_model``
-    with set_model(k, adm, eadm, coh, ecoh, alph, atype):
+    with set_bayes_model(k, adm, eadm, coh, ecoh, alph, atype):
 
         # Sample the Posterior distribution
         trace = pm.sample(cf.samples, tune=cf.tunes, cores=cf.cores)
@@ -174,7 +172,7 @@ def estimate_cell(k, adm, eadm, coh, ecoh, alph=False, atype='joint'):
 
     return trace, summary, map_estimate
 
-def get_estimates(summary, map_estimate):
+def get_bayes_estimates(summary, map_estimate):
     """
     Extract useful estimates from the Posterior distributions.
 
@@ -231,6 +229,202 @@ def get_estimates(summary, map_estimate):
             mean_F, std_F, C2_5_F, C97_5_F, best_F
 
 
+def L2_estimate_cell(k, adm, eadm, coh, ecoh, alph=False, atype='joint'):
+    """
+    Function to estimate the parameters of the flexural model at a single cell location
+    of the input grids. 
+
+    :type k: :class:`~numpy.ndarray`
+    :param k: 1D array of wavenumbers
+    :type adm: :class:`~numpy.ndarray`
+    :param adm: 1D array of wavelet admittance
+    :type eadm: :class:`~numpy.ndarray`
+    :param eadm: 1D array of error on wavelet admittance
+    :type coh: :class:`~numpy.ndarray`
+    :param coh: 1D array of wavelet coherence
+    :type ecoh: :class:`~numpy.ndarray`
+    :param ecoh: 1D array of error on wavelet coherence
+    :type alph: bool, optional
+    :param alph: Whether or not to estimate parameter ``alpha``
+    :type atype: str, optional
+    :param atype: Whether to use the admittance ('admit'), coherence ('coh') or both ('joint')
+
+    :return:
+        (tuple): Tuple containing:
+            * ``summary`` : :class:`~pandas.core.frame.DataFrame`
+                Summary statistics from Posterior distributions
+
+    """
+    
+    from scipy.optimize import curve_fit
+    import pandas as pd
+
+    def pred_admit(k, Te, F, alpha):
+
+        return flex.real_xspec_functions(k, Te, F, alpha, 0.)[0]
+
+    def pred_coh(k, Te, F, alpha):
+
+        return flex.real_xspec_functions(k, Te, F, alpha, 0.)[1]
+
+    def pred_joint(k, Te, F, alpha):
+
+        admittance, coherence = flex.real_xspec_functions(k, Te, F, alpha, 0.)
+        return np.array([admittance, coherence]).flatten()
+
+    if atype=='admit':
+        y_obs = adm
+        y_err = eadm
+        if alph:
+            theta0 = np.array([20., 0.5, np.pi/2.])
+            p1fit, p1cov = curve_fit(pred_admit, k, y_obs, p0=theta0, \
+                sigma=y_err, absolute_sigma=True, max_nfev=1000, \
+                bounds=([2., 0.0001, 0.0001], [200., 0.9999, np.pi-0.001]))
+        else:
+            theta0 = np.array([20., 0.5])
+            function = lambda k, Te, F: pred_admit(k, Te, F, alpha=np.pi/2.)
+            p1fit, p1cov = curve_fit(function, k, y_obs, p0=theta0, \
+                sigma=y_err, absolute_sigma=True, max_nfev=1000, \
+                bounds=([2., 0.0001], [200., 0.9999]))
+
+    elif atype=='coh':
+        y_obs = coh
+        y_err = ecoh
+        if alph:
+            theta0 = np.array([20., 0.5, np.pi/2.])
+            p1fit, p1cov = curve_fit(pred_coh, k, y_obs, p0=theta0, \
+                sigma=y_err, absolute_sigma=True, max_nfev=1000, \
+                bounds=([2., 0.0001, 0.0001], [200., 0.9999, np.pi-0.001]))
+        else:
+            theta0 = np.array([20., 0.5])
+            function = lambda k, Te, F: pred_coh(k, Te, F, alpha=np.pi/2.)
+            p1fit, p1cov = curve_fit(function, k, y_obs, p0=theta0, \
+                sigma=y_err, absolute_sigma=True, max_nfev=1000, \
+                bounds=([2., 0.0001], [200., 0.9999]))
+
+    elif atype=='joint':
+        y_obs = np.array([adm, coh]).flatten()
+        y_err = np.array([eadm, ecoh]).flatten()
+        if alph:
+            theta0 = np.array([20., 0.5, np.pi/2.])
+            p1fit, p1cov = curve_fit(pred_joint, k, y_obs, p0=theta0, \
+                sigma=y_err, absolute_sigma=True, max_nfev=1000, \
+                bounds=([2., 0.0001, 0.0001], [200., 0.9999, np.pi-0.001]))
+        else:
+            theta0 = np.array([20., 0.5])
+            function = lambda k, Te, F: pred_joint(k, Te, F, alpha=np.pi/2.)
+            p1fit, p1cov = curve_fit(function, k, y_obs, p0=theta0, \
+                sigma=y_err, absolute_sigma=True, max_nfev=1000, \
+                bounds=([2., 0.0001], [200., 0.9999]))
+
+    p1err = np.sqrt(np.diag(p1cov))
+
+    if alph:
+        summary = pd.DataFrame(data={'mean':[p1fit[0], p1fit[1], p1fit[2]], \
+            'std':[p1err[0], p1err[1], p1err[2]]}, index=['Te', 'F', 'alpha'])
+    else:
+        summary = pd.DataFrame(data={'mean':[p1fit[0], p1fit[1]], \
+            'std':[p1err[0], p1err[1]]}, index=['Te', 'F'])
+
+    return summary
+
+def get_bayes_estimates(summary, map_estimate):
+    """
+    Extract useful estimates from the Posterior distributions.
+
+    :type summary: :class:`~pandas.core.frame.DataFrame`
+    :param summary: Summary statistics from Posterior distributions
+    :type map_estimate: dict
+    :param map_estimate: Container for Maximum a Posteriori (MAP) estimates
+
+    :return: 
+        (tuple): tuple containing:
+            * mean_te (float) : Mean value of elastic thickness from posterior (km)
+            * std_te (float)  : Standard deviation of elastic thickness from posterior (km)
+            * best_te (float) : Most likely elastic thickness value from posterior (km)
+            * mean_F (float)  : Mean value of load ratio from posterior
+            * std_F (float)   : Standard deviation of load ratio from posterior
+            * best_F (float)  : Most likely load ratio value from posterior
+
+    .. rubric:: Example
+
+    >>> from plateflex import estimate
+    >>> # MAKE THIS FUNCTION FASTER
+
+    """
+
+    mean_a = None
+
+    # Go through all estimates
+    for index, row in summary.iterrows():
+        if index=='Te':
+            mean_te = row['mean']
+            std_te = row['sd']
+            C2_5_te = row['hpd_2.5']
+            C97_5_te = row['hpd_97.5']
+            best_te = np.float(map_estimate['Te'])
+        elif index=='F':
+            mean_F = row['mean']
+            std_F = row['sd']
+            C2_5_F = row['hpd_2.5']
+            C97_5_F = row['hpd_97.5']
+            best_F = np.float(map_estimate['F'])
+        elif index=='alpha':
+            mean_a = row['mean']
+            std_a = row['sd']
+            C2_5_a = row['hpd_2.5']
+            C97_5_a = row['hpd_97.5']
+            best_a = np.float(map_estimate['alpha'])
+
+    if mean_a is not None:
+        return mean_te, std_te, C2_5_te, C97_5_te, best_te, \
+            mean_F, std_F, C2_5_F, C97_5_F, best_F, \
+            mean_a, std_a, C2_5_a, C97_5_a, best_a
+    else:
+        return mean_te, std_te, C2_5_te, C97_5_te, best_te, \
+            mean_F, std_F, C2_5_F, C97_5_F, best_F
+
+def get_L2_estimates(summary):
+    """
+    Extract useful estimates from the Posterior distributions.
+
+    :type summary: :class:`~pandas.core.frame.DataFrame`
+    :param summary: Summary statistics from Posterior distributions
+
+    :return: 
+        (tuple): tuple containing:
+            * mean_te (float) : Mean value of elastic thickness from posterior (km)
+            * std_te (float)  : Standard deviation of elastic thickness from posterior (km)
+            * mean_F (float)  : Mean value of load ratio from posterior
+            * std_F (float)   : Standard deviation of load ratio from posterior
+
+    .. rubric:: Example
+
+    >>> from plateflex import estimate
+    >>> # MAKE THIS FUNCTION FASTER
+
+    """
+
+    mean_a = None
+
+    # Go through all estimates
+    for index, row in summary.iterrows():
+        if index=='Te':
+            mean_te = row['mean']
+            std_te = row['std']
+        elif index=='F':
+            mean_F = row['mean']
+            std_F = row['std']
+        elif index=='alpha':
+            mean_a = row['mean']
+            std_a = row['std']
+
+    if mean_a is not None:
+        return mean_te, std_te, mean_F, std_F, mean_a, std_a
+    else:
+        return mean_te, std_te, mean_F, std_F
+
+
 def real_xspec_functions(k, Te, F, alpha=np.pi/2., wd=0.):
     """
     Calculate analytical expressions for the real component of admittance, 
@@ -241,7 +435,7 @@ def real_xspec_functions(k, Te, F, alpha=np.pi/2., wd=0.):
     :type Te: float
     :param Te: Effective elastic thickness (km)
     :type F: float
-    :param F: Subruface-to-surface load ratio [0, 1[
+    :param F: Subsurface-to-surface load ratio [0, 1[
     :type alpha: float, optional
     :param alpha: Phase difference between initial applied loads (rad)
     :type wd: float, optional
