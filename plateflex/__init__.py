@@ -58,9 +58,13 @@ The current version was developed using **Python3.7** \
 Also, the following packages are required:
 
 - ``gfortran`` (https://gcc.gnu.org/wiki/GFortran) (or any Fortran compiler)
-- ``numpy`` (https://github.com/obspy/obspy/wiki)
+- ``numpy`` (https://numpy.org)
 - ``pymc3`` (https://docs.pymc.io)
 - ``seaborn`` (https://seaborn.pydata.org)
+
+The following package is useful to draw outline of land areas:
+
+- ``scikit-image`` (https://scikit-image.org)
 
 See below for full installation details. 
 

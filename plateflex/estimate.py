@@ -22,14 +22,25 @@
 """
 This :mod:`~plateflex` module contains the following functions: 
 
-- :func:`~plateflex.estimate.set_model`: Set up :mod:`~pymc` model
-- :func:`~plateflex.estimate.get_estimates`: Explore the output of sampling the :mod:`~pymc` model
+- :func:`~plateflex.estimate.bayes_estimate_cell`: Set up :mod:`~pymc` model and estimate the parameters
+  of the elastic plate model using a probabilistic Bayesian inference method.  
+- :func:`~plateflex.estimate.get_bayes_estimates`: Explore the output of sampling the :mod:`~pymc` model
+- :func:`~plateflex.estimate.L2_estimate_cell`: Set up non-linear curve fitting to estimate the parameters
+  of the elastic plate model using non-linear least-squares from the function :func:`scipy.optimize.curve_fit`.  
+- :func:`~plateflex.estimate.get_L2_estimates`: Explore the output the non-linear inversion
 - :func:`~plateflex.estimate.real_xspec_functions`: Calculate the analytical admittance and coherence functions. 
 
-Internal functions are available to define predicted admittance and coherence data
+Internal functions are also available to define predicted admittance and coherence data
 with ``theano`` decorators to be incorporated as pymc variables. These functions are
 used within :class:`~plateflex.classes.Project` methods as with :mod:`~plateflex.plotting`
 functions.
+
+.. warning::
+
+    If you plan to estimate model parameters over entire grids, the non-linear least-squares method
+    is orders of magnitude faster than the probabilistic method and should be preferred. The probabilistic
+    method, on the other hand, gives useful estimation statistics from sampling the posterior distribution
+    and can provide better insight on the trade-off between parameters.
 
 """
 
@@ -263,7 +274,7 @@ def L2_estimate_cell(k, adm, eadm, coh, ecoh, alph=False, atype='joint'):
                 bounds=([2., 0.0001], [200., 0.9999]))
 
             # Calculate best fit function
-            pred = pred_admit(k, p1fit[0], p1fit[1])
+            pred = pred_admit(k, p1fit[0], p1fit[1], np.pi/2.)
             
             # calculate reduced chi-square
             rchi2 = np.sum((pred - y_obs)**2\
@@ -293,7 +304,7 @@ def L2_estimate_cell(k, adm, eadm, coh, ecoh, alph=False, atype='joint'):
                 bounds=([2., 0.0001], [200., 0.9999]))
 
             # Calculate best fit function
-            pred = pred_coh(k, p1fit[0], p1fit[1])
+            pred = pred_coh(k, p1fit[0], p1fit[1], np.pi/2.)
             
             # calculate reduced chi-square
             rchi2 = np.sum((pred - y_obs)**2\
@@ -323,7 +334,7 @@ def L2_estimate_cell(k, adm, eadm, coh, ecoh, alph=False, atype='joint'):
                 bounds=([2., 0.0001], [200., 0.9999]))
 
             # Calculate best fit function
-            pred = pred_joint(k, p1fit[0], p1fit[1])
+            pred = pred_joint(k, p1fit[0], p1fit[1], np.pi/2.)
             
             # calculate reduced chi-square
             rchi2 = np.sum((pred - y_obs)**2\

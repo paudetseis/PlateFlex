@@ -157,14 +157,24 @@ class Grid(object):
             self.data = np.array(grid)
 
     def make_contours(self, level=0.):
+        """
+        This function returns the contours as a List of coordinate positions
+        at one given level - run this more than once with different levels 
+        if desired
 
-        # import matplotlib.pyplot as plt
-        # xx, yy = np.mgrid[0:self.nx, 0:self.ny]
-        # Cset = plt.contour(yy, xx, self.data, levels)
-        # return Cset.allsegs
-        from skimage import measure
-        contours = measure.find_contours(self.data, level)
-        return contours
+        :type level: float
+        :param level: Level (z value) of grid to contour
+
+        :return:
+            contours: List of contours with coordinate positions
+
+        """
+        try:
+            from skimage import measure
+        except:
+            raise(Exception("Package 'scikit-image' not available to make contours."))
+
+        return measure.find_contours(self.data, level)
 
     def plot(self, mask=None, title=None, save=None, clabel=None, contours=None, **kwargs):
 
@@ -308,12 +318,11 @@ class Grid(object):
     def plot_scalogram(self, kindex=None, log=True, mask=None, title='Wavelet scalogram', \
         save=None, clabel=None, contours=None, **kwargs):
         """
-        This method plots the wavelet scalogram of a
-        :class:`~plateflex.classes.Grid` object at a wavenumber index (int). Raises ``Exception`` for the 
-        cases where:
+        This method plots the wavelet scalogram of a :class:`~plateflex.classes.Grid` 
+        object at a wavenumber index (int). Raises ``Exception`` for the cases where:
 
         - no wavenumber index is specified (kindex)
-        - wavenumber index is lower than 0 or larger than self.ns
+        - wavenumber index is lower than 0 or larger than self.ns - 1
 
         .. note::
 
@@ -488,6 +497,9 @@ class Project(object):
 
     ``grids`` : List
         List of :class:`~plateflex.classes.Grid` objects
+    ``inverse`` : str
+        Type of inversion to perform. By default the inversion is 'L2' for
+        non-linear least-squares. Options are: 'L2' or 'bayes'
 
     .. note:::
 
@@ -693,6 +705,9 @@ class Project(object):
         if any(isinstance(g, BougGrid) for g in self.grids):
             cf.boug = True
             plateflex.set_conf_flex()
+        elif any(isinstance(g, FairGrid) for g in self.grids):
+            cf.boug = False
+            plateflex.set_conf_flex()
 
         self.k = self.grids[0].k
         self.ns = self.grids[0].ns
@@ -878,6 +893,8 @@ class Project(object):
             Grid with std alpha estimates (shape ``(nx, ny``))
 
         """
+
+        self.nn = nn
 
         if not isinstance(alph, bool):
             raise(Exception("'alph' should be a boolean: defaults to False"))
@@ -1120,7 +1137,7 @@ class Project(object):
 
     def plot_results(self, mean_Te=False, MAP_Te=False, std_Te=False, \
         mean_F=False, MAP_F=False, std_F=False, mean_a=False, MAP_a=False, \
-        std_a=False, chi2=False, mask=False, contours=False, save=None, **kwargs):
+        std_a=False, chi2=False, mask=False, contours=None, save=None, **kwargs):
         """
         Method to plot grids of estimated parameters with fixed labels and titles. 
         To have more control over the plot rendering, use the function 
@@ -1141,6 +1158,9 @@ class Project(object):
         else:
             new_mask=None
 
+        if contours is not None:
+            contours = np.array(contours)/self.nn
+
         if mean_Te:
             plotting.plot_real_grid(self.mean_Te_grid, mask=new_mask, \
                 title='Mean estimated $T_e$', clabel='$T_e$ (km)', contours=contours, \
@@ -1152,7 +1172,7 @@ class Project(object):
         if std_Te:
             plotting.plot_real_grid(self.std_Te_grid, mask=new_mask, \
                 title='Error on $T_e$', clabel='$T_e$ (km)', contours=contours, \
-                save=save, vmin=0., vmax=100.)
+                save=save, vmin=0., vmax=40.)
         if mean_F:
             plotting.plot_real_grid(self.mean_F_grid, mask=new_mask, \
                 title='Mean estimated $F$', clabel='$F$', contours=contours, \
@@ -1164,7 +1184,7 @@ class Project(object):
         if std_F:
             plotting.plot_real_grid(self.std_F_grid, mask=new_mask, \
                 title='Error on $F$', clabel='$F$', contours=contours, \
-                save=save, vmin=0, vmax=0.5)
+                save=save, vmin=0, vmax=0.2)
         if mean_a:
             try:
                 plotting.plot_real_grid(self.mean_a_grid, mask=new_mask, \
@@ -1183,7 +1203,7 @@ class Project(object):
             try:
                 plotting.plot_real_grid(self.std_a_grid, mask=new_mask, \
                     title=r'Error on $\alpha$', clabel=r'$\alpha$', contours=contours, \
-                    save=save, vmin=0., vmax=np.pi/2.)
+                    save=save, vmin=0., vmax=np.pi/6.)
             except:
                 print("parameter 'alpha' was not estimated")
         if chi2:

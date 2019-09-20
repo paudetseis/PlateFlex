@@ -1,7 +1,7 @@
 # PlateFlex: Software for mapping the effective elastic thickness of the lithosphere
 
-<!-- ![](./plateflex/examples/picture/tws_logo.png)
- -->
+![](./plateflex/examples/picture/plateflex_logo.png)
+
 The flexure of elastic plates is a central concept in the theory of plate tectonics,
 where the Earth's lithosphere (crust and uppermost mantle) reacts to applied loads 
 by bending, a process referred to as flexural isostasy. The plate elasticity is 
