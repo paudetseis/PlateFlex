@@ -37,7 +37,7 @@ import seaborn as sns
 sns.set()
 
 
-def plot_real_grid(grid, log=False, mask=None, title=None, save=None, clabel=None, **kwargs):
+def plot_real_grid(grid, log=False, mask=None, title=None, save=None, clabel=None, contours=None, **kwargs):
     """
     Plot 2D image of any real-valued 2D array, used in several context throughout
     :mod:`~plateflex`. For example, it can be used to plot the input grids of topography
@@ -58,6 +58,8 @@ def plot_real_grid(grid, log=False, mask=None, title=None, save=None, clabel=Non
     :param save: Name of file for to save figure
     :type clabel: str, optional
     :param clabel: Label for colorbar
+    :type contours: List
+    :param contours: Contours to overlay on maps (e.g., useful for plotting outline of land areas)
 
     """
 
@@ -80,6 +82,15 @@ def plot_real_grid(grid, log=False, mask=None, title=None, save=None, clabel=Non
     # Add units on colorbar label
     if clabel is not None:
         cbar.set_label(clabel)
+
+    # Add contours
+    if contours is not None:
+        try: 
+            segs = np.array(contours)
+            for seg in segs[:][0].T:
+                plt.plot(seg.T[0], seg.T[1], 'k-', zorder=100)
+        except:
+            print("No contours exist for map. Passing.")
 
     # Plot title if requested
     if title is not None:
@@ -239,7 +250,7 @@ def plot_bayes_stats(trace, summary, map_estimate, title=None, save=None):
     plt.show()
 
 
-def plot_fitted(k, adm, eadm, coh, ecoh, padm, pcoh, title=None, save=None):
+def plot_fitted(k, adm, eadm, coh, ecoh, padm=None, pcoh=None, title=None, save=None):
     """
     Function to plot observed and fitted admittance and coherence functions using 
     one of ``MAP`` or ``mean`` estimates. Both admittance and coherence are plotted
@@ -273,16 +284,18 @@ def plot_fitted(k, adm, eadm, coh, ecoh, padm, pcoh, title=None, save=None):
     f, (ax1, ax2) = plt.subplots(2, 1, sharex=True)
 
     # Plot observed admittance with error bars
-    ax1.errorbar(k*1.e3,adm,yerr=eadm)
+    ax1.errorbar(k*1.e3,adm,yerr=eadm, marker='*')
 
-    # Plot predicted admittance
-    ax1.plot(k*1.e3,padm)
+    if padm is not None:
+        # Plot predicted admittance
+        ax1.plot(k*1.e3,padm)
 
     # Plot observed coherence with error bars
-    ax2.errorbar(k*1.e3,coh,yerr=ecoh)
+    ax2.errorbar(k*1.e3,coh,yerr=ecoh, marker='*')
 
-    # Plot predicted coherence
-    ax2.plot(k*1.e3,pcoh)
+    if pcoh is not None:
+        # Plot predicted coherence
+        ax2.plot(k*1.e3,pcoh)
 
     # Add all labels
     ax1.set_ylabel('Admittance (mGal/m)')
