@@ -61,6 +61,8 @@ def plot_real_grid(grid, log=False, mask=None, title=None, save=None, clabel=Non
     :type contours: List
     :param contours: Contours to overlay on maps (e.g., useful for plotting outline of land areas)
 
+    https://stackoverflow.com/questions/30376897/calling-contour-without-plotting-it-python-pylab-inline
+    
     """
 
     # Take log of real values
@@ -86,9 +88,8 @@ def plot_real_grid(grid, log=False, mask=None, title=None, save=None, clabel=Non
     # Add contours
     if contours is not None:
         try: 
-            segs = np.array(contours)
-            for seg in segs[:][0].T:
-                plt.plot(seg.T[0], seg.T[1], 'k-', zorder=100)
+            for n, contour in enumerate(contours):
+                plt.plot(contour[:,1], contour[:,0], lw=1.25, c='k')
         except:
             print("No contours exist for map. Passing.")
 

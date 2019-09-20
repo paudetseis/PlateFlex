@@ -156,12 +156,15 @@ class Grid(object):
         else:
             self.data = np.array(grid)
 
-    def make_contours(self, levels=[0.]):
+    def make_contours(self, level=0.):
 
-        import matplotlib.pyplot as plt
-        xx, yy = np.mgrid[0:self.nx, 0:self.ny]
-        Cset = plt.contour(yy, xx, self.data, levels)
-        return Cset.allsegs
+        # import matplotlib.pyplot as plt
+        # xx, yy = np.mgrid[0:self.nx, 0:self.ny]
+        # Cset = plt.contour(yy, xx, self.data, levels)
+        # return Cset.allsegs
+        from skimage import measure
+        contours = measure.find_contours(self.data, level)
+        return contours
 
     def plot(self, mask=None, title=None, save=None, clabel=None, contours=None, **kwargs):
 
