@@ -78,7 +78,7 @@ def plot_real_grid(grid, log=False, mask=None, title=None, save=None, clabel=Non
 
     # Plot figure and add colorbar
     plt.figure()
-    plt.imshow(grid, origin='lower', cmap='viridis', **kwargs)
+    plt.imshow(grid, origin='lower', **kwargs)
     cbar = plt.colorbar()
 
     # Add units on colorbar label

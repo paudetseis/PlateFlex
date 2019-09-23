@@ -57,6 +57,7 @@ which itself is a container of :class:`~plateflex.classes.Grid` objects
 import numpy as np
 import plateflex
 from plateflex.cpwt import cpwt
+from plateflex.flex import conf_flex as cf_f
 from plateflex import conf as cf
 from plateflex import plotting
 from plateflex import estimate
@@ -483,6 +484,32 @@ class TopoGrid(Grid):
         if np.std(self.data) < 20.:
             self.data *= 1.e3
 
+        water_depth = grid
+        water_depth[grid>0.] = 0.
+
+        self.water_depth = -1.*water_depth
+
+    def filter_water_depth(self, sigma=10, returned=False):
+        from skimage.filters import gaussian
+
+        water_depth = gaussian(self.data, sigma=sigma)
+        water_depth[self.data>0.] = 0.
+
+        self.water_depth = -1.*water_depth
+        
+        if returned:
+            return water_depth
+
+    def plot_water_depth(self, mask=None, title=None, save=None, clabel=None, contours=None, **kwargs):
+
+        if title is not None:
+            plotting.plot_real_grid(self.water_depth, title=title, mask=mask, save=save, \
+                clabel=self.units, contours=contours, cmap='viridis_r', **kwargs)
+        else:
+            plotting.plot_real_grid(self.water_depth, title='Water depth', mask=mask, save=save, \
+                clabel=self.units, contours=contours, cmap='viridis_r', **kwargs)
+
+
 class Project(object):
     """
     Container for :class:`~plateflex.classes.Grid` objects, with
@@ -703,11 +730,9 @@ class Project(object):
 
         # Check whether gravity grid is Free air or Bouguer and set global variable accordingly
         if any(isinstance(g, BougGrid) for g in self.grids):
-            cf.boug = True
-            plateflex.set_conf_flex()
+            cf_f.boug = 1
         elif any(isinstance(g, FairGrid) for g in self.grids):
-            cf.boug = False
-            plateflex.set_conf_flex()
+            cf_f.boug = 0
 
         self.k = self.grids[0].k
         self.ns = self.grids[0].ns
@@ -722,6 +747,7 @@ class Project(object):
                 except:
                     grid.wlet_transform()
                     wl_trans_topo = grid.wl_trans
+                self.water_depth = grid.water_depth
             elif isinstance(grid, GravGrid):
                 try:
                     wl_trans_grav = grid.wl_trans
@@ -821,10 +847,11 @@ class Project(object):
         eadm = self.ewl_admit[cell[0], cell[1], :]
         coh = self.wl_coh[cell[0], cell[1], :]
         ecoh = self.ewl_coh[cell[0], cell[1], :]
+        wd = self.water_depth[cell[0], cell[1]]
 
         if self.inverse=='L2':
             summary = estimate.L2_estimate_cell( \
-                self.k, adm, eadm, coh, ecoh, alph, atype)
+                self.k, adm, eadm, coh, ecoh, wd, alph, atype)
 
             # Return estimates if requested
             if returned:
@@ -839,7 +866,7 @@ class Project(object):
 
         elif self.inverse=='bayes':
             trace, summary, map_estimate = estimate.bayes_estimate_cell( \
-                self.k, adm, eadm, coh, ecoh, alph, atype)
+                self.k, adm, eadm, coh, ecoh, wd, alph, atype)
 
             # Return estimates if requested
             if returned:
@@ -1092,6 +1119,7 @@ class Project(object):
             eadm = self.ewl_admit[cell[0], cell[1], :]
             coh = self.wl_coh[cell[0], cell[1], :]
             ecoh = self.ewl_coh[cell[0], cell[1], :]
+            wd = self.water_depth[cell[0], cell[1]]
 
             ma = np.pi/2.
 
@@ -1110,7 +1138,7 @@ class Project(object):
                     if 'alpha' in self.map_estimate:
                         ma = np.float(self.map_estimate['alpha'])
                 else:
-                    raise(Exception('estimate does not exist. Choose among: "mean" or "MAP"'))
+                    raise(Exception("estimate does not exist. Choose among: 'mean' or 'MAP'"))
 
             elif self.inverse=='L2':
 
@@ -1121,7 +1149,7 @@ class Project(object):
                     ma = self.summary.loc['alpha', 'mean']
 
             # Calculate predicted admittance and coherence from estimates
-            padm, pcoh = estimate.real_xspec_functions(k, mte, mF, ma)
+            padm, pcoh = estimate.real_xspec_functions(k, mte, mF, wd, ma)
 
             # Call function from ``plotting`` module
             plotting.plot_fitted(k, adm, eadm, coh, ecoh, \
@@ -1137,7 +1165,8 @@ class Project(object):
 
     def plot_results(self, mean_Te=False, MAP_Te=False, std_Te=False, \
         mean_F=False, MAP_F=False, std_F=False, mean_a=False, MAP_a=False, \
-        std_a=False, chi2=False, mask=False, contours=None, save=None, **kwargs):
+        std_a=False, chi2=False, mask=False, contours=None, save=None, \
+        filter=True, sigma=1, **kwargs):
         """
         Method to plot grids of estimated parameters with fixed labels and titles. 
         To have more control over the plot rendering, use the function 
@@ -1148,6 +1177,8 @@ class Project(object):
         :param mean/MAP/std_Te/F/a: Type of plot to produce. 
             All variables default to False (no plot generated)
         """
+
+        from skimage.filters import gaussian
 
         if mask:
             try:
@@ -1162,53 +1193,93 @@ class Project(object):
             contours = np.array(contours)/self.nn
 
         if mean_Te:
-            plotting.plot_real_grid(self.mean_Te_grid, mask=new_mask, \
+            if filter:
+                mean_Te_grid = gaussian(self.mean_Te_grid, sigma=sigma)
+            else:
+                mean_Te_grid = self.mean_Te_grid
+            plotting.plot_real_grid(mean_Te_grid, mask=new_mask, \
                 title='Mean estimated $T_e$', clabel='$T_e$ (km)', contours=contours, \
                 save=save, **kwargs)
         if MAP_Te:
-            plotting.plot_real_grid(self.MAP_Te_grid, mask=new_mask, \
+            if filter:
+                MAP_Te_grid = gaussian(self.MAP_Te_grid, sigma=sigma)
+            else:
+                MAP_Te_grid = self.MAP_Te_grid
+            plotting.plot_real_grid(MAP_Te_grid, mask=new_mask, \
                 title='MAP estimate of $T_e$', clabel='$T_e$ (km)', contours=contours, \
                 save=save, **kwargs)
         if std_Te:
-            plotting.plot_real_grid(self.std_Te_grid, mask=new_mask, \
+            if filter:
+                std_Te_grid = gaussian(self.std_Te_grid, sigma=sigma)
+            else:
+                std_Te_grid = self.std_Te_grid
+            plotting.plot_real_grid(std_Te_grid, mask=new_mask, \
                 title='Error on $T_e$', clabel='$T_e$ (km)', contours=contours, \
                 save=save, vmin=0., vmax=40.)
         if mean_F:
-            plotting.plot_real_grid(self.mean_F_grid, mask=new_mask, \
+            if filter:
+                mean_F_grid = gaussian(self.mean_F_grid, sigma=sigma)
+            else:
+                mean_F_grid = self.mean_F_grid
+            plotting.plot_real_grid(mean_F_grid, mask=new_mask, \
                 title='Mean estimated $F$', clabel='$F$', contours=contours, \
                 save=save, **kwargs)
         if MAP_F:
-            plotting.plot_real_grid(self.MAP_F_grid, mask=new_mask, \
+            if filter:
+                MAP_F_grid = gaussian(self.MAP_F_grid, sigma=sigma)
+            else:
+                MAP_F_grid = self.MAP_F_grid
+            plotting.plot_real_grid(MAP_F_grid, mask=new_mask, \
                 title='MAP estimate of $F$', clabel='$F$', contours=contours, \
                 save=save, **kwargs)
         if std_F:
-            plotting.plot_real_grid(self.std_F_grid, mask=new_mask, \
+            if filter:
+                std_F_grid = gaussian(self.std_F_grid, sigma=sigma)
+            else:
+                std_F_grid = self.std_F_grid       
+            plotting.plot_real_grid(std_F_grid, mask=new_mask, \
                 title='Error on $F$', clabel='$F$', contours=contours, \
                 save=save, vmin=0, vmax=0.2)
         if mean_a:
             try:
-                plotting.plot_real_grid(self.mean_a_grid, mask=new_mask, \
+                if filter:
+                    mean_a_grid = gaussian(mean_a_grid, sigma)
+                else:
+                    mean_a_grid = self.mean_a_grid
+                plotting.plot_real_grid(mean_a_grid, mask=new_mask, \
                     title=r'Mean estimated $\alpha$', clabel=r'$\alpha$', \
                     contours=contours, save=save, **kwargs)
             except:
                 print("parameter 'alpha' was not estimated")
         if MAP_a:
             try:
-                plotting.plot_real_grid(self.MAP_a_grid, mask=new_mask, \
+                if filter:
+                    MAP_a_grid = gaussian(MAP_a_grid, sigma=sigma)
+                else:
+                    MAP_a_grid = self.MAP_a_grid
+                plotting.plot_real_grid(MAP_a_grid, mask=new_mask, \
                     title=r'MAP estimate of $\alpha$', clabel=r'$\alpha$', \
                     contours=contours, save=save, **kwargs)
             except:
                 print("parameter 'alpha' was not estimated")
         if std_a:
             try:
-                plotting.plot_real_grid(self.std_a_grid, mask=new_mask, \
+                if filter:
+                    std_a_grid = gaussian(std_a_grid, sigma=sigma)
+                else:
+                    std_a_grid = self.std_a_grid
+                plotting.plot_real_grid(std_a_grid, mask=new_mask, \
                     title=r'Error on $\alpha$', clabel=r'$\alpha$', contours=contours, \
                     save=save, vmin=0., vmax=np.pi/6.)
             except:
                 print("parameter 'alpha' was not estimated")
         if chi2:
             try:
-                plotting.plot_real_grid(self.chi2_grid, mask=new_mask, \
+                if filter:
+                    chi2_grid = gaussian(self.chi2_grid, sigma=sigma)
+                else:
+                    chi2_grid = self.chi2_grid
+                plotting.plot_real_grid(chi2_grid, mask=new_mask, \
                     title='Reduced chi-squared', clabel=r'$\chi_{\nu}^2$', \
                     contours=contours, save=save, vmin=0., vmax=10.)
             except:

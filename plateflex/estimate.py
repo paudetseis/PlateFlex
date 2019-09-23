@@ -55,7 +55,7 @@ from scipy.optimize import curve_fit
 import pandas as pd
 
 
-def bayes_estimate_cell(k, adm, eadm, coh, ecoh, alph=False, atype='joint'):
+def bayes_estimate_cell(k, adm, eadm, coh, ecoh, wd=0., alph=False, atype='joint'):
     """
     Function to estimate the parameters of the flexural model at a single cell location
     of the input grids. 
@@ -91,18 +91,21 @@ def bayes_estimate_cell(k, adm, eadm, coh, ecoh, alph=False, atype='joint'):
         # k is an array - needs to be passed as distribution
         k_obs = pm.Normal('k', mu=k, sigma=1., observed=k)
 
+        # Water depth needs to be passed as theanor tensor object
+        wd = tt.as_tensor_variable(wd)
+
         # Prior distributions
-        Te = pm.Uniform('Te', lower=1., upper=250.)
-        F = pm.Uniform('F', lower=0., upper=0.99999)
+        Te = pm.Uniform('Te', lower=1., upper=200.)
+        F = pm.Uniform('F', lower=0., upper=0.9999)
 
         if alph:
 
             # Prior distribution of `alpha`
             alpha = pm.Uniform('alpha', lower=0., upper=np.pi)
-            admit_exp, coh_exp = real_xspec_functions_alpha(k_obs, Te, F, alpha)
+            admit_exp, coh_exp = real_xspec_functions_alpha(k_obs, Te, F, wd, alpha)
 
         else:
-            admit_exp, coh_exp = real_xspec_functions_noalpha(k_obs, Te, F)
+            admit_exp, coh_exp = real_xspec_functions_noalpha(k_obs, Te, F, wd)
 
         # Select type of analysis to perform
         if atype=='admit':
@@ -149,7 +152,7 @@ def bayes_estimate_cell(k, adm, eadm, coh, ecoh, alph=False, atype='joint'):
         map_estimate = pm.find_MAP()
 
         # Get Summary
-        summary = pm.summary(trace).round(2)
+        summary = pm.summary(trace)
 
     return trace, summary, map_estimate
 
@@ -210,7 +213,7 @@ def get_bayes_estimates(summary, map_estimate):
             mean_F, std_F, C2_5_F, C97_5_F, best_F
 
 
-def L2_estimate_cell(k, adm, eadm, coh, ecoh, alph=False, atype='joint'):
+def L2_estimate_cell(k, adm, eadm, coh, ecoh, wd=0., alph=False, atype='joint'):
     """
     Function to estimate the parameters of the flexural model at a single cell location
     of the input grids. 
@@ -237,17 +240,17 @@ def L2_estimate_cell(k, adm, eadm, coh, ecoh, alph=False, atype='joint'):
 
     """
     
-    def pred_admit(k, Te, F, alpha):
+    def pred_admit(k, Te, F, alpha, wd):
 
-        return flex.real_xspec_functions(k, Te, F, alpha, 0.)[0]
+        return flex.real_xspec_functions(k, Te, F, alpha, wd)[0]
 
-    def pred_coh(k, Te, F, alpha):
+    def pred_coh(k, Te, F, alpha, wd):
 
-        return flex.real_xspec_functions(k, Te, F, alpha, 0.)[1]
+        return flex.real_xspec_functions(k, Te, F, alpha, wd)[1]
 
-    def pred_joint(k, Te, F, alpha):
+    def pred_joint(k, Te, F, alpha, wd):
 
-        admittance, coherence = flex.real_xspec_functions(k, Te, F, alpha, 0.)
+        admittance, coherence = flex.real_xspec_functions(k, Te, F, alpha, wd)
         return np.array([admittance, coherence]).flatten()
 
     if atype=='admit':
@@ -255,12 +258,13 @@ def L2_estimate_cell(k, adm, eadm, coh, ecoh, alph=False, atype='joint'):
         y_err = eadm
         if alph:
             theta0 = np.array([20., 0.5, np.pi/2.])
-            p1fit, p1cov = curve_fit(pred_admit, k, y_obs, p0=theta0, \
+            function = lambda k, Te, F, alpha: pred_admit(k, Te, F, alpha, wd=wd)
+            p1fit, p1cov = curve_fit(function, k, y_obs, p0=theta0, \
                 sigma=y_err, absolute_sigma=True, max_nfev=1000, \
                 bounds=([2., 0.0001, 0.0001], [200., 0.9999, np.pi-0.001]))
 
             # Calculate best fit function
-            pred = pred_admit(k, p1fit[0], p1fit[1], p1fit[2])
+            pred = pred_admit(k, p1fit[0], p1fit[1], p1fit[2], wd)
             
             # calculate reduced chi-square
             rchi2 = np.sum((pred - y_obs)**2\
@@ -268,13 +272,13 @@ def L2_estimate_cell(k, adm, eadm, coh, ecoh, alph=False, atype='joint'):
 
         else:
             theta0 = np.array([20., 0.5])
-            function = lambda k, Te, F: pred_admit(k, Te, F, alpha=np.pi/2.)
+            function = lambda k, Te, F: pred_admit(k, Te, F, alpha=np.pi/2., wd=wd)
             p1fit, p1cov = curve_fit(function, k, y_obs, p0=theta0, \
                 sigma=y_err, absolute_sigma=True, max_nfev=1000, \
                 bounds=([2., 0.0001], [200., 0.9999]))
 
             # Calculate best fit function
-            pred = pred_admit(k, p1fit[0], p1fit[1], np.pi/2.)
+            pred = pred_admit(k, p1fit[0], p1fit[1], np.pi/2., wd)
             
             # calculate reduced chi-square
             rchi2 = np.sum((pred - y_obs)**2\
@@ -285,12 +289,13 @@ def L2_estimate_cell(k, adm, eadm, coh, ecoh, alph=False, atype='joint'):
         y_err = ecoh
         if alph:
             theta0 = np.array([20., 0.5, np.pi/2.])
-            p1fit, p1cov = curve_fit(pred_coh, k, y_obs, p0=theta0, \
+            function = lambda k, Te, F, alpha: pred_coh(k, Te, F, alpha, wd=wd)
+            p1fit, p1cov = curve_fit(function, k, y_obs, p0=theta0, \
                 sigma=y_err, absolute_sigma=True, max_nfev=1000, \
                 bounds=([2., 0.0001, 0.0001], [200., 0.9999, np.pi-0.001]))
 
             # Calculate best fit function
-            pred = pred_coh(k, p1fit[0], p1fit[1], p1fit[2])
+            pred = pred_coh(k, p1fit[0], p1fit[1], p1fit[2], wd)
             
             # calculate reduced chi-square
             rchi2 = np.sum((pred - y_obs)**2\
@@ -298,13 +303,13 @@ def L2_estimate_cell(k, adm, eadm, coh, ecoh, alph=False, atype='joint'):
 
         else:
             theta0 = np.array([20., 0.5])
-            function = lambda k, Te, F: pred_coh(k, Te, F, alpha=np.pi/2.)
+            function = lambda k, Te, F: pred_coh(k, Te, F, alpha=np.pi/2., wd=wd)
             p1fit, p1cov = curve_fit(function, k, y_obs, p0=theta0, \
                 sigma=y_err, absolute_sigma=True, max_nfev=1000, \
                 bounds=([2., 0.0001], [200., 0.9999]))
 
             # Calculate best fit function
-            pred = pred_coh(k, p1fit[0], p1fit[1], np.pi/2.)
+            pred = pred_coh(k, p1fit[0], p1fit[1], np.pi/2., wd)
             
             # calculate reduced chi-square
             rchi2 = np.sum((pred - y_obs)**2\
@@ -315,12 +320,13 @@ def L2_estimate_cell(k, adm, eadm, coh, ecoh, alph=False, atype='joint'):
         y_err = np.array([eadm, ecoh]).flatten()
         if alph:
             theta0 = np.array([20., 0.5, np.pi/2.])
-            p1fit, p1cov = curve_fit(pred_joint, k, y_obs, p0=theta0, \
+            function = lambda k, Te, F, alpha: pred_joint(k, Te, F, alpha, wd=wd)
+            p1fit, p1cov = curve_fit(function, k, y_obs, p0=theta0, \
                 sigma=y_err, absolute_sigma=True, max_nfev=1000, \
                 bounds=([2., 0.0001, 0.0001], [200., 0.9999, np.pi-0.001]))
 
             # Calculate best fit function
-            pred = pred_joint(k, p1fit[0], p1fit[1], p1fit[2])
+            pred = pred_joint(k, p1fit[0], p1fit[1], p1fit[2], wd)
             
             # calculate reduced chi-square
             rchi2 = np.sum((pred - y_obs)**2\
@@ -328,13 +334,13 @@ def L2_estimate_cell(k, adm, eadm, coh, ecoh, alph=False, atype='joint'):
 
         else:
             theta0 = np.array([20., 0.5])
-            function = lambda k, Te, F: pred_joint(k, Te, F, alpha=np.pi/2.)
+            function = lambda k, Te, F: pred_joint(k, Te, F, alpha=np.pi/2., wd=wd)
             p1fit, p1cov = curve_fit(function, k, y_obs, p0=theta0, \
                 sigma=y_err, absolute_sigma=True, max_nfev=1000, \
                 bounds=([2., 0.0001], [200., 0.9999]))
 
             # Calculate best fit function
-            pred = pred_joint(k, p1fit[0], p1fit[1], np.pi/2.)
+            pred = pred_joint(k, p1fit[0], p1fit[1], np.pi/2., wd)
             
             # calculate reduced chi-square
             rchi2 = np.sum((pred - y_obs)**2\
@@ -352,7 +358,7 @@ def L2_estimate_cell(k, adm, eadm, coh, ecoh, alph=False, atype='joint'):
     else:
 
         summary = pd.DataFrame(data={'mean':[p1fit[0], p1fit[1]], \
-            'std':[p1err[0], p1err[1]], 'chi2':[rchi2, rchi2, rchi2]}, \
+            'std':[p1err[0], p1err[1]], 'chi2':[rchi2, rchi2]}, \
             index=['Te', 'F'])
 
     return summary
@@ -400,7 +406,7 @@ def get_L2_estimates(summary):
         return mean_te, std_te, mean_F, std_F, rchi2
 
 
-def real_xspec_functions(k, Te, F, alpha=np.pi/2., wd=0.):
+def real_xspec_functions(k, Te, F, wd, alpha=np.pi/2.):
     """
     Calculate analytical expressions for the real component of admittance, 
     coherency and coherence functions. 
@@ -428,27 +434,27 @@ def real_xspec_functions(k, Te, F, alpha=np.pi/2., wd=0.):
     return admittance, coherence
 
 
-@as_op(itypes=[tt.dvector, tt.dscalar, tt.dscalar], 
+@as_op(itypes=[tt.dvector, tt.dscalar, tt.dscalar, tt.dscalar], 
     otypes=[tt.dvector, tt.dvector])
-def real_xspec_functions_noalpha(k, Te, F):
+def real_xspec_functions_noalpha(k, Te, F, wd):
     """
     Calculate analytical expressions for the real component of admittance, 
     coherency and coherence functions. 
     """
 
-    adm, coh = real_xspec_functions(k, Te, F)
+    adm, coh = real_xspec_functions(k, Te, F, wd)
 
     return adm, coh
 
-@as_op(itypes=[tt.dvector, tt.dscalar, tt.dscalar, tt.dscalar], 
+@as_op(itypes=[tt.dvector, tt.dscalar, tt.dscalar, tt.dscalar, tt.dscalar], 
     otypes=[tt.dvector, tt.dvector])
-def real_xspec_functions_alpha(k, Te, F, alpha):
+def real_xspec_functions_alpha(k, Te, F, wd, alpha):
     """
     Calculate analytical expressions for the real component of admittance, 
     coherency and coherence functions. 
     """
 
-    adm, coh = real_xspec_functions(k, Te, F, alpha)
+    adm, coh = real_xspec_functions(k, Te, F, wd, alpha)
 
     return adm, coh
 
