@@ -23,8 +23,8 @@
 This :mod:`~plateflex`` module contains the following functions for plotting:
 
 - :func:`~plateflex.plotting.plot_real_grid`
-- :func:`~plateflex.plotting.plot_stats`
-- :func:`~plateflex.plotting.plot_fitted`
+- :func:`~plateflex.plotting.plot_bayes_stats`
+- :func:`~plateflex.plotting.plot_functions`
 
 """
 
@@ -61,8 +61,6 @@ def plot_real_grid(grid, log=False, mask=None, title=None, save=None, clabel=Non
     :type contours: List
     :param contours: Contours to overlay on maps (e.g., useful for plotting outline of land areas)
 
-    https://stackoverflow.com/questions/30376897/calling-contour-without-plotting-it-python-pylab-inline
-    
     """
 
     # Take log of real values
@@ -251,32 +249,31 @@ def plot_bayes_stats(trace, summary, map_estimate, title=None, save=None):
     plt.show()
 
 
-def plot_fitted(k, adm, eadm, coh, ecoh, padm=None, pcoh=None, title=None, save=None):
+def plot_functions(k, adm, eadm, coh, ecoh, padm=None, pcoh=None, title=None, save=None):
     """
-    Function to plot observed and fitted admittance and coherence functions using 
-    one of ``MAP`` or ``mean`` estimates. Both admittance and coherence are plotted
-    regardless of method to estimate the model paramters. 
+    Function to plot observed and predicted (``None`` by default) admittance and coherence functions. 
+    Both admittance and coherence are plotted regardless of method to estimate 
+    the model paramters.
 
     :type k: :class:`~numpy.ndarray`
     :param k: 1D array of wavenumbers
     :type adm: :class:`~numpy.ndarray`
-    :param adm: 1D array of wavelet admittance
+    :param adm: 1D array of observed wavelet admittance
     :type eadm: :class:`~numpy.ndarray`
-    :param eadm: 1D array of error on wavelet admittance
+    :param eadm: 1D array of error on observed wavelet admittance
     :type coh: :class:`~numpy.ndarray`
-    :param coh: 1D array of wavelet coherence
+    :param coh: 1D array of observed wavelet coherence
     :type ecoh: :class:`~numpy.ndarray`
-    :param ecoh: 1D array of error on wavelet coherence
-    :type summary: :class:`~pandas.core.frame.DataFrame`
-    :param summary: Summary statistics from Posterior distributions
-    :type map_estimate: dict
-    :param map_estimate: Container for Maximum a Posteriori (MAP) estimates
-    :type est: bool, optional
-    :param est: Type of inference estimate to use for predicting admittance and coherence
+    :param ecoh: 1D array of error on observed wavelet coherence
+    :type padm: :class:`~numpy.ndarray`
+    :param padm: 1D array of predicted wavelet admittance
+    :type pcoh: :class:`~numpy.ndarray`
+    :param pcoh: 1D array of predicted wavelet coherence
     :type title: str, optional 
     :param title: Title of plot
     :type save: str, optional
     :param save: Name of file for to save figure
+
     """
 
     from plateflex import estimate

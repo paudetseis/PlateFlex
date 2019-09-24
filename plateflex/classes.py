@@ -21,34 +21,38 @@
 # SOFTWARE.
 """
 
-This :mod:`~plateflex` module contains the following ``Grid`` classes:
+:mod:`~plateflex` defines the following ``Grid`` classes:
 
 - :class:`~plateflex.classes.Grid`
 - :class:`~plateflex.classes.TopoGrid`
 - :class:`~plateflex.classes.GravGrid`
 - :class:`~plateflex.classes.BougGrid`
 - :class:`~plateflex.classes.FairGrid`
+- :class:`~plateflex.classes.RhocGrid`
+- :class:`~plateflex.classes.ZcGrid`
 
-These classes can be initiatlized with a grid of topography/bathymetry or gravity
+These classes can be initialized with a grid of topography/bathymetry or gravity
 anomaly (Bouguer/Free-air) data, and contain methods for the following functionality:
 
+- Extracting contours at some level of the grid
 - Performing a wavelet transform using a Morlet wavelet
 - Obtaining the wavelet scalogram from the wavelet transform
 - Plotting the input grids, wavelet transform components, and scalograms
 
 This module further contains the class :class:`~plateflex.classes.Project`, 
 which itself is a container of :class:`~plateflex.classes.Grid` objects 
-(two at most and one each of :class:`~plateflex.classes.TopoGrid` and 
+(at least one each of :class:`~plateflex.classes.TopoGrid` and 
 :class:`~plateflex.classes.GravGrid`). Methods are available to:
 
 - Add :class:`~plateflex.classes.Grid` or :class:`~plateflex.classes.Project` objects to the project
 - Iterate over :class:`~plateflex.classes.Grid` objects
+- Initialize the project
 - Perform the wavelet admittance and coherence between topography (:class:`~plateflex.classes.TopoGrid` object) and gravity anomalies (:class:`~plateflex.classes.GravGrid` object)
 - Plot the wavelet admnittance and coherence spectra
 - Estimate model parameters at single grid cell
 - Estimate model parameters at every (or decimated) grid cell
 - Plot the statistics of the estimated parameters at single grid cell
-- Plot the fitted admittance and coherence functions at single grid cell
+- Plot the observed and predicted admittance and coherence functions at single grid cell
 - Plot the final grids of model parameters
 
 """
@@ -57,8 +61,8 @@ which itself is a container of :class:`~plateflex.classes.Grid` objects
 import numpy as np
 import plateflex
 from plateflex.cpwt import cpwt
+from plateflex.cpwt import conf_cpwt as cf_w
 from plateflex.flex import conf_flex as cf_f
-from plateflex import conf as cf
 from plateflex import plotting
 from plateflex import estimate
 import seaborn as sns
@@ -136,16 +140,12 @@ class Grid(object):
         self.logsg_units = None
         self.title = None
         self.ns, self.k = _lam2k(nx, ny, dx, dy)
-        self.mask = None
 
         if np.any(np.isnan(np.array(grid))):
             
             print('grid contains NaN values. Performing interpolation...')
             
             from scipy.interpolate import griddata
-
-            # Grab NaNs as mask
-            mask = np.ma.masked_invalid(grid).mask
 
             # Now interpolate grid where NaNs
             good = np.where(np.isfinite(grid))
@@ -226,9 +226,14 @@ class Grid(object):
     def wlet_scalogram(self):
         """
         This method uses the module :mod:`~plateflex.cpwt.cpwt` to calculate 
-        the wavelet scalogram of the grid. If the attribute ``wl_trans`` cannot be found, 
-        the method automatically calculates the wavelet transform first. The wavelet 
-        scalogram is stored as an attribute of the object.
+        the wavelet scalogram of the grid. 
+
+        .. note::
+
+            If no ``wl_trans`` attribute is found, the method automatically calculates
+            the wavelet transform first.
+
+        The wavelet scalogram is stored as an attribute of the object.
 
         .. rubric:: Additional Attributes
 
@@ -355,7 +360,7 @@ class Grid(object):
 
 class GravGrid(Grid):
     """
-    Basic grid class of ``plateflex`` for gravity data that inherits 
+    Basic grid class of :mod:`~plateflex` for gravity data that inherits 
     from :class:`~plateflex.classes.Grid`
 
     .. rubric:: Additional Attributes
@@ -389,7 +394,7 @@ class GravGrid(Grid):
 
 class BougGrid(GravGrid):
     """
-    Basic grid class of ``plateflex`` for Bouguer gravity data that inherits 
+    Basic grid class of :mod:`~plateflex` for Bouguer gravity data that inherits 
     from :class:`~plateflex.classes.GravGrid`
 
     .. rubric:: Additional Attributes
@@ -417,7 +422,7 @@ class BougGrid(GravGrid):
 
 class FairGrid(GravGrid):
     """
-    Basic grid class of ``plateflex`` for Free-air gravity data that inherits 
+    Basic grid class of :mod:`~plateflex` for Free-air gravity data that inherits 
     from :class:`~plateflex.classes.GravGrid`
 
     .. rubric:: Additional Attributes
@@ -444,7 +449,7 @@ class FairGrid(GravGrid):
 
 class TopoGrid(Grid):
     """
-    Basic grid class of ``plateflex`` for Topography data that inherits 
+    Basic grid class of :mod:`~plateflex` for Topography data that inherits 
     from :class:`~plateflex.classes.Grid`
 
     .. rubric:: Additional Attributes
@@ -504,11 +509,73 @@ class TopoGrid(Grid):
 
         if title is not None:
             plotting.plot_real_grid(self.water_depth, title=title, mask=mask, save=save, \
-                clabel=self.units, contours=contours, cmap='viridis_r', **kwargs)
+                clabel=self.units, contours=contours, **kwargs)
         else:
             plotting.plot_real_grid(self.water_depth, title='Water depth', mask=mask, save=save, \
-                clabel=self.units, contours=contours, cmap='viridis_r', **kwargs)
+                clabel=self.units, contours=contours, **kwargs)
 
+
+class RhocGrid(Grid):
+    """
+    Basic grid class of :mod:`~plateflex` for crustal density data that inherits 
+    from :class:`~plateflex.classes.Grid`
+
+    .. rubric:: Additional Attributes
+
+    ``units`` : str
+        Units of Density (':math:`kg/m^3`')
+    ``title``: str
+        Descriptor for Density data
+
+    .. note::
+
+        This class should only be used to specify the density of the
+        crust at each cell location. Although the :class:`~plateflex.classes.Grid`
+        methods are still available, they are not useful in this context.
+
+    """
+
+    def __init__(self, grid, dx, dy):
+
+        Grid.__init__(self, grid, dx, dy)
+        self.units = r'kg/m$^3$'
+        self.sg_units = None
+        self.logsg_units = None
+        self.title = 'Crustal density'
+
+        if np.std(self.data) < 10.:
+            self.data *= 1.e3
+
+class ZcGrid(Grid):
+    """
+    Basic grid class of :mod:`~plateflex` for crustal thickness data that inherits 
+    from :class:`~plateflex.classes.Grid`
+
+    .. rubric:: Additional Attributes
+
+    ``units`` : str
+        Units of Crustal thickness (':math:`m`')
+    ``title``: str
+        Descriptor for Crustal thickness data
+
+    .. note::
+
+        This class should only be used to specify the thickness of the
+        crust at each cell location. Although the :class:`~plateflex.classes.Grid`
+        methods are still available, they are not useful in this context.
+         
+    """
+
+    def __init__(self, grid, dx, dy):
+
+        Grid.__init__(self, grid, dx, dy)
+        self.units = 'm'
+        self.sg_units = None
+        self.logsg_units = None
+        self.title = 'Crustal thickness'
+
+        if np.std(self.data) < 20.:
+            self.data *= 1.e3
 
 class Project(object):
     """
@@ -525,16 +592,23 @@ class Project(object):
     ``grids`` : List
         List of :class:`~plateflex.classes.Grid` objects
     ``inverse`` : str
-        Type of inversion to perform. By default the inversion is 'L2' for
-        non-linear least-squares. Options are: 'L2' or 'bayes'
+        Type of inversion to perform. By default the type is `'L2'` for
+        non-linear least-squares. Options are: `'L2'` or `'bayes'`
+    ``mask`` : Array
+        2D array of boolean values determined independently
+    ``initialized`` : Bool
+        Whether or not the project has been initialized and is ready for 
+        the wavelet analysis and estimation steps. By default this parameter
+        is ``False``, unless the method :func:`~plateflex.classes.Project.init` 
+        has been executed.
 
-    .. note:::
+    .. note::
 
         Can hold a list of any length with any type of 
         :class:`~plateflex.classes.Grid` objects - however the wavelet 
-        calculations will only proceed if the project holds exactly 2 
-        :class:`~plateflex.classes.Grid` objects in the list, one each 
-        of :class:`~plateflex.classes.TopoGrid` and :class:`~plateflex.classes.GravGrid`. 
+        calculations will only proceed if the project holds one each 
+        of :class:`~plateflex.classes.TopoGrid` and 
+        :class:`~plateflex.classes.GravGrid` (``BougGrid`` or ``FairGrid``) objects. 
 
     .. rubric:: Examples
 
@@ -550,7 +624,7 @@ class Project(object):
     >>> isinstance(bouggrid, Grid)
     True
 
-    Initialize project with list of grids
+    Assign project with list of grids
 
     >>> Project(grids=[topogrid, bouggrid])
     <plateflex.classes.Project object at 0x10c62b320>
@@ -571,6 +645,20 @@ class Project(object):
     >>> project.grids[0]
     <plateflex.classes.TopoGrid object at 0x1176b4240>
 
+    Initialize project
+
+    >>> project.init()
+
+    Exception if project does not contain exactly one TopoGrid and one GravGrid
+
+    >>> project = Project(grids=[topogrid, topogrid])
+    >>> project.init()
+    Traceback (most recent call last):
+      File "<stdin>", line 1, in <module>
+      File "/Users/pascalaudet/Softwares/Python/plateflex-dev/PlateFlex/plateflex/classes.py", line 492, in wlet_admit_coh
+        grids = self.grids + other.grids
+    Exception: There needs to be one GravGrid object in Project
+
     Calculate wavelet admittance and coherence
 
     >>> project = Project(grids=[topogrid, bouggrid])
@@ -579,26 +667,6 @@ class Project(object):
      #loops = 17:  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17
      Calculation jackknife error on admittance and coherence
 
-    Exception if project does not contain exactly one TopoGrid and one GravGrid
-
-    >>> project = Project(grids=[topogrid, topogrid])
-    >>> project.wlet_admit_coh()
-    Traceback (most recent call last):
-      File "<stdin>", line 1, in <module>
-      File "/Users/pascalaudet/Softwares/Python/plateflex-dev/PlateFlex/plateflex/classes.py", line 492, in wlet_admit_coh
-        grids = self.grids + other.grids
-    Exception: There needs to be one GravGrid object in Project
-
-    Exception if more than two Grid objects are contained in project
-
-    >>> project = Project(grids=[topogrid, topogrid, bouggrid])
-    >>> project.wlet_admit_coh()
-    Traceback (most recent call last):
-      File "<stdin>", line 1, in <module>
-      File "[...]/plateflex/classes.py", line 484, in wlet_admit_coh
-        if isinstance(grid_list, list):
-    Exception: There needs to be exactly two Grid objects in Project
-
     """
 
     def __init__(self, grids=None):
@@ -606,6 +674,7 @@ class Project(object):
         self.inverse = 'L2'
         self.grids = []
         self.mask = None
+        self.initialized = False
 
         if isinstance(grids, Grid):
             grids = [grids]
@@ -692,14 +761,104 @@ class Project(object):
         return self
 
 
+    def init(self):
+        """
+        Method to initialize a project. This step is required before calculating
+        the wavelet admittance and coherence. The method checks that the project contains
+        one each of :class:`~plateflex.classes.TopoGrid` and :class:`~plateflex.classes.GravGrid`.
+        It also ensures that all grids have the same shape and sampling intervals. 
+        If Grids of type :class:`~plateflex.classes.RhocGrid` and/or :class:`~plateflex.classes.ZcGrid`
+        are present, the project attributes will be updated with data from those grids to be
+        used in the estimation part. The method further sets the water depth at each cell location
+        (grid point) from the :class:`~plateflex.classes.TopoGrid` object. 
+
+        .. rubric:: Additional Attributes
+
+        ``water_depth`` : :class:`~numpy.ndarray`
+            Grid of water depth from topography data (shape (`nx,ny`))
+        ``nx`` : int 
+            Number of grid cells in the x-direction
+        ``ny`` : int 
+            Number of grid cells in the y-direction
+        ``ns`` int 
+            Number of wavenumber samples
+        ``k`` : np.ndarray 
+            1D array of wavenumbers
+        ``initialized`` : bool
+            Set to ``True`` when method is called successfully
+            
+        .. rubric:: Optional Attributes
+
+        ``rhoc`` : :class:`~numpy.ndarray`
+            Grid of crustal density data (shape (`nx,ny`))
+        ``zc`` : :class:`~numpy.ndarray`
+            Grid of crustal thickness data (shape (`nx,ny`))
+
+        .. rubric:: Example
+
+        >>> project = Project[grids=[topogrid, fairgrid, zcgrid]]
+        >>> project.init()
+
+        """
+
+        # Methods will fail if there is no ``TopoGrid`` object in list
+        if not any(isinstance(g, TopoGrid) for g in self.grids):
+            raise(Exception('There needs to be one TopoGrid object in Project'))
+
+        # Methods will fail if there is no ``GravGrid`` object in list
+        if not any(isinstance(g, GravGrid) for g in self.grids):
+            raise(Exception('There needs to be one GravGrid object in Project'))
+
+        # Check that all grids have the same shape 
+        shape = [grid.data.shape for grid in self.grids]
+        if not (len(set(shape))==1):
+            raise(Exception('Grids do not have the same shape - aborting:'+str(shape)))
+
+        # Check that all grids have the same sampling intervals
+        dd = [(grid.dx, grid.dy) for grid in self.grids]
+        if not (len(set(dd))==1):
+            raise(Exception('Grids do not have the same sampling intervals - aborting:'+str(dd)))
+
+        # Check whether gravity grid is Free air or Bouguer and set global variable accordingly
+        if any(isinstance(g, BougGrid) for g in self.grids):
+            cf_f.boug = 1
+        elif any(isinstance(g, FairGrid) for g in self.grids):
+            cf_f.boug = 0
+
+        # Initialize model attributes to None (i.e., default values will be used)
+        self.rhoc = None
+        self.zc = None
+
+        # Identify the ``Grid`` types and set new attributes if available
+        for grid in self.grids:
+            if isinstance(grid, RhocGrid):
+                self.rhoc = grid.data
+            elif isinstance(grid, ZcGrid):
+                self.zc = grid.data
+            elif isinstance(grid, TopoGrid):
+                self.water_depth = grid.water_depth
+
+        # Now set project attributes from first grid object
+        self.k = self.grids[0].k
+        self.ns = self.grids[0].ns
+        self.nx = self.grids[0].nx
+        self.ny = self.grids[0].ny
+        self.initialized = True
+
+
     def wlet_admit_coh(self):
         """
         This method uses the module :mod:`~plateflex.cpwt.cpwt` to calculate 
         the wavelet admittance and coherence. The object needs to contain 
         exactly two :class:`~plateflex.classes.Grid` objects, one of each of 
         :class:`~plateflex.classes.TopoGrid` and :class:`~plateflex.classes.GravGrid` 
-        objects. If the wavelet transforms attributes don't exist, they are 
-        calculated first.
+        objects. 
+
+        .. note::
+
+            If no ``wl_trans`` attribute is found for individual 
+            :class:`~plateflex.classes.Grid` objects, the method automatically calculates
+            them first.
 
         Stores the wavelet admittance, coherence and their errors as attributes
 
@@ -716,28 +875,8 @@ class Project(object):
 
         """
 
-        # Method will not execute unless there are exactly two Grid objects in list
-        if len(self.grids)!=2:
-            raise(Exception('There needs to be exactly two Grid objects in Project'))
-
-        # Method will fail if there is no ``TopoGrid`` object in list
-        if not any(isinstance(g, TopoGrid) for g in self.grids):
-            raise(Exception('There needs to be one TopoGrid object in Project'))
-
-        # Method will fail if there is no ``GravGrid`` object in list
-        if not any(isinstance(g, GravGrid) for g in self.grids):
-            raise(Exception('There needs to be one GravGrid object in Project'))
-
-        # Check whether gravity grid is Free air or Bouguer and set global variable accordingly
-        if any(isinstance(g, BougGrid) for g in self.grids):
-            cf_f.boug = 1
-        elif any(isinstance(g, FairGrid) for g in self.grids):
-            cf_f.boug = 0
-
-        self.k = self.grids[0].k
-        self.ns = self.grids[0].ns
-        self.nx = self.grids[0].nx
-        self.ny = self.grids[0].ny
+        if not self.initialized:
+            raise(Exception("Project not yet initialized - Abort"))
 
         # Identify the ``Grid`` types for proper calculation of admittance and coherence 
         for grid in self.grids:
@@ -747,7 +886,6 @@ class Project(object):
                 except:
                     grid.wlet_transform()
                     wl_trans_topo = grid.wl_trans
-                self.water_depth = grid.water_depth
             elif isinstance(grid, GravGrid):
                 try:
                     wl_trans_grav = grid.wl_trans
@@ -772,8 +910,6 @@ class Project(object):
         """
         Method to plot grids of wavelet admittance and coherence at a given  wavenumber index. 
 
-        :type xmin: float
-        :param xmin: Minimum x bound in km
         :type kindex: int
         :param kindex: Index of wavenumber array
         :type mask: :class:`~numpy.ndarray`, optional 
@@ -784,7 +920,11 @@ class Project(object):
         :param save: Name of file for to save figure
         :type clabel: str, optional    
         :param clabel: Label for colorbar
-       """
+        :type contours: List
+        :param contours: List of contour lines obtained separately
+        :type kwargs: Keyword arguments
+        :param kwargs: Keyword arguments allowing more control on plots
+        """
 
         if kindex is None:
             raise(Exception('Specify index of wavenumber for plotting'))
@@ -810,7 +950,11 @@ class Project(object):
     def estimate_cell(self, cell=(0,0), alph=False, atype='joint', returned=False):
         """
         Method to estimate the parameters of the flexural model at a single cell location
-        of the input grids. 
+        of the input grids. The type of estimation performed is set by the project attribute 
+        ``inverse``. See :class:`~plateflex.classes.Project`` and :mod:`~plateflex.estimate` 
+        for details. The model parameters ``rhoc`` and ``zc`` are extracted from the 
+        corresponding :class:`~plateflex.classes.RhocGrid` and :class:`~plateflex.classes.ZcGrid`
+        objects if they were initialized in the project.
 
         :type cell: tuple
         :param cell: Indices of cell location within grid
@@ -819,7 +963,7 @@ class Project(object):
         :type atype: str, optional
         :param atype: Whether to use the admittance ('admit'), coherence ('coh') or both ('joint')
         :type returned: bool, optional
-        :param returned: Whether to use to return the estimates
+        :param returned: Whether or not to return the estimates
 
         .. rubric:: Additional Attributes
 
@@ -827,7 +971,7 @@ class Project(object):
             Posterior samples from the MCMC chains
         ``summary`` : :class:`~pandas.core.frame.DataFrame`
             Summary statistics from Posterior distributions
-        ``map_estimate`` : dict
+        ``map_estimate`` : dict, optional
             Container for Maximum a Posteriori (MAP) estimates
         ``cell`` : tuple 
             Indices of cell location within grid
@@ -847,11 +991,17 @@ class Project(object):
         eadm = self.ewl_admit[cell[0], cell[1], :]
         coh = self.wl_coh[cell[0], cell[1], :]
         ecoh = self.ewl_coh[cell[0], cell[1], :]
-        wd = self.water_depth[cell[0], cell[1]]
+
+        # Now set model parameters if they are availble as attributes
+        cf_f.wd = self.water_depth[cell[0], cell[1]]
+        if self.rhoc is not None:
+            cf_f.rhoc = self.rhoc[cell[0], cell[1]]
+        if self.zc is not None:
+            cf_f.zc = self.zc[cell[0], cell[1]]
 
         if self.inverse=='L2':
             summary = estimate.L2_estimate_cell( \
-                self.k, adm, eadm, coh, ecoh, wd, alph, atype)
+                self.k, adm, eadm, coh, ecoh, alph, atype)
 
             # Return estimates if requested
             if returned:
@@ -866,7 +1016,7 @@ class Project(object):
 
         elif self.inverse=='bayes':
             trace, summary, map_estimate = estimate.bayes_estimate_cell( \
-                self.k, adm, eadm, coh, ecoh, wd, alph, atype)
+                self.k, adm, eadm, coh, ecoh, alph, atype)
 
             # Return estimates if requested
             if returned:
@@ -892,8 +1042,8 @@ class Project(object):
         :type alph: bool, optional 
         :param alph: Whether or not to estimate parameter ``alpha``
         :type atype: str, optional
-        :param atype: Whether to use the admittance ('admit'), coherence ('coh') or 
-            both ('joint')
+        :param atype: Whether to use the admittance (`'admit'`), coherence (`'coh'`) or 
+            both (`'joint'`)
 
         .. rubric:: Additional Attributes
 
@@ -910,14 +1060,19 @@ class Project(object):
         ``std_F_grid`` : :class:`~numpy.ndarray` 
             Grid with std F estimates (shape ``(nx, ny``))
 
-        .. rubric:: Optional Additional Attributes
+        .. rubric:: Optional Attributes
 
         ``mean_a_grid`` : :class:`~numpy.ndarray` 
-            Grid with mean alpha estimates (shape ``(nx, ny``))
+            Grid with mean alpha estimates (shape ``(nx, ny``)). Only present if ``alph=True``.
         ``MAP_a_grid`` : :class:`~numpy.ndarray` 
-            Grid with MAP alpha estimates (shape ``(nx, ny``))
+            Grid with MAP alpha estimates (shape ``(nx, ny``)). Only present if ``alph=True``.
         ``std_a_grid`` : :class:`~numpy.ndarray` 
-            Grid with std alpha estimates (shape ``(nx, ny``))
+            Grid with std alpha estimates (shape ``(nx, ny``)). Only present if ``alph=True``.
+        ``chi2_grid`` : :class:`~numpy.ndarray` 
+            Grid with reduced chi-squared estimates (shape ``(nx, ny``)). 
+            Only present if ``project.inverse='L2'``
+        ``new_mask`` : Array
+            New grid of masked (boolean) values, corresponding to decimated mask.
 
         """
 
@@ -1012,9 +1167,6 @@ class Project(object):
                             MAP_a_grid[int(i/nn),int(j/nn)] = MAP_a
                             std_a_grid[int(i/nn),int(j/nn)] = std_a
 
-                        # # Release garbage collector
-                        # gc.collect()
-
                     elif self.inverse=='L2':
 
                         # Carry out calculations by calling the ``estimate_cell`` method
@@ -1094,11 +1246,12 @@ class Project(object):
         except:
             raise(Exception("No 'cell' estimate available"))
 
-    def plot_fitted(self, est='mean', title=None, save=None):
+    def plot_functions(self, est='mean', title=None, save=None):
         """
         Method to plot observed and fitted admittance and coherence functions using 
-        one of ``MAP`` or ``mean`` estimates. Calls the function :func:`~plateflex.plotting.plot_fitted`
-        with attributes as arguments.
+        one of ``mean`` or ``MAP`` estimates. The ``MAP`` is only available if the project
+        attribute has been set to ``project='bayes'``. Calls the function 
+        :func:`~plateflex.plotting.plot_functions` with attributes as arguments.
 
         :type est: str, optional
         :param est: Type of inference estimate to use for predicting admittance and coherence
@@ -1106,7 +1259,6 @@ class Project(object):
         :param title: Title of plot
         :type save: str, optional
         :param save: Name of file for to save figure
-        
         """
 
         if est not in ['mean', 'MAP']:
@@ -1119,7 +1271,7 @@ class Project(object):
             eadm = self.ewl_admit[cell[0], cell[1], :]
             coh = self.wl_coh[cell[0], cell[1], :]
             ecoh = self.ewl_coh[cell[0], cell[1], :]
-            wd = self.water_depth[cell[0], cell[1]]
+            cf_f.wd = self.water_depth[cell[0], cell[1]]
 
             ma = np.pi/2.
 
@@ -1149,16 +1301,16 @@ class Project(object):
                     ma = self.summary.loc['alpha', 'mean']
 
             # Calculate predicted admittance and coherence from estimates
-            padm, pcoh = estimate.real_xspec_functions(k, mte, mF, wd, ma)
+            padm, pcoh = estimate.real_xspec_functions(k, mte, mF, ma)
 
             # Call function from ``plotting`` module
-            plotting.plot_fitted(k, adm, eadm, coh, ecoh, \
+            plotting.plot_functions(k, adm, eadm, coh, ecoh, \
                 padm=padm, pcoh=pcoh, title=title, save=save)
 
         except:
 
             # Call function from ``plotting`` module
-            plotting.plot_fitted(k, adm, eadm, coh, ecoh, \
+            plotting.plot_functions(k, adm, eadm, coh, ecoh, \
                 title=title, save=save)
 
             print("No estimate yet available. Plotting observed data only")
@@ -1176,6 +1328,23 @@ class Project(object):
         :type mean/MAP/std_Te/F/a: bool
         :param mean/MAP/std_Te/F/a: Type of plot to produce. 
             All variables default to False (no plot generated)
+        :type mask: bool
+        :param mask: Whether or not to plot the mask
+        :type contours: List
+        :param contours: List of contours with coordinate positions
+        :type filter: bool
+        :param filter: Whether or not to filter the resulting grid using a Gaussian filter
+        :type sigma: int
+        :param sigma: Standard deviation of filter (in terms of adjacent cells), if set to ``True``
+        :type kwargs: Keyword arguments
+        :param kwargs: Keyword arguments allowing more control on plots
+
+        .. note::
+
+           It is advisable to plot each grid separately using one call per grid, in order
+           to have more control on plot paramters (e.g., colormap, min and max values of 
+           colorbar, etc.).
+
         """
 
         from skimage.filters import gaussian
@@ -1215,7 +1384,7 @@ class Project(object):
                 std_Te_grid = self.std_Te_grid
             plotting.plot_real_grid(std_Te_grid, mask=new_mask, \
                 title='Error on $T_e$', clabel='$T_e$ (km)', contours=contours, \
-                save=save, vmin=0., vmax=40.)
+                save=save, **kwargs)
         if mean_F:
             if filter:
                 mean_F_grid = gaussian(self.mean_F_grid, sigma=sigma)
@@ -1239,7 +1408,7 @@ class Project(object):
                 std_F_grid = self.std_F_grid       
             plotting.plot_real_grid(std_F_grid, mask=new_mask, \
                 title='Error on $F$', clabel='$F$', contours=contours, \
-                save=save, vmin=0, vmax=0.2)
+                save=save, **kwargs)
         if mean_a:
             try:
                 if filter:
@@ -1270,7 +1439,7 @@ class Project(object):
                     std_a_grid = self.std_a_grid
                 plotting.plot_real_grid(std_a_grid, mask=new_mask, \
                     title=r'Error on $\alpha$', clabel=r'$\alpha$', contours=contours, \
-                    save=save, vmin=0., vmax=np.pi/6.)
+                    save=save, **kwargs)
             except:
                 print("parameter 'alpha' was not estimated")
         if chi2:
@@ -1281,13 +1450,13 @@ class Project(object):
                     chi2_grid = self.chi2_grid
                 plotting.plot_real_grid(chi2_grid, mask=new_mask, \
                     title='Reduced chi-squared', clabel=r'$\chi_{\nu}^2$', \
-                    contours=contours, save=save, vmin=0., vmax=10.)
+                    contours=contours, save=save, **kwargs)
             except:
                 print("parameter 'chi2' was not estimated")
 
 
 
-def _lam2k(nx, ny, dx, dy):
+def _lam2k(nx, ny, dx, dy, p=0.85):
     """
     Calculate the optimal set of equally-spaced equivalent wavenumbers for given grid 
     parameters to be used in the wavelet analysis through the :mod:`~plateflex.cpwt.cpwt` 
@@ -1301,6 +1470,8 @@ def _lam2k(nx, ny, dx, dy):
     :param dx: Sample distance in x direction (km)
     :type dy: float 
     :param dy: Sample distance in y direction (km)
+    :type p: float 
+    :param p: Fractional amplitude at which wavelets overlap in wavenumber space
 
     :return:  
         (tuple): Tuple containing:
@@ -1325,7 +1496,6 @@ def _lam2k(nx, ny, dx, dy):
            1.64758613e-05, 2.04177293e-05, 2.53026936e-05, 3.13563910e-05,
            3.88584421e-05, 4.81553673e-05, 5.96765921e-05, 7.39542826e-05,
            9.16479263e-05, 1.13574794e-04]))
-
     """
 
     # Max is quarter of maximum possible wavelength from grid size
@@ -1338,16 +1508,16 @@ def _lam2k(nx, ny, dx, dy):
     lam = []; k = []; s = []
     lam.append(maxlam)
     k.append(2.*np.pi/lam[0])
-    s.append(cf.k0/k[0])
-    dk = np.sqrt(-2.*np.log(cf.p))/s[0]
+    s.append(cf_w.k0/k[0])
+    dk = np.sqrt(-2.*np.log(p))/s[0]
     ss = 1
 
     # Loop through k's until minlam is reached
     while lam[ss-1]>minlam:
-            s = (cf.k0-np.sqrt(-2.*np.log(cf.p)))/(k[ss-1]+dk)
-            k.append(cf.k0/s)
+            s = (cf_w.k0-np.sqrt(-2.*np.log(p)))/(k[ss-1]+dk)
+            k.append(cf_w.k0/s)
             lam.append(2.*np.pi/k[ss])
-            dk = np.sqrt(-2.0*np.log(cf.p))/s
+            dk = np.sqrt(-2.0*np.log(p))/s
             ss = ss + 1
     ns = ss
 

@@ -45,7 +45,7 @@
 ! Global parameters that are allowed to vary
 !
       DOUBLE PRECISION :: rhoc, rhom, rhof, rhow, rhoa, wd, zc
-      INTEGER :: water, boug
+      INTEGER :: boug
 
       END MODULE conf_flex
 
@@ -178,14 +178,14 @@
 ! from input values of Te, F and alpha
 !---------------------------------------------------------------------------
 
-      SUBROUTINE real_xspec_functions(ns, k, Te, F, alpha, wdepth, admit, coh)
+      SUBROUTINE real_xspec_functions(ns, k, Te, F, alpha, admit, coh)
 
       USE conf_flex
 
       IMPLICIT NONE
 
       INTEGER :: ns
-      DOUBLE PRECISION :: k(ns), Te, F, alpha, wdepth
+      DOUBLE PRECISION :: k(ns), Te, F, alpha
 
       DOUBLE PRECISION :: A, D, psi(ns), theta(ns), phi(ns)
       DOUBLE PRECISION :: mu_h(ns), mu_w(ns), nu_h(ns), nu_w(ns)
@@ -197,7 +197,7 @@
 !
 !f2py DOUBLE PRECISION, intent(in) :: k
 !f2py INTEGER, intent(hide),depend(k) :: ns=shape(k,0)
-!f2py DOUBLE PRECISION, intent(in) :: Te, F, alpha, wd
+!f2py DOUBLE PRECISION, intent(in) :: Te, F, alpha
 !f2py DOUBLE PRECISION, intent(out) :: admit, coh
 
         ! Is this a Bouguer analysis?
@@ -207,13 +207,11 @@
           A = 1.
         END IF
 
-        ! Analysis includes water column?
-        IF (water.eq.1) THEN
+        ! Determine fluid density from water depth variable
+        IF (wd.gt.0.) THEN
           rhof = rhow
-          wd = wdepth*1.e3
         ELSE
           rhof = rhoa
-          wd = 0.
         END IF
 
         ! Te in meters

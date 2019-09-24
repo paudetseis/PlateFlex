@@ -21,18 +21,25 @@
 # SOFTWARE.
 """
 
-Configuration module to set up global variables
+plateflex.cpwt.conf_cpwt
+------------------------
 
-Variables are:
+Global variable that controls the spatio-spectral
+localization of the Morlet wavelet. Default value 
+in parentheses.
 
-.. rubric:: Wavelet parameters
+.. rubric:: Internal wavenumber of Morlet wavelet
 
 ``k0``: float
     Internal Morlet wavenumber (5.336 or higher)
-``p`` : float 
-    Separation between adjacent wavenumbers (0.85)
 
-.. rubric:: Earth parameters
+plateflex.flex.conf_flex
+------------------------
+
+Global variables that define model parameters for
+the flexural model. Default values in parentheses.
+
+.. rubric:: Earth parameters - fixed
 
 ``E`` : float
     Young's modulus (100 GPa)
@@ -42,6 +49,9 @@ Variables are:
     Gravitational acceleration (9.81 m/s^2)
 ``G`` : float)
     Gravitational constant (6.67e-11*1.e5 mGal)
+
+.. rubric:: Earth parameters - variable
+
 ``zc`` : float
     Crustal thickness (35.e3 m)
 ``rhom``: float
@@ -53,52 +63,30 @@ Variables are:
 ``rhow`` : float
     Water density (1030. kg/m^3)
 ``rhof`` : float
-    Fluid density at topo/fluid interface (==rhoa or ==rhow)
+    Fluid density at topo/fluid interface (==rhoa *or* ==rhow, depending on water depth)
 ``wd`` : float
-    Water depth (0.e3 m)
+    Water depth (0.e3 m) -  Automatically determined from 
+    :class:`~plateflex.classes.TopoGrid` object
 
-.. rubric:: Flexure analysis
+plateflex.conf
+--------------
 
-``water`` : bool 
-    Whether or not to include loading from water column
-        
-.. rubric:: Bayes inference
+Global variables that control sampling of the posterior
+from MCMC chains using :class:`pymc3`. Default values in parentheses.
 
-``samples`` : int 
-    Number of samples in single MCMC chain
+.. rubric:: Bayes sampling
+
+``draws`` : int 
+    Number of draws (i.e., samples) in single MCMC chain (500)
 ``tunes`` : int
-    Number of tuning samples
+    Number of tuning (i.e., burn-in) samples (500)
 ``cores`` : int
-    Number of cores (i.e., parallel chains). For parallel runs, set conf.cores=1
+    Number of cores (i.e., parallel MCMC chains) (4)
 
 """
 
-# wavelet parameters
-global k0, p
-k0 = 5.336
-p = 0.85
-
-# Earth parameters
-global E, nu, g, G, zc, rhom, rhoc, rhow, rhoa, rhof, wd
-E = 1.e11
-nu = 0.25
-g = 9.81
-G = 6.67e-11*1.e5
-zc = 35.*1.e3
-rhom = 3200.
-rhoc = 2700.
-rhow = 1030.
-rhoa = 0.
-rhof = rhoa
-wd = 0.
-
-# flex analysis
-global boug, water
-boug = True
-water = False
-
 # bayes parameters
 global samples, tunes
-samples = 200
-tunes = 200
+draws = 500
+tunes = 500
 cores = 4

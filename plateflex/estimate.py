@@ -40,7 +40,8 @@ functions.
     If you plan to estimate model parameters over entire grids, the non-linear least-squares method
     is orders of magnitude faster than the probabilistic method and should be preferred. The probabilistic
     method, on the other hand, gives useful estimation statistics from sampling the posterior distribution
-    and can provide better insight on the trade-off between parameters.
+    and can provide better insight on the trade-off between parameters. Estimates from the two methods are
+    otherwise asymptotically identical (i.e., given infinite sampling of the posterior)
 
 """
 
@@ -55,7 +56,7 @@ from scipy.optimize import curve_fit
 import pandas as pd
 
 
-def bayes_estimate_cell(k, adm, eadm, coh, ecoh, wd=0., alph=False, atype='joint'):
+def bayes_estimate_cell(k, adm, eadm, coh, ecoh, alph=False, atype='joint'):
     """
     Function to estimate the parameters of the flexural model at a single cell location
     of the input grids. 
@@ -73,7 +74,7 @@ def bayes_estimate_cell(k, adm, eadm, coh, ecoh, wd=0., alph=False, atype='joint
     :type alph: bool, optional
     :param alph: Whether or not to estimate parameter ``alpha``
     :type atype: str, optional
-    :param atype: Whether to use the admittance ('admit'), coherence ('coh') or both ('joint')
+    :param atype: Whether to use the admittance (`'admit'`), coherence (`'coh'`) or both (`'joint'`)
 
     :return:
         (tuple): Tuple containing:
@@ -91,9 +92,6 @@ def bayes_estimate_cell(k, adm, eadm, coh, ecoh, wd=0., alph=False, atype='joint
         # k is an array - needs to be passed as distribution
         k_obs = pm.Normal('k', mu=k, sigma=1., observed=k)
 
-        # Water depth needs to be passed as theanor tensor object
-        wd = tt.as_tensor_variable(wd)
-
         # Prior distributions
         Te = pm.Uniform('Te', lower=1., upper=200.)
         F = pm.Uniform('F', lower=0., upper=0.9999)
@@ -102,10 +100,10 @@ def bayes_estimate_cell(k, adm, eadm, coh, ecoh, wd=0., alph=False, atype='joint
 
             # Prior distribution of `alpha`
             alpha = pm.Uniform('alpha', lower=0., upper=np.pi)
-            admit_exp, coh_exp = real_xspec_functions_alpha(k_obs, Te, F, wd, alpha)
+            admit_exp, coh_exp = real_xspec_functions_alpha(k_obs, Te, F, alpha)
 
         else:
-            admit_exp, coh_exp = real_xspec_functions_noalpha(k_obs, Te, F, wd)
+            admit_exp, coh_exp = real_xspec_functions_noalpha(k_obs, Te, F)
 
         # Select type of analysis to perform
         if atype=='admit':
@@ -146,7 +144,7 @@ def bayes_estimate_cell(k, adm, eadm, coh, ecoh, wd=0., alph=False, atype='joint
                 sigma=sigma, observed=joint)
 
         # Sample the Posterior distribution
-        trace = pm.sample(cf.samples, tune=cf.tunes, cores=cf.cores)
+        trace = pm.sample(cf.draws, tune=cf.tunes, cores=cf.cores)
 
         # Get Max a porteriori estimate
         map_estimate = pm.find_MAP()
@@ -158,7 +156,7 @@ def bayes_estimate_cell(k, adm, eadm, coh, ecoh, wd=0., alph=False, atype='joint
 
 def get_bayes_estimates(summary, map_estimate):
     """
-    Extract useful estimates from the Posterior distributions.
+    Returns digestible estimates from the Posterior distributions.
 
     :type summary: :class:`~pandas.core.frame.DataFrame`
     :param summary: Summary statistics from Posterior distributions
@@ -167,17 +165,21 @@ def get_bayes_estimates(summary, map_estimate):
 
     :return: 
         (tuple): tuple containing:
-            * mean_te (float) : Mean value of elastic thickness from posterior (km)
-            * std_te (float)  : Standard deviation of elastic thickness from posterior (km)
-            * best_te (float) : Most likely elastic thickness value from posterior (km)
-            * mean_F (float)  : Mean value of load ratio from posterior
-            * std_F (float)   : Standard deviation of load ratio from posterior
-            * best_F (float)  : Most likely load ratio value from posterior
-
-    .. rubric:: Example
-
-    >>> from plateflex import estimate
-    >>> # MAKE THIS FUNCTION FASTER
+            * mean_te (float) : Mean value of elastic thickness ``Te`` from posterior (km)
+            * std_te (float)  : Standard deviation of elastic thickness ``Te`` from posterior (km)
+            * C2_5_te (float) : Lower limit of 95% confidence interval on ``Te`` (km)
+            * C97_5_te (float) : Upper limit of 95% confidence interval on ``Te`` (km)
+            * MAP_te (float) : Maximum a Posteriori ``Te`` (km)
+            * mean_F (float)  : Mean value of load ratio ``F`` from posterior
+            * std_F (float)   : Standard deviation of load ratio ``F`` from posterior
+            * C2_5_F (float) : Lower limit of 95% confidence interval on ``F``
+            * C97_5_F (float) : Upper limit of 95% confidence interval on ``F``
+            * MAP_F (float)  : Maximum a Posteriori load ratio ``F``
+            * mean_a (float, optional)  : Mean value of initial phase difference ``alpha`` from posterior
+            * std_a (float, optional)   : Standard deviation of initial phase difference `alpha`` from posterior
+            * C2_5_a (float, optional) : Lower limit of 95% confidence interval on ``alpha``
+            * C97_5_a (float, optional) : Upper limit of 95% confidence interval on ``alpha``
+            * MAP_a (float, optional)  : Maximum a Posteriori initial phase difference ``alpha``
 
     """
 
@@ -190,30 +192,30 @@ def get_bayes_estimates(summary, map_estimate):
             std_te = row['sd']
             C2_5_te = row['hpd_2.5']
             C97_5_te = row['hpd_97.5']
-            best_te = np.float(map_estimate['Te'])
+            MAP_te = np.float(map_estimate['Te'])
         elif index=='F':
             mean_F = row['mean']
             std_F = row['sd']
             C2_5_F = row['hpd_2.5']
             C97_5_F = row['hpd_97.5']
-            best_F = np.float(map_estimate['F'])
+            MAP_F = np.float(map_estimate['F'])
         elif index=='alpha':
             mean_a = row['mean']
             std_a = row['sd']
             C2_5_a = row['hpd_2.5']
             C97_5_a = row['hpd_97.5']
-            best_a = np.float(map_estimate['alpha'])
+            MAP_a = np.float(map_estimate['alpha'])
 
     if mean_a is not None:
-        return mean_te, std_te, C2_5_te, C97_5_te, best_te, \
-            mean_F, std_F, C2_5_F, C97_5_F, best_F, \
-            mean_a, std_a, C2_5_a, C97_5_a, best_a
+        return mean_te, std_te, C2_5_te, C97_5_te, MAP_te, \
+            mean_F, std_F, C2_5_F, C97_5_F, MAP_F, \
+            mean_a, std_a, C2_5_a, C97_5_a, MAP_a
     else:
-        return mean_te, std_te, C2_5_te, C97_5_te, best_te, \
-            mean_F, std_F, C2_5_F, C97_5_F, best_F
+        return mean_te, std_te, C2_5_te, C97_5_te, MAP_te, \
+            mean_F, std_F, C2_5_F, C97_5_F, MAP_F
 
 
-def L2_estimate_cell(k, adm, eadm, coh, ecoh, wd=0., alph=False, atype='joint'):
+def L2_estimate_cell(k, adm, eadm, coh, ecoh, alph=False, atype='joint'):
     """
     Function to estimate the parameters of the flexural model at a single cell location
     of the input grids. 
@@ -231,26 +233,26 @@ def L2_estimate_cell(k, adm, eadm, coh, ecoh, wd=0., alph=False, atype='joint'):
     :type alph: bool, optional
     :param alph: Whether or not to estimate parameter ``alpha``
     :type atype: str, optional
-    :param atype: Whether to use the admittance ('admit'), coherence ('coh') or both ('joint')
+    :param atype: Whether to use the admittance (`'admit'`), coherence (`'coh'`) or both (`'joint'`)
 
     :return:
         (tuple): Tuple containing:
             * ``summary`` : :class:`~pandas.core.frame.DataFrame`
-                Summary statistics from Posterior distributions
+                Summary statistics from L2 estimation
 
     """
     
-    def pred_admit(k, Te, F, alpha, wd):
+    def pred_admit(k, Te, F, alpha):
 
-        return flex.real_xspec_functions(k, Te, F, alpha, wd)[0]
+        return flex.real_xspec_functions(k, Te, F, alpha)[0]
 
-    def pred_coh(k, Te, F, alpha, wd):
+    def pred_coh(k, Te, F, alpha):
 
-        return flex.real_xspec_functions(k, Te, F, alpha, wd)[1]
+        return flex.real_xspec_functions(k, Te, F, alpha)[1]
 
-    def pred_joint(k, Te, F, alpha, wd):
+    def pred_joint(k, Te, F, alpha):
 
-        admittance, coherence = flex.real_xspec_functions(k, Te, F, alpha, wd)
+        admittance, coherence = flex.real_xspec_functions(k, Te, F, alpha)
         return np.array([admittance, coherence]).flatten()
 
     if atype=='admit':
@@ -258,13 +260,13 @@ def L2_estimate_cell(k, adm, eadm, coh, ecoh, wd=0., alph=False, atype='joint'):
         y_err = eadm
         if alph:
             theta0 = np.array([20., 0.5, np.pi/2.])
-            function = lambda k, Te, F, alpha: pred_admit(k, Te, F, alpha, wd=wd)
+            function = lambda k, Te, F, alpha: pred_admit(k, Te, F, alpha)
             p1fit, p1cov = curve_fit(function, k, y_obs, p0=theta0, \
                 sigma=y_err, absolute_sigma=True, max_nfev=1000, \
                 bounds=([2., 0.0001, 0.0001], [200., 0.9999, np.pi-0.001]))
 
             # Calculate best fit function
-            pred = pred_admit(k, p1fit[0], p1fit[1], p1fit[2], wd)
+            pred = pred_admit(k, p1fit[0], p1fit[1], p1fit[2])
             
             # calculate reduced chi-square
             rchi2 = np.sum((pred - y_obs)**2\
@@ -272,13 +274,13 @@ def L2_estimate_cell(k, adm, eadm, coh, ecoh, wd=0., alph=False, atype='joint'):
 
         else:
             theta0 = np.array([20., 0.5])
-            function = lambda k, Te, F: pred_admit(k, Te, F, alpha=np.pi/2., wd=wd)
+            function = lambda k, Te, F: pred_admit(k, Te, F, alpha=np.pi/2.)
             p1fit, p1cov = curve_fit(function, k, y_obs, p0=theta0, \
                 sigma=y_err, absolute_sigma=True, max_nfev=1000, \
                 bounds=([2., 0.0001], [200., 0.9999]))
 
             # Calculate best fit function
-            pred = pred_admit(k, p1fit[0], p1fit[1], np.pi/2., wd)
+            pred = pred_admit(k, p1fit[0], p1fit[1], np.pi/2.)
             
             # calculate reduced chi-square
             rchi2 = np.sum((pred - y_obs)**2\
@@ -289,13 +291,13 @@ def L2_estimate_cell(k, adm, eadm, coh, ecoh, wd=0., alph=False, atype='joint'):
         y_err = ecoh
         if alph:
             theta0 = np.array([20., 0.5, np.pi/2.])
-            function = lambda k, Te, F, alpha: pred_coh(k, Te, F, alpha, wd=wd)
+            function = lambda k, Te, F, alpha: pred_coh(k, Te, F, alpha)
             p1fit, p1cov = curve_fit(function, k, y_obs, p0=theta0, \
                 sigma=y_err, absolute_sigma=True, max_nfev=1000, \
                 bounds=([2., 0.0001, 0.0001], [200., 0.9999, np.pi-0.001]))
 
             # Calculate best fit function
-            pred = pred_coh(k, p1fit[0], p1fit[1], p1fit[2], wd)
+            pred = pred_coh(k, p1fit[0], p1fit[1], p1fit[2])
             
             # calculate reduced chi-square
             rchi2 = np.sum((pred - y_obs)**2\
@@ -303,13 +305,13 @@ def L2_estimate_cell(k, adm, eadm, coh, ecoh, wd=0., alph=False, atype='joint'):
 
         else:
             theta0 = np.array([20., 0.5])
-            function = lambda k, Te, F: pred_coh(k, Te, F, alpha=np.pi/2., wd=wd)
+            function = lambda k, Te, F: pred_coh(k, Te, F, alpha=np.pi/2.)
             p1fit, p1cov = curve_fit(function, k, y_obs, p0=theta0, \
                 sigma=y_err, absolute_sigma=True, max_nfev=1000, \
                 bounds=([2., 0.0001], [200., 0.9999]))
 
             # Calculate best fit function
-            pred = pred_coh(k, p1fit[0], p1fit[1], np.pi/2., wd)
+            pred = pred_coh(k, p1fit[0], p1fit[1], np.pi/2.)
             
             # calculate reduced chi-square
             rchi2 = np.sum((pred - y_obs)**2\
@@ -320,13 +322,13 @@ def L2_estimate_cell(k, adm, eadm, coh, ecoh, wd=0., alph=False, atype='joint'):
         y_err = np.array([eadm, ecoh]).flatten()
         if alph:
             theta0 = np.array([20., 0.5, np.pi/2.])
-            function = lambda k, Te, F, alpha: pred_joint(k, Te, F, alpha, wd=wd)
+            function = lambda k, Te, F, alpha: pred_joint(k, Te, F, alpha)
             p1fit, p1cov = curve_fit(function, k, y_obs, p0=theta0, \
                 sigma=y_err, absolute_sigma=True, max_nfev=1000, \
                 bounds=([2., 0.0001, 0.0001], [200., 0.9999, np.pi-0.001]))
 
             # Calculate best fit function
-            pred = pred_joint(k, p1fit[0], p1fit[1], p1fit[2], wd)
+            pred = pred_joint(k, p1fit[0], p1fit[1], p1fit[2])
             
             # calculate reduced chi-square
             rchi2 = np.sum((pred - y_obs)**2\
@@ -334,13 +336,13 @@ def L2_estimate_cell(k, adm, eadm, coh, ecoh, wd=0., alph=False, atype='joint'):
 
         else:
             theta0 = np.array([20., 0.5])
-            function = lambda k, Te, F: pred_joint(k, Te, F, alpha=np.pi/2., wd=wd)
+            function = lambda k, Te, F: pred_joint(k, Te, F, alpha=np.pi/2.)
             p1fit, p1cov = curve_fit(function, k, y_obs, p0=theta0, \
                 sigma=y_err, absolute_sigma=True, max_nfev=1000, \
                 bounds=([2., 0.0001], [200., 0.9999]))
 
             # Calculate best fit function
-            pred = pred_joint(k, p1fit[0], p1fit[1], np.pi/2., wd)
+            pred = pred_joint(k, p1fit[0], p1fit[1], np.pi/2.)
             
             # calculate reduced chi-square
             rchi2 = np.sum((pred - y_obs)**2\
@@ -366,7 +368,7 @@ def L2_estimate_cell(k, adm, eadm, coh, ecoh, wd=0., alph=False, atype='joint'):
 
 def get_L2_estimates(summary):
     """
-    Extract useful estimates from the Posterior distributions.
+    Returns digestible estimates from the L2 estimates.
 
     :type summary: :class:`~pandas.core.frame.DataFrame`
     :param summary: Summary statistics from Posterior distributions
@@ -377,12 +379,9 @@ def get_L2_estimates(summary):
             * std_te (float)  : Standard deviation of elastic thickness from posterior (km)
             * mean_F (float)  : Mean value of load ratio from posterior
             * std_F (float)   : Standard deviation of load ratio from posterior
-
-    .. rubric:: Example
-
-    >>> from plateflex import estimate
-    >>> # MAKE THIS FUNCTION FASTER
-
+            * mean_a (float, optional)  : Mean value of phase difference between initial loads from posterior
+            * std_a (float, optional)   : Standard deviation of phase difference between initial loads from posterior
+            * rchi2 (float)   : Reduced chi-squared value
     """
 
     mean_a = None
@@ -406,10 +405,10 @@ def get_L2_estimates(summary):
         return mean_te, std_te, mean_F, std_F, rchi2
 
 
-def real_xspec_functions(k, Te, F, wd, alpha=np.pi/2.):
+def real_xspec_functions(k, Te, F, alpha=np.pi/2.):
     """
-    Calculate analytical expressions for the real component of admittance, 
-    coherency and coherence functions. 
+    Calculate analytical expressions for the real component of admittance
+    and coherence functions. 
 
     :type k: np.ndarray
     :param k: Wavenumbers (rad/m)
@@ -419,42 +418,40 @@ def real_xspec_functions(k, Te, F, wd, alpha=np.pi/2.):
     :param F: Subsurface-to-surface load ratio [0, 1[
     :type alpha: float, optional
     :param alpha: Phase difference between initial applied loads (rad)
-    :type wd: float, optional
-    :param wd: Thickness of water layer (km)
 
     :return:  
         (tuple): tuple containing:
-            * admittance (:class:`~numpy.ndarray`): Real admittance function (shape ``len(k)``)
-            * coherence (:class:`~numpy.ndarray`): Coherence functions (shape ``len(k)``)
+            * admittance (:class:`~numpy.ndarray`): Real admittance function (shape: ``len(k)``)
+            * coherence (:class:`~numpy.ndarray`): Coherence functions (shape: ``len(k)``)
 
     """
 
-    admittance, coherence = flex.real_xspec_functions(k, Te, F, alpha, wd)
+    admittance, coherence = flex.real_xspec_functions(k, Te, F, alpha)
 
     return admittance, coherence
 
 
-@as_op(itypes=[tt.dvector, tt.dscalar, tt.dscalar, tt.dscalar], 
+@as_op(itypes=[tt.dvector, tt.dscalar, tt.dscalar], 
     otypes=[tt.dvector, tt.dvector])
-def real_xspec_functions_noalpha(k, Te, F, wd):
+def real_xspec_functions_noalpha(k, Te, F):
     """
     Calculate analytical expressions for the real component of admittance, 
     coherency and coherence functions. 
     """
 
-    adm, coh = real_xspec_functions(k, Te, F, wd)
+    adm, coh = real_xspec_functions(k, Te, F)
 
     return adm, coh
 
-@as_op(itypes=[tt.dvector, tt.dscalar, tt.dscalar, tt.dscalar, tt.dscalar], 
+@as_op(itypes=[tt.dvector, tt.dscalar, tt.dscalar, tt.dscalar], 
     otypes=[tt.dvector, tt.dvector])
-def real_xspec_functions_alpha(k, Te, F, wd, alpha):
+def real_xspec_functions_alpha(k, Te, F, alpha):
     """
     Calculate analytical expressions for the real component of admittance, 
     coherency and coherence functions. 
     """
 
-    adm, coh = real_xspec_functions(k, Te, F, wd, alpha)
+    adm, coh = real_xspec_functions(k, Te, F, alpha)
 
     return adm, coh
 

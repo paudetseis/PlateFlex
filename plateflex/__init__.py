@@ -138,7 +138,6 @@ def set_conf_flex():
     cf_fl.rhof = cf_fl.rhoa
     cf_fl.wd = 0.
     cf_fl.boug = 1
-    cf_fl.water = 0
 
 set_conf_cpwt()
 set_conf_flex()
@@ -180,7 +179,6 @@ def get_conf_flex():
     [Fluid density]            rhof (float):   0 kg/m^3
     [Water depth]              wd (float):     0 m
     [Bouguer analysis?]        boug (int):     1 ; True
-    [Include water column?]    water (int):    0 ; False
     """
 
     print('\n'.join((
@@ -193,6 +191,5 @@ def get_conf_flex():
         '[Air density]              rhoa (float):   {0:.0f} kg/m^3'.format(cf_fl.rhoa),
         '[Fluid density]            rhof (float):   {0:.0f} kg/m^3'.format(cf_fl.rhof),
         '[Water depth]              wd (float):     {0:.0f} m'.format(cf_fl.wd),
-        '[Bouguer analysis?]        boug (int):     {0} ; {1}'.format(cf_fl.boug, bool(cf_fl.boug)),
-        '[Include water column?]    water (int):    {0} ; {1}'.format(cf_fl.water, bool(cf_fl.water)))))
+        '[Bouguer analysis?]        boug (int):     {0} ; {1}'.format(cf_fl.boug, bool(cf_fl.boug)))))
 
