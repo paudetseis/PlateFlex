@@ -13,6 +13,11 @@ build
 dist
 
 _build
+_static
+_sources
+_images
 *.rst
 Makefile
 make.bat
+
+picture
