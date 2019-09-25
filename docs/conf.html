@@ -1,0 +1,154 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>Configuration modules &#8212; plateflex 0.0.1 documentation</title>
+    <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">plateflex 0.0.1 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Configuration modules</a><ul>
+<li><a class="reference internal" href="#plateflex-cpwt-conf-cpwt">plateflex.cpwt.conf_cpwt</a></li>
+<li><a class="reference internal" href="#plateflex-flex-conf-flex">plateflex.flex.conf_flex</a></li>
+<li><a class="reference internal" href="#plateflex-conf">plateflex.conf</a></li>
+</ul>
+</li>
+</ul>
+
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/conf.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-plateflex.conf">
+<span id="configuration-modules"></span><h1>Configuration modules<a class="headerlink" href="#module-plateflex.conf" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="plateflex-cpwt-conf-cpwt">
+<h2>plateflex.cpwt.conf_cpwt<a class="headerlink" href="#plateflex-cpwt-conf-cpwt" title="Permalink to this headline">¶</a></h2>
+<p>Global variable that controls the spatio-spectral
+localization of the Morlet wavelet. Default value
+in parentheses.</p>
+<p class="rubric">Internal wavenumber of Morlet wavelet</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">k0</span></code>: float</dt><dd><p>Internal Morlet wavenumber (5.336 or higher)</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="plateflex-flex-conf-flex">
+<h2>plateflex.flex.conf_flex<a class="headerlink" href="#plateflex-flex-conf-flex" title="Permalink to this headline">¶</a></h2>
+<p>Global variables that define model parameters for
+the flexural model. Default values in parentheses.</p>
+<p class="rubric">Earth parameters - fixed</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">E</span></code><span class="classifier">float</span></dt><dd><p>Young’s modulus (100 GPa)</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">nu</span></code><span class="classifier">float</span></dt><dd><p>Poisson’s ratio (0.25)</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">g</span></code><span class="classifier">float</span></dt><dd><p>Gravitational acceleration (9.81 m/s^2)</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">G</span></code><span class="classifier">float)</span></dt><dd><p>Gravitational constant (6.67e-11*1.e5 mGal)</p>
+</dd>
+</dl>
+<p class="rubric">Earth parameters - variable</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">zc</span></code><span class="classifier">float</span></dt><dd><p>Crustal thickness (35.e3 m)</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">rhom</span></code>: float</dt><dd><p>Uppermost mantle density (3200. kg/m^3)</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">rhoc</span></code><span class="classifier">float</span></dt><dd><p>Crustal density (2700. kg/m^3)</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">rhoa</span></code><span class="classifier">float</span></dt><dd><p>Air density (0. kg/m^3)</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">rhow</span></code><span class="classifier">float</span></dt><dd><p>Water density (1030. kg/m^3)</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">rhof</span></code><span class="classifier">float</span></dt><dd><p>Fluid density at topo/fluid interface (==rhoa <em>or</em> ==rhow, depending on water depth)</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">wd</span></code><span class="classifier">float</span></dt><dd><p>Water depth (0.e3 m) -  Automatically determined from
+<a class="reference internal" href="classes.html#plateflex.classes.TopoGrid" title="plateflex.classes.TopoGrid"><code class="xref py py-class docutils literal notranslate"><span class="pre">TopoGrid</span></code></a> object</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="plateflex-conf">
+<h2>plateflex.conf<a class="headerlink" href="#plateflex-conf" title="Permalink to this headline">¶</a></h2>
+<p>Global variables that control sampling of the posterior
+from MCMC chains using <code class="xref py py-class docutils literal notranslate"><span class="pre">pymc3</span></code>. Default values in parentheses.</p>
+<p class="rubric">Bayes sampling</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">draws</span></code><span class="classifier">int</span></dt><dd><p>Number of draws (i.e., samples) in single MCMC chain (500)</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">tunes</span></code><span class="classifier">int</span></dt><dd><p>Number of tuning (i.e., burn-in) samples (500)</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">cores</span></code><span class="classifier">int</span></dt><dd><p>Number of cores (i.e., parallel MCMC chains) (4)</p>
+</dd>
+</dl>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">plateflex 0.0.1 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2019, Pascal Audet.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.2.0.
+    </div>
+  </body>
+</html>

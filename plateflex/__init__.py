@@ -122,7 +122,7 @@ Once the previous steps are performed, you can install ``plateflex`` using pip:
 from . import conf as cf
 from . import estimate
 from . import plotting
-from .classes import Grid, TopoGrid, GravGrid, BougGrid, FairGrid, Project
+from .classes import Grid, TopoGrid, GravGrid, BougGrid, FairGrid, RhocGrid, ZcGrid, Project
 from .cpwt import conf_cpwt as cf_wt
 from .flex import conf_flex as cf_fl
 

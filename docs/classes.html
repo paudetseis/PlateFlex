@@ -1,0 +1,913 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>Classes &#8212; plateflex 0.0.1 documentation</title>
+    <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Module estimate" href="estimate.html" />
+    <link rel="prev" title="Configuration modules" href="conf.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="estimate.html" title="Module estimate"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="conf.html" title="Configuration modules"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">plateflex 0.0.1 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Classes</a><ul>
+<li><a class="reference internal" href="#grid">Grid</a></li>
+<li><a class="reference internal" href="#topogrid">TopoGrid</a></li>
+<li><a class="reference internal" href="#gravgrid">GravGrid</a></li>
+<li><a class="reference internal" href="#bouggrid">BougGrid</a></li>
+<li><a class="reference internal" href="#fairgrid">FairGrid</a></li>
+<li><a class="reference internal" href="#rhocgrid">RhocGrid</a></li>
+<li><a class="reference internal" href="#zcgrid">ZcGrid</a></li>
+<li><a class="reference internal" href="#project">Project</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="conf.html"
+                        title="previous chapter">Configuration modules</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="estimate.html"
+                        title="next chapter">Module estimate</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/classes.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-plateflex.classes">
+<span id="classes"></span><h1>Classes<a class="headerlink" href="#module-plateflex.classes" title="Permalink to this headline">¶</a></h1>
+<p><a class="reference internal" href="api.html#module-plateflex" title="plateflex"><code class="xref py py-mod docutils literal notranslate"><span class="pre">plateflex</span></code></a> defines the following <code class="docutils literal notranslate"><span class="pre">Grid</span></code> classes:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#plateflex.classes.Grid" title="plateflex.classes.Grid"><code class="xref py py-class docutils literal notranslate"><span class="pre">Grid</span></code></a></p></li>
+<li><p><a class="reference internal" href="#plateflex.classes.TopoGrid" title="plateflex.classes.TopoGrid"><code class="xref py py-class docutils literal notranslate"><span class="pre">TopoGrid</span></code></a></p></li>
+<li><p><a class="reference internal" href="#plateflex.classes.GravGrid" title="plateflex.classes.GravGrid"><code class="xref py py-class docutils literal notranslate"><span class="pre">GravGrid</span></code></a></p></li>
+<li><p><a class="reference internal" href="#plateflex.classes.BougGrid" title="plateflex.classes.BougGrid"><code class="xref py py-class docutils literal notranslate"><span class="pre">BougGrid</span></code></a></p></li>
+<li><p><a class="reference internal" href="#plateflex.classes.FairGrid" title="plateflex.classes.FairGrid"><code class="xref py py-class docutils literal notranslate"><span class="pre">FairGrid</span></code></a></p></li>
+<li><p><a class="reference internal" href="#plateflex.classes.RhocGrid" title="plateflex.classes.RhocGrid"><code class="xref py py-class docutils literal notranslate"><span class="pre">RhocGrid</span></code></a></p></li>
+<li><p><a class="reference internal" href="#plateflex.classes.ZcGrid" title="plateflex.classes.ZcGrid"><code class="xref py py-class docutils literal notranslate"><span class="pre">ZcGrid</span></code></a></p></li>
+</ul>
+<p>These classes can be initialized with a grid of topography/bathymetry or gravity
+anomaly (Bouguer/Free-air) data, and contain methods for the following functionality:</p>
+<ul class="simple">
+<li><p>Extracting contours at some level of the grid</p></li>
+<li><p>Performing a wavelet transform using a Morlet wavelet</p></li>
+<li><p>Obtaining the wavelet scalogram from the wavelet transform</p></li>
+<li><p>Plotting the input grids, wavelet transform components, and scalograms</p></li>
+</ul>
+<p>This module further contains the class <a class="reference internal" href="#plateflex.classes.Project" title="plateflex.classes.Project"><code class="xref py py-class docutils literal notranslate"><span class="pre">Project</span></code></a>,
+which itself is a container of <a class="reference internal" href="#plateflex.classes.Grid" title="plateflex.classes.Grid"><code class="xref py py-class docutils literal notranslate"><span class="pre">Grid</span></code></a> objects
+(at least one each of <a class="reference internal" href="#plateflex.classes.TopoGrid" title="plateflex.classes.TopoGrid"><code class="xref py py-class docutils literal notranslate"><span class="pre">TopoGrid</span></code></a> and
+<a class="reference internal" href="#plateflex.classes.GravGrid" title="plateflex.classes.GravGrid"><code class="xref py py-class docutils literal notranslate"><span class="pre">GravGrid</span></code></a>). Methods are available to:</p>
+<ul class="simple">
+<li><p>Add <a class="reference internal" href="#plateflex.classes.Grid" title="plateflex.classes.Grid"><code class="xref py py-class docutils literal notranslate"><span class="pre">Grid</span></code></a> or <a class="reference internal" href="#plateflex.classes.Project" title="plateflex.classes.Project"><code class="xref py py-class docutils literal notranslate"><span class="pre">Project</span></code></a> objects to the project</p></li>
+<li><p>Iterate over <a class="reference internal" href="#plateflex.classes.Grid" title="plateflex.classes.Grid"><code class="xref py py-class docutils literal notranslate"><span class="pre">Grid</span></code></a> objects</p></li>
+<li><p>Initialize the project</p></li>
+<li><p>Perform the wavelet admittance and coherence between topography (<a class="reference internal" href="#plateflex.classes.TopoGrid" title="plateflex.classes.TopoGrid"><code class="xref py py-class docutils literal notranslate"><span class="pre">TopoGrid</span></code></a> object) and gravity anomalies (<a class="reference internal" href="#plateflex.classes.GravGrid" title="plateflex.classes.GravGrid"><code class="xref py py-class docutils literal notranslate"><span class="pre">GravGrid</span></code></a> object)</p></li>
+<li><p>Plot the wavelet admnittance and coherence spectra</p></li>
+<li><p>Estimate model parameters at single grid cell</p></li>
+<li><p>Estimate model parameters at every (or decimated) grid cell</p></li>
+<li><p>Plot the statistics of the estimated parameters at single grid cell</p></li>
+<li><p>Plot the observed and predicted admittance and coherence functions at single grid cell</p></li>
+<li><p>Plot the final grids of model parameters</p></li>
+</ul>
+<dl class="function">
+<dt id="plateflex.classes._lam2k">
+<code class="sig-prename descclassname">plateflex.classes.</code><code class="sig-name descname">_lam2k</code><span class="sig-paren">(</span><em class="sig-param">nx</em>, <em class="sig-param">ny</em>, <em class="sig-param">dx</em>, <em class="sig-param">dy</em>, <em class="sig-param">p=0.85</em><span class="sig-paren">)</span><a class="headerlink" href="#plateflex.classes._lam2k" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the optimal set of equally-spaced equivalent wavenumbers for given grid
+parameters to be used in the wavelet analysis through the <code class="xref py py-mod docutils literal notranslate"><span class="pre">cpwt</span></code>
+module.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>nx</strong> (<em>int</em>) – Size of grid in x direction</p></li>
+<li><p><strong>ny</strong> (<em>int</em>) – Size of grid in y direction</p></li>
+<li><p><strong>dx</strong> (<em>float</em>) – Sample distance in x direction (km)</p></li>
+<li><p><strong>dy</strong> (<em>float</em>) – Sample distance in y direction (km)</p></li>
+<li><p><strong>p</strong> (<em>float</em>) – Fractional amplitude at which wavelets overlap in wavenumber space</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>(tuple): Tuple containing:</dt><dd><ul class="simple">
+<li><p>ns (int): Size of wavenumber array</p></li>
+<li><p>k (<code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code>): Wavenumbers (rad/m)</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This is different from the exact Fourier wavenumbers calculated for
+the grid using <code class="xref py py-func docutils literal notranslate"><span class="pre">fftfreq()</span></code>, as the continuous wavelet
+transform can be defined at arbitrary wavenumbers.</p>
+</div>
+<p class="rubric">Example</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">plateflex</span> <span class="k">import</span> <span class="n">classes</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Define fake grid</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">nx</span> <span class="o">=</span> <span class="n">ny</span> <span class="o">=</span> <span class="mi">300</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dx</span> <span class="o">=</span> <span class="n">dy</span> <span class="o">=</span> <span class="mf">20.</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">classes</span><span class="o">.</span><span class="n">_lam2k</span><span class="p">(</span><span class="n">nx</span><span class="p">,</span> <span class="n">ny</span><span class="p">,</span> <span class="n">dx</span><span class="p">,</span> <span class="n">dy</span><span class="p">)</span>
+<span class="go">(18, array([2.96192196e-06, 3.67056506e-06, 4.54875180e-06, 5.63704569e-06,</span>
+<span class="go">       6.98571509e-06, 8.65705514e-06, 1.07282651e-05, 1.32950144e-05,</span>
+<span class="go">       1.64758613e-05, 2.04177293e-05, 2.53026936e-05, 3.13563910e-05,</span>
+<span class="go">       3.88584421e-05, 4.81553673e-05, 5.96765921e-05, 7.39542826e-05,</span>
+<span class="go">       9.16479263e-05, 1.13574794e-04]))</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<div class="section" id="grid">
+<h2>Grid<a class="headerlink" href="#grid" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="plateflex.classes.Grid">
+<em class="property">class </em><code class="sig-prename descclassname">plateflex.classes.</code><code class="sig-name descname">Grid</code><span class="sig-paren">(</span><em class="sig-param">grid</em>, <em class="sig-param">dx</em>, <em class="sig-param">dy</em><span class="sig-paren">)</span><a class="headerlink" href="#plateflex.classes.Grid" title="Permalink to this definition">¶</a></dt>
+<dd><p>An object containing a 2D array of data and Cartesian coordinates specifying the
+bounding box of the array. Contains methods to calculate the wavelet transform,
+wavelet scalogram and to plot those quantities at a specified wavenumber index.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>grid</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code>) – 2D array of of topography/gravity data</p></li>
+<li><p><strong>dx</strong> (<em>float</em>) – Grid spacing in the x-direction (km)</p></li>
+<li><p><strong>dy</strong> (<em>float</em>) – Grid spacing in the y-direction (km)</p></li>
+</ul>
+</dd>
+</dl>
+<p>Grid must be projected in km.</p>
+<p class="rubric">Default Attributes</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">data</span></code><span class="classifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></span></dt><dd><p>2D array of topography/gravity data (shape (<cite>nx,ny</cite>))</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">dx</span></code><span class="classifier">float</span></dt><dd><p>Grid spacing in the x-direction in km</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">dy</span></code><span class="classifier">float</span></dt><dd><p>Grid spacing in the y-direction in km</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">nx</span></code><span class="classifier">int</span></dt><dd><p>Number of grid cells in the x-direction</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">ny</span></code><span class="classifier">int</span></dt><dd><p>Number of grid cells in the y-direction</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">units</span></code><span class="classifier">str</span></dt><dd><p>Units of data set</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">sg_units</span></code><span class="classifier">str</span></dt><dd><p>Units of power-spectral density of data set</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">logsg_units</span></code><span class="classifier">str</span></dt><dd><p>Units of power-spectral density of data set in log</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">title</span></code><span class="classifier">str</span></dt><dd><p>Descriptor for data set - used in title of plots</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">ns</span></code> int</dt><dd><p>Number of wavenumber samples</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">k</span></code><span class="classifier">np.ndarray</span></dt><dd><p>1D array of wavenumbers</p>
+</dd>
+</dl>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">plateflex</span> <span class="k">import</span> <span class="n">Grid</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Create zero-valued square grid</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">nn</span> <span class="o">=</span> <span class="mi">200</span><span class="p">;</span> <span class="n">dd</span> <span class="o">=</span> <span class="mf">10.</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">xmin</span> <span class="o">=</span> <span class="n">ymin</span> <span class="o">=</span> <span class="mf">0.</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">xmax</span> <span class="o">=</span> <span class="n">ymax</span> <span class="o">=</span> <span class="p">(</span><span class="n">nn</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">dd</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">nn</span><span class="p">,</span> <span class="n">nn</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">grid</span> <span class="o">=</span> <span class="n">Grid</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">dx</span><span class="p">,</span> <span class="n">dy</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">grid</span>
+<span class="go">&lt;plateflex.grids.Grid object at 0x10613fe10&gt;</span>
+</pre></div>
+</div>
+<dl class="method">
+<dt id="plateflex.classes.Grid.make_contours">
+<code class="sig-name descname">make_contours</code><span class="sig-paren">(</span><em class="sig-param">level=0.0</em><span class="sig-paren">)</span><a class="headerlink" href="#plateflex.classes.Grid.make_contours" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function returns the contours as a List of coordinate positions
+at one given level - run this more than once with different levels
+if desired</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>level</strong> (<em>float</em>) – Level (z value) of grid to contour</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>contours: List of contours with coordinate positions</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="plateflex.classes.Grid.wlet_transform">
+<code class="sig-name descname">wlet_transform</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#plateflex.classes.Grid.wlet_transform" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method uses the module <code class="xref py py-mod docutils literal notranslate"><span class="pre">cpwt</span></code> to calculate
+the wavelet transform of the grid. By default the method mirrors the grid edges,
+tapers them (10 points on each edge) and pads the array with zeros to the next
+power of 2. The wavelet transform is stored as an attribute of the object.</p>
+<p class="rubric">Additional Attributes</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">wl_trans</span></code><span class="classifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></span></dt><dd><p>Wavelet transform of the grid (shape (<cite>nx,ny,na,ns</cite>))</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">plateflex</span> <span class="k">import</span> <span class="n">Grid</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Create zero-valued square array</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">nn</span> <span class="o">=</span> <span class="mi">200</span><span class="p">;</span> <span class="n">dd</span> <span class="o">=</span> <span class="mf">10.</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">xmin</span> <span class="o">=</span> <span class="n">ymin</span> <span class="o">=</span> <span class="mf">0.</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">xmax</span> <span class="o">=</span> <span class="n">ymax</span> <span class="o">=</span> <span class="p">(</span><span class="n">nn</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">dd</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">nn</span><span class="p">,</span> <span class="n">nn</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">grid</span> <span class="o">=</span> <span class="n">Grid</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">dx</span><span class="p">,</span> <span class="n">dy</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">grid</span><span class="o">.</span><span class="n">wlet_transform</span><span class="p">()</span>
+<span class="go"> #loops = 13:  1  2  3  4  5  6  7  8  9 10 11 12 13</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">grid</span><span class="o">.</span><span class="n">wl_trans</span><span class="o">.</span><span class="n">shape</span>
+<span class="go">(100, 100, 11, 13)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="plateflex.classes.Grid.wlet_scalogram">
+<code class="sig-name descname">wlet_scalogram</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#plateflex.classes.Grid.wlet_scalogram" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method uses the module <code class="xref py py-mod docutils literal notranslate"><span class="pre">cpwt</span></code> to calculate
+the wavelet scalogram of the grid.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If no <code class="docutils literal notranslate"><span class="pre">wl_trans</span></code> attribute is found, the method automatically calculates
+the wavelet transform first.</p>
+</div>
+<p>The wavelet scalogram is stored as an attribute of the object.</p>
+<p class="rubric">Additional Attributes</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">wl_sg</span></code><span class="classifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></span></dt><dd><p>Wavelet scalogram of the grid (shape (<cite>nx,ny,na,ns</cite>))</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">plateflex</span> <span class="k">import</span> <span class="n">Grid</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Create random-valued square grid</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">nn</span> <span class="o">=</span> <span class="mi">200</span><span class="p">;</span> <span class="n">dd</span> <span class="o">=</span> <span class="mf">10.</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">xmin</span> <span class="o">=</span> <span class="n">ymin</span> <span class="o">=</span> <span class="mf">0.</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">xmax</span> <span class="o">=</span> <span class="n">ymax</span> <span class="o">=</span> <span class="p">(</span><span class="n">nn</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">dd</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># set random seed</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">nn</span><span class="p">,</span> <span class="n">nn</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">grid1</span> <span class="o">=</span> <span class="n">Grid</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">dx</span><span class="p">,</span> <span class="n">dy</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">grid1</span><span class="o">.</span><span class="n">wlet_scalogram</span><span class="p">()</span>
+<span class="go"> #loops = 17:  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">grid1</span><span class="o">.</span><span class="n">wl_sg</span><span class="o">.</span><span class="n">shape</span>
+<span class="go">(200, 200, 17)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Perform wavelet transform first</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">grid2</span> <span class="o">=</span> <span class="n">Grid</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">dx</span><span class="p">,</span> <span class="n">dy</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">grid2</span><span class="o">.</span><span class="n">wlet_transform</span><span class="p">()</span>
+<span class="go"> #loops = 17:  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">grid2</span><span class="o">.</span><span class="n">wlet_scalogram</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">grid1</span><span class="o">.</span><span class="n">wl_sg</span><span class="p">,</span> <span class="n">grid2</span><span class="o">.</span><span class="n">wl_sg</span><span class="p">)</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="plateflex.classes.Grid.plot_transform">
+<code class="sig-name descname">plot_transform</code><span class="sig-paren">(</span><em class="sig-param">kindex=None</em>, <em class="sig-param">aindex=None</em>, <em class="sig-param">log=False</em>, <em class="sig-param">mask=None</em>, <em class="sig-param">title='Wavelet transform'</em>, <em class="sig-param">save=None</em>, <em class="sig-param">clabel=None</em>, <em class="sig-param">contours=None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#plateflex.classes.Grid.plot_transform" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method plots the real and imaginary components of the wavelet transform of a
+<a class="reference internal" href="#plateflex.classes.Grid" title="plateflex.classes.Grid"><code class="xref py py-class docutils literal notranslate"><span class="pre">Grid</span></code></a> object at wavenumber and angle indices (int).
+Raises <code class="docutils literal notranslate"><span class="pre">Exception</span></code> for the cases where:</p>
+<ul class="simple">
+<li><p>no wavenumber OR angle index is specified (kindex and aindex)</p></li>
+<li><p>wavenumber index is lower than 0 or larger than self.ns</p></li>
+<li><p>angle index is lower than 0 or larger than 11 (hardcoded)</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If no <code class="docutils literal notranslate"><span class="pre">wl_trans</span></code> attribute is found, the method automatically calculates
+the wavelet transform first.</p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="plateflex.classes.Grid.plot_scalogram">
+<code class="sig-name descname">plot_scalogram</code><span class="sig-paren">(</span><em class="sig-param">kindex=None</em>, <em class="sig-param">log=True</em>, <em class="sig-param">mask=None</em>, <em class="sig-param">title='Wavelet scalogram'</em>, <em class="sig-param">save=None</em>, <em class="sig-param">clabel=None</em>, <em class="sig-param">contours=None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#plateflex.classes.Grid.plot_scalogram" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method plots the wavelet scalogram of a <a class="reference internal" href="#plateflex.classes.Grid" title="plateflex.classes.Grid"><code class="xref py py-class docutils literal notranslate"><span class="pre">Grid</span></code></a>
+object at a wavenumber index (int). Raises <code class="docutils literal notranslate"><span class="pre">Exception</span></code> for the cases where:</p>
+<ul class="simple">
+<li><p>no wavenumber index is specified (kindex)</p></li>
+<li><p>wavenumber index is lower than 0 or larger than self.ns - 1</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If no <code class="docutils literal notranslate"><span class="pre">wl_sg</span></code> attribute is found, the method automatically calculates
+the wavelet scalogram (and maybe also the wavelet transform) first.</p>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="topogrid">
+<h2>TopoGrid<a class="headerlink" href="#topogrid" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="plateflex.classes.TopoGrid">
+<em class="property">class </em><code class="sig-prename descclassname">plateflex.classes.</code><code class="sig-name descname">TopoGrid</code><span class="sig-paren">(</span><em class="sig-param">grid</em>, <em class="sig-param">dx</em>, <em class="sig-param">dy</em><span class="sig-paren">)</span><a class="headerlink" href="#plateflex.classes.TopoGrid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Basic grid class of <a class="reference internal" href="api.html#module-plateflex" title="plateflex"><code class="xref py py-mod docutils literal notranslate"><span class="pre">plateflex</span></code></a> for Topography data that inherits
+from <a class="reference internal" href="#plateflex.classes.Grid" title="plateflex.classes.Grid"><code class="xref py py-class docutils literal notranslate"><span class="pre">Grid</span></code></a></p>
+<p class="rubric">Additional Attributes</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">units</span></code><span class="classifier">str</span></dt><dd><p>Units of Topography (‘<span class="math notranslate nohighlight">\(m\)</span>’)</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">sg_units</span></code><span class="classifier">str</span></dt><dd><p>Units of wavelet PSD (scalogram) (‘<span class="math notranslate nohighlight">\(m^2/|k|\)</span>’)</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">logsg_units</span></code><span class="classifier">str</span></dt><dd><p>Units of log of wavelet PSD (log(scalogram)) (‘<span class="math notranslate nohighlight">\(log(m^2/|k|)\)</span>’)</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">title</span></code>: str</dt><dd><p>Descriptor for Topography data</p>
+</dd>
+</dl>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">plateflex</span> <span class="k">import</span> <span class="n">Grid</span><span class="p">,</span> <span class="n">TopoGrid</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">nn</span> <span class="o">=</span> <span class="mi">200</span><span class="p">;</span> <span class="n">dd</span> <span class="o">=</span> <span class="mf">10.</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">topogrid</span> <span class="o">=</span> <span class="n">TopoGrid</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">nn</span><span class="p">,</span> <span class="n">nn</span><span class="p">),</span> <span class="n">dd</span><span class="p">,</span> <span class="n">dd</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">isinstance</span><span class="p">(</span><span class="n">topogrid</span><span class="p">,</span> <span class="n">Grid</span><span class="p">)</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Automatically converts grid values to ‘meters’ if standard deviation is lower
+than 20</p>
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="gravgrid">
+<h2>GravGrid<a class="headerlink" href="#gravgrid" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="plateflex.classes.GravGrid">
+<em class="property">class </em><code class="sig-prename descclassname">plateflex.classes.</code><code class="sig-name descname">GravGrid</code><span class="sig-paren">(</span><em class="sig-param">grid</em>, <em class="sig-param">dx</em>, <em class="sig-param">dy</em><span class="sig-paren">)</span><a class="headerlink" href="#plateflex.classes.GravGrid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Basic grid class of <a class="reference internal" href="api.html#module-plateflex" title="plateflex"><code class="xref py py-mod docutils literal notranslate"><span class="pre">plateflex</span></code></a> for gravity data that inherits
+from <a class="reference internal" href="#plateflex.classes.Grid" title="plateflex.classes.Grid"><code class="xref py py-class docutils literal notranslate"><span class="pre">Grid</span></code></a></p>
+<p class="rubric">Additional Attributes</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">units</span></code><span class="classifier">str</span></dt><dd><p>Units of Gravity anomaly (‘<span class="math notranslate nohighlight">\(mGal\)</span>’)</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">sg_units</span></code><span class="classifier">str</span></dt><dd><p>Units of wavelet PSD (scalogram) (‘<span class="math notranslate nohighlight">\(mGal^2/|k|\)</span>’)</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">logsg_units</span></code><span class="classifier">str</span></dt><dd><p>Units of log of wavelet PSD (log(scalogram)) (‘<span class="math notranslate nohighlight">\(log(mGal^2/|k|)\)</span>’)</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">title</span></code>: str</dt><dd><p>Descriptor for Gravity data</p>
+</dd>
+</dl>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">plateflex</span> <span class="k">import</span> <span class="n">Grid</span><span class="p">,</span> <span class="n">GravGrid</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">nn</span> <span class="o">=</span> <span class="mi">200</span><span class="p">;</span> <span class="n">dd</span> <span class="o">=</span> <span class="mf">10.</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">gravgrid</span> <span class="o">=</span> <span class="n">GravGrid</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">nn</span><span class="p">,</span> <span class="n">nn</span><span class="p">),</span> <span class="n">dd</span><span class="p">,</span> <span class="n">dd</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">isinstance</span><span class="p">(</span><span class="n">gravgrid</span><span class="p">,</span> <span class="n">Grid</span><span class="p">)</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="bouggrid">
+<h2>BougGrid<a class="headerlink" href="#bouggrid" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="plateflex.classes.BougGrid">
+<em class="property">class </em><code class="sig-prename descclassname">plateflex.classes.</code><code class="sig-name descname">BougGrid</code><span class="sig-paren">(</span><em class="sig-param">grid</em>, <em class="sig-param">dx</em>, <em class="sig-param">dy</em><span class="sig-paren">)</span><a class="headerlink" href="#plateflex.classes.BougGrid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Basic grid class of <a class="reference internal" href="api.html#module-plateflex" title="plateflex"><code class="xref py py-mod docutils literal notranslate"><span class="pre">plateflex</span></code></a> for Bouguer gravity data that inherits
+from <a class="reference internal" href="#plateflex.classes.GravGrid" title="plateflex.classes.GravGrid"><code class="xref py py-class docutils literal notranslate"><span class="pre">GravGrid</span></code></a></p>
+<p class="rubric">Additional Attributes</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">title</span></code>: str</dt><dd><p>Descriptor for Bouguer gravity data</p>
+</dd>
+</dl>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">plateflex</span> <span class="k">import</span> <span class="n">Grid</span><span class="p">,</span> <span class="n">BougGrid</span><span class="p">,</span> <span class="n">GravGrid</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">nn</span> <span class="o">=</span> <span class="mi">200</span><span class="p">;</span> <span class="n">dd</span> <span class="o">=</span> <span class="mf">10.</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">bouggrid</span> <span class="o">=</span> <span class="n">BougGrid</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">nn</span><span class="p">,</span> <span class="n">nn</span><span class="p">),</span> <span class="n">dd</span><span class="p">,</span> <span class="n">dd</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">isinstance</span><span class="p">(</span><span class="n">bouggrid</span><span class="p">,</span> <span class="n">GravGrid</span><span class="p">)</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">isinstance</span><span class="p">(</span><span class="n">bouggrid</span><span class="p">,</span> <span class="n">Grid</span><span class="p">)</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="fairgrid">
+<h2>FairGrid<a class="headerlink" href="#fairgrid" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="plateflex.classes.FairGrid">
+<em class="property">class </em><code class="sig-prename descclassname">plateflex.classes.</code><code class="sig-name descname">FairGrid</code><span class="sig-paren">(</span><em class="sig-param">grid</em>, <em class="sig-param">dx</em>, <em class="sig-param">dy</em><span class="sig-paren">)</span><a class="headerlink" href="#plateflex.classes.FairGrid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Basic grid class of <a class="reference internal" href="api.html#module-plateflex" title="plateflex"><code class="xref py py-mod docutils literal notranslate"><span class="pre">plateflex</span></code></a> for Free-air gravity data that inherits
+from <a class="reference internal" href="#plateflex.classes.GravGrid" title="plateflex.classes.GravGrid"><code class="xref py py-class docutils literal notranslate"><span class="pre">GravGrid</span></code></a></p>
+<p class="rubric">Additional Attributes</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">title</span></code>: str</dt><dd><p>Descriptor for Free-air gravity data</p>
+</dd>
+</dl>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">plateflex</span> <span class="k">import</span> <span class="n">Grid</span><span class="p">,</span> <span class="n">FairGrid</span><span class="p">,</span> <span class="n">GravGrid</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">nn</span> <span class="o">=</span> <span class="mi">200</span><span class="p">;</span> <span class="n">dd</span> <span class="o">=</span> <span class="mf">10.</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fairgrid</span> <span class="o">=</span> <span class="n">FaiorGrid</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">nn</span><span class="p">,</span> <span class="n">nn</span><span class="p">),</span> <span class="n">dd</span><span class="p">,</span> <span class="n">dd</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">isinstance</span><span class="p">(</span><span class="n">fairgrid</span><span class="p">,</span> <span class="n">GravGrid</span><span class="p">)</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">isinstance</span><span class="p">(</span><span class="n">fairgrid</span><span class="p">,</span> <span class="n">Grid</span><span class="p">)</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="rhocgrid">
+<h2>RhocGrid<a class="headerlink" href="#rhocgrid" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="plateflex.classes.RhocGrid">
+<em class="property">class </em><code class="sig-prename descclassname">plateflex.classes.</code><code class="sig-name descname">RhocGrid</code><span class="sig-paren">(</span><em class="sig-param">grid</em>, <em class="sig-param">dx</em>, <em class="sig-param">dy</em><span class="sig-paren">)</span><a class="headerlink" href="#plateflex.classes.RhocGrid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Basic grid class of <a class="reference internal" href="api.html#module-plateflex" title="plateflex"><code class="xref py py-mod docutils literal notranslate"><span class="pre">plateflex</span></code></a> for crustal density data that inherits
+from <a class="reference internal" href="#plateflex.classes.Grid" title="plateflex.classes.Grid"><code class="xref py py-class docutils literal notranslate"><span class="pre">Grid</span></code></a></p>
+<p class="rubric">Additional Attributes</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">units</span></code><span class="classifier">str</span></dt><dd><p>Units of Density (‘<span class="math notranslate nohighlight">\(kg/m^3\)</span>’)</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">title</span></code>: str</dt><dd><p>Descriptor for Density data</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This class should only be used to specify the density of the
+crust at each cell location. Although the <a class="reference internal" href="#plateflex.classes.Grid" title="plateflex.classes.Grid"><code class="xref py py-class docutils literal notranslate"><span class="pre">Grid</span></code></a>
+methods are still available, they are not useful in this context.</p>
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="zcgrid">
+<h2>ZcGrid<a class="headerlink" href="#zcgrid" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="plateflex.classes.ZcGrid">
+<em class="property">class </em><code class="sig-prename descclassname">plateflex.classes.</code><code class="sig-name descname">ZcGrid</code><span class="sig-paren">(</span><em class="sig-param">grid</em>, <em class="sig-param">dx</em>, <em class="sig-param">dy</em><span class="sig-paren">)</span><a class="headerlink" href="#plateflex.classes.ZcGrid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Basic grid class of <a class="reference internal" href="api.html#module-plateflex" title="plateflex"><code class="xref py py-mod docutils literal notranslate"><span class="pre">plateflex</span></code></a> for crustal thickness data that inherits
+from <a class="reference internal" href="#plateflex.classes.Grid" title="plateflex.classes.Grid"><code class="xref py py-class docutils literal notranslate"><span class="pre">Grid</span></code></a></p>
+<p class="rubric">Additional Attributes</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">units</span></code><span class="classifier">str</span></dt><dd><p>Units of Crustal thickness (‘<span class="math notranslate nohighlight">\(m\)</span>’)</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">title</span></code>: str</dt><dd><p>Descriptor for Crustal thickness data</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This class should only be used to specify the thickness of the
+crust at each cell location. Although the <a class="reference internal" href="#plateflex.classes.Grid" title="plateflex.classes.Grid"><code class="xref py py-class docutils literal notranslate"><span class="pre">Grid</span></code></a>
+methods are still available, they are not useful in this context.</p>
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="project">
+<h2>Project<a class="headerlink" href="#project" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="plateflex.classes.Project">
+<em class="property">class </em><code class="sig-prename descclassname">plateflex.classes.</code><code class="sig-name descname">Project</code><span class="sig-paren">(</span><em class="sig-param">grids=None</em><span class="sig-paren">)</span><a class="headerlink" href="#plateflex.classes.Project" title="Permalink to this definition">¶</a></dt>
+<dd><p>Container for <a class="reference internal" href="#plateflex.classes.Grid" title="plateflex.classes.Grid"><code class="xref py py-class docutils literal notranslate"><span class="pre">Grid</span></code></a> objects, with
+methods to calculate the wavelet admittance and coherence and
+estimate flexural model parameters as well as plot various results.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>grids</strong> (list of <a class="reference internal" href="#plateflex.classes.Grid" title="plateflex.classes.Grid"><code class="xref py py-class docutils literal notranslate"><span class="pre">Grid</span></code></a>, optional) – Initial list of PlateFlex <a class="reference internal" href="#plateflex.classes.Grid" title="plateflex.classes.Grid"><code class="xref py py-class docutils literal notranslate"><span class="pre">Grid</span></code></a>
+objects.</p>
+</dd>
+</dl>
+<p class="rubric">Default Attributes</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">grids</span></code><span class="classifier">List</span></dt><dd><p>List of <a class="reference internal" href="#plateflex.classes.Grid" title="plateflex.classes.Grid"><code class="xref py py-class docutils literal notranslate"><span class="pre">Grid</span></code></a> objects</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">inverse</span></code><span class="classifier">str</span></dt><dd><p>Type of inversion to perform. By default the type is <cite>‘L2’</cite> for
+non-linear least-squares. Options are: <cite>‘L2’</cite> or <cite>‘bayes’</cite></p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">mask</span></code><span class="classifier">Array</span></dt><dd><p>2D array of boolean values determined independently</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">initialized</span></code><span class="classifier">Bool</span></dt><dd><p>Whether or not the project has been initialized and is ready for
+the wavelet analysis and estimation steps. By default this parameter
+is <code class="docutils literal notranslate"><span class="pre">False</span></code>, unless the method <a class="reference internal" href="#plateflex.classes.Project.init" title="plateflex.classes.Project.init"><code class="xref py py-func docutils literal notranslate"><span class="pre">init()</span></code></a>
+has been executed.</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Can hold a list of any length with any type of
+<a class="reference internal" href="#plateflex.classes.Grid" title="plateflex.classes.Grid"><code class="xref py py-class docutils literal notranslate"><span class="pre">Grid</span></code></a> objects - however the wavelet
+calculations will only proceed if the project holds one each
+of <a class="reference internal" href="#plateflex.classes.TopoGrid" title="plateflex.classes.TopoGrid"><code class="xref py py-class docutils literal notranslate"><span class="pre">TopoGrid</span></code></a> and
+<a class="reference internal" href="#plateflex.classes.GravGrid" title="plateflex.classes.GravGrid"><code class="xref py py-class docutils literal notranslate"><span class="pre">GravGrid</span></code></a> (<code class="docutils literal notranslate"><span class="pre">BougGrid</span></code> or <code class="docutils literal notranslate"><span class="pre">FairGrid</span></code>) objects.</p>
+</div>
+<p class="rubric">Examples</p>
+<p>Create zero-valued square grid</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">plateflex</span> <span class="k">import</span> <span class="n">Grid</span><span class="p">,</span> <span class="n">TopoGrid</span><span class="p">,</span> <span class="n">BougGrid</span><span class="p">,</span> <span class="n">GravGrid</span><span class="p">,</span> <span class="n">Project</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">nn</span> <span class="o">=</span> <span class="mi">200</span><span class="p">;</span> <span class="n">dd</span> <span class="o">=</span> <span class="mf">10.</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">topogrid</span> <span class="o">=</span> <span class="n">TopoGrid</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">nn</span><span class="p">,</span> <span class="n">nn</span><span class="p">),</span> <span class="n">dd</span><span class="p">,</span> <span class="n">dd</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">bouggrid</span> <span class="o">=</span> <span class="n">BougGrid</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">nn</span><span class="p">,</span> <span class="n">nn</span><span class="p">),</span> <span class="n">dd</span><span class="p">,</span> <span class="n">dd</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">isinstance</span><span class="p">(</span><span class="n">bouggrid</span><span class="p">,</span> <span class="n">GravGrid</span><span class="p">)</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">isinstance</span><span class="p">(</span><span class="n">bouggrid</span><span class="p">,</span> <span class="n">Grid</span><span class="p">)</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+<p>Assign project with list of grids</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Project</span><span class="p">(</span><span class="n">grids</span><span class="o">=</span><span class="p">[</span><span class="n">topogrid</span><span class="p">,</span> <span class="n">bouggrid</span><span class="p">])</span>
+<span class="go">&lt;plateflex.classes.Project object at 0x10c62b320&gt;</span>
+</pre></div>
+</div>
+<p>Add Grid to project</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">project</span> <span class="o">=</span> <span class="n">Project</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">project</span> <span class="o">+=</span> <span class="n">topogrid</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">project</span> <span class="o">+=</span> <span class="n">bouggrid</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">project</span><span class="o">.</span><span class="n">grids</span>
+<span class="go">[&lt;plateflex.classes.TopoGrid object at 0x1176b4240&gt;, &lt;plateflex.classes.BougGrid object at 0x1176b42e8&gt;]</span>
+</pre></div>
+</div>
+<p>Append Grid to project</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">project</span> <span class="o">=</span> <span class="n">Project</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">project</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">topogrid</span><span class="p">)</span>
+<span class="go">&lt;plateflex.classes.Project object at 0x1176b9400&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">project</span><span class="o">.</span><span class="n">grids</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="go">&lt;plateflex.classes.TopoGrid object at 0x1176b4240&gt;</span>
+</pre></div>
+</div>
+<p>Initialize project</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">project</span><span class="o">.</span><span class="n">init</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Exception if project does not contain exactly one TopoGrid and one GravGrid</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">project</span> <span class="o">=</span> <span class="n">Project</span><span class="p">(</span><span class="n">grids</span><span class="o">=</span><span class="p">[</span><span class="n">topogrid</span><span class="p">,</span> <span class="n">topogrid</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">project</span><span class="o">.</span><span class="n">init</span><span class="p">()</span>
+<span class="gt">Traceback (most recent call last):</span>
+  File <span class="nb">&quot;&lt;stdin&gt;&quot;</span>, line <span class="m">1</span>, in <span class="n">&lt;module&gt;</span>
+  File <span class="nb">&quot;/Users/pascalaudet/Softwares/Python/plateflex-dev/PlateFlex/plateflex/classes.py&quot;</span>, line <span class="m">492</span>, in <span class="n">wlet_admit_coh</span>
+    <span class="n">grids</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">grids</span> <span class="o">+</span> <span class="n">other</span><span class="o">.</span><span class="n">grids</span>
+<span class="gr">Exception</span>: <span class="n">There needs to be one GravGrid object in Project</span>
+</pre></div>
+</div>
+<p>Calculate wavelet admittance and coherence</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">project</span> <span class="o">=</span> <span class="n">Project</span><span class="p">(</span><span class="n">grids</span><span class="o">=</span><span class="p">[</span><span class="n">topogrid</span><span class="p">,</span> <span class="n">bouggrid</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">project</span><span class="o">.</span><span class="n">wlet_admit_coh</span><span class="p">()</span>
+<span class="go"> #loops = 17:  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17</span>
+<span class="go"> #loops = 17:  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17</span>
+<span class="go"> Calculation jackknife error on admittance and coherence</span>
+</pre></div>
+</div>
+<dl class="method">
+<dt id="plateflex.classes.Project.append">
+<code class="sig-name descname">append</code><span class="sig-paren">(</span><em class="sig-param">grid</em><span class="sig-paren">)</span><a class="headerlink" href="#plateflex.classes.Project.append" title="Permalink to this definition">¶</a></dt>
+<dd><p>Append a single <a class="reference internal" href="#plateflex.classes.Grid" title="plateflex.classes.Grid"><code class="xref py py-class docutils literal notranslate"><span class="pre">Grid</span></code></a> object to the
+current <cite>:class:`~plateflex.classes.Project</cite> object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>grid</strong> (<a class="reference internal" href="#plateflex.classes.Grid" title="plateflex.classes.Grid"><code class="xref py py-class docutils literal notranslate"><span class="pre">Grid</span></code></a>) – object to append to project</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">plateflex</span> <span class="k">import</span> <span class="n">Grid</span><span class="p">,</span> <span class="n">Project</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">nn</span> <span class="o">=</span> <span class="mi">200</span><span class="p">;</span> <span class="n">dd</span> <span class="o">=</span> <span class="mf">10.</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">grid</span> <span class="o">=</span> <span class="n">Grid</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">nn</span><span class="p">,</span> <span class="n">nn</span><span class="p">),</span> <span class="n">dd</span><span class="p">,</span> <span class="n">dd</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">project</span> <span class="o">=</span> <span class="n">Project</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">project</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">grid</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="plateflex.classes.Project.extend">
+<code class="sig-name descname">extend</code><span class="sig-paren">(</span><em class="sig-param">grid_list</em><span class="sig-paren">)</span><a class="headerlink" href="#plateflex.classes.Project.extend" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extend the current Project object with a list of Grid objects.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>trace_list</strong> – list of <a class="reference internal" href="#plateflex.classes.Grid" title="plateflex.classes.Grid"><code class="xref py py-class docutils literal notranslate"><span class="pre">Grid</span></code></a> objects or
+<a class="reference internal" href="#plateflex.classes.Project" title="plateflex.classes.Project"><code class="xref py py-class docutils literal notranslate"><span class="pre">Project</span></code></a>.</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">plateflex</span> <span class="k">import</span> <span class="n">Grid</span><span class="p">,</span> <span class="n">Project</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">nn</span> <span class="o">=</span> <span class="mi">200</span><span class="p">;</span> <span class="n">dd</span> <span class="o">=</span> <span class="mf">10.</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">grid1</span> <span class="o">=</span> <span class="n">Grid</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">nn</span><span class="p">,</span> <span class="n">nn</span><span class="p">),</span> <span class="n">dd</span><span class="p">,</span> <span class="n">dd</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">grid2</span> <span class="o">=</span> <span class="n">Grid</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">nn</span><span class="p">,</span> <span class="n">nn</span><span class="p">),</span> <span class="n">dd</span><span class="p">,</span> <span class="n">dd</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">project</span> <span class="o">=</span> <span class="n">Project</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">project</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">grids</span><span class="o">=</span><span class="p">[</span><span class="n">grid1</span><span class="p">,</span> <span class="n">grid2</span><span class="p">])</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="plateflex.classes.Project.init">
+<code class="sig-name descname">init</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#plateflex.classes.Project.init" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to initialize a project. This step is required before calculating
+the wavelet admittance and coherence. The method checks that the project contains
+one each of <a class="reference internal" href="#plateflex.classes.TopoGrid" title="plateflex.classes.TopoGrid"><code class="xref py py-class docutils literal notranslate"><span class="pre">TopoGrid</span></code></a> and <a class="reference internal" href="#plateflex.classes.GravGrid" title="plateflex.classes.GravGrid"><code class="xref py py-class docutils literal notranslate"><span class="pre">GravGrid</span></code></a>.
+It also ensures that all grids have the same shape and sampling intervals.
+If Grids of type <a class="reference internal" href="#plateflex.classes.RhocGrid" title="plateflex.classes.RhocGrid"><code class="xref py py-class docutils literal notranslate"><span class="pre">RhocGrid</span></code></a> and/or <a class="reference internal" href="#plateflex.classes.ZcGrid" title="plateflex.classes.ZcGrid"><code class="xref py py-class docutils literal notranslate"><span class="pre">ZcGrid</span></code></a>
+are present, the project attributes will be updated with data from those grids to be
+used in the estimation part. The method further sets the water depth at each cell location
+(grid point) from the <a class="reference internal" href="#plateflex.classes.TopoGrid" title="plateflex.classes.TopoGrid"><code class="xref py py-class docutils literal notranslate"><span class="pre">TopoGrid</span></code></a> object.</p>
+<p class="rubric">Additional Attributes</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">water_depth</span></code><span class="classifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></span></dt><dd><p>Grid of water depth from topography data (shape (<cite>nx,ny</cite>))</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">nx</span></code><span class="classifier">int</span></dt><dd><p>Number of grid cells in the x-direction</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">ny</span></code><span class="classifier">int</span></dt><dd><p>Number of grid cells in the y-direction</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">ns</span></code> int</dt><dd><p>Number of wavenumber samples</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">k</span></code><span class="classifier">np.ndarray</span></dt><dd><p>1D array of wavenumbers</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">initialized</span></code><span class="classifier">bool</span></dt><dd><p>Set to <code class="docutils literal notranslate"><span class="pre">True</span></code> when method is called successfully</p>
+</dd>
+</dl>
+<p class="rubric">Optional Attributes</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">rhoc</span></code><span class="classifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></span></dt><dd><p>Grid of crustal density data (shape (<cite>nx,ny</cite>))</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">zc</span></code><span class="classifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></span></dt><dd><p>Grid of crustal thickness data (shape (<cite>nx,ny</cite>))</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">project</span> <span class="o">=</span> <span class="n">Project</span><span class="p">[</span><span class="n">grids</span><span class="o">=</span><span class="p">[</span><span class="n">topogrid</span><span class="p">,</span> <span class="n">fairgrid</span><span class="p">,</span> <span class="n">zcgrid</span><span class="p">]]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">project</span><span class="o">.</span><span class="n">init</span><span class="p">()</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="plateflex.classes.Project.wlet_admit_coh">
+<code class="sig-name descname">wlet_admit_coh</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#plateflex.classes.Project.wlet_admit_coh" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method uses the module <code class="xref py py-mod docutils literal notranslate"><span class="pre">cpwt</span></code> to calculate
+the wavelet admittance and coherence. The object needs to contain
+exactly two <a class="reference internal" href="#plateflex.classes.Grid" title="plateflex.classes.Grid"><code class="xref py py-class docutils literal notranslate"><span class="pre">Grid</span></code></a> objects, one of each of
+<a class="reference internal" href="#plateflex.classes.TopoGrid" title="plateflex.classes.TopoGrid"><code class="xref py py-class docutils literal notranslate"><span class="pre">TopoGrid</span></code></a> and <a class="reference internal" href="#plateflex.classes.GravGrid" title="plateflex.classes.GravGrid"><code class="xref py py-class docutils literal notranslate"><span class="pre">GravGrid</span></code></a>
+objects.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If no <code class="docutils literal notranslate"><span class="pre">wl_trans</span></code> attribute is found for individual
+<a class="reference internal" href="#plateflex.classes.Grid" title="plateflex.classes.Grid"><code class="xref py py-class docutils literal notranslate"><span class="pre">Grid</span></code></a> objects, the method automatically calculates
+them first.</p>
+</div>
+<p>Stores the wavelet admittance, coherence and their errors as attributes</p>
+<p class="rubric">Additional Attributes</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">wl_admit</span></code><span class="classifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></span></dt><dd><p>Wavelet admittance (shape (<cite>nx,ny,ns</cite>))</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">wl_eadmit</span></code><span class="classifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></span></dt><dd><p>Error of wavelet admittance (shape (<cite>nx,ny,ns</cite>))</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">wl_coh</span></code><span class="classifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></span></dt><dd><p>Wavelet coherence (shape (<cite>nx,ny,ns</cite>))</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">wl_ecoh</span></code><span class="classifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></span></dt><dd><p>Error of wavelet coherence (shape (<cite>nx,ny,ns</cite>))</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="plateflex.classes.Project.plot_admit_coh">
+<code class="sig-name descname">plot_admit_coh</code><span class="sig-paren">(</span><em class="sig-param">kindex=None</em>, <em class="sig-param">mask=None</em>, <em class="sig-param">save=None</em>, <em class="sig-param">contours=None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#plateflex.classes.Project.plot_admit_coh" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to plot grids of wavelet admittance and coherence at a given  wavenumber index.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>kindex</strong> (<em>int</em>) – Index of wavenumber array</p></li>
+<li><p><strong>mask</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code>, optional) – Array of booleans for masking data points</p></li>
+<li><p><strong>title</strong> (<em>str</em><em>, </em><em>optional</em>) – Title of plot</p></li>
+<li><p><strong>save</strong> (<em>str</em><em>, </em><em>optional</em>) – Name of file for to save figure</p></li>
+<li><p><strong>clabel</strong> (<em>str</em><em>, </em><em>optional</em>) – Label for colorbar</p></li>
+<li><p><strong>contours</strong> (<em>List</em>) – List of contour lines obtained separately</p></li>
+<li><p><strong>kwargs</strong> (<em>Keyword arguments</em>) – Keyword arguments allowing more control on plots</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="plateflex.classes.Project.estimate_cell">
+<code class="sig-name descname">estimate_cell</code><span class="sig-paren">(</span><em class="sig-param">cell=(0</em>, <em class="sig-param">0)</em>, <em class="sig-param">alph=False</em>, <em class="sig-param">atype='joint'</em>, <em class="sig-param">returned=False</em><span class="sig-paren">)</span><a class="headerlink" href="#plateflex.classes.Project.estimate_cell" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to estimate the parameters of the flexural model at a single cell location
+of the input grids. The type of estimation performed is set by the project attribute
+<code class="docutils literal notranslate"><span class="pre">inverse</span></code>. See <code class="xref py py-class docutils literal notranslate"><span class="pre">Project`</span></code> and <a class="reference internal" href="estimate.html#module-plateflex.estimate" title="plateflex.estimate"><code class="xref py py-mod docutils literal notranslate"><span class="pre">estimate</span></code></a>
+for details. The model parameters <code class="docutils literal notranslate"><span class="pre">rhoc</span></code> and <code class="docutils literal notranslate"><span class="pre">zc</span></code> are extracted from the
+corresponding <a class="reference internal" href="#plateflex.classes.RhocGrid" title="plateflex.classes.RhocGrid"><code class="xref py py-class docutils literal notranslate"><span class="pre">RhocGrid</span></code></a> and <a class="reference internal" href="#plateflex.classes.ZcGrid" title="plateflex.classes.ZcGrid"><code class="xref py py-class docutils literal notranslate"><span class="pre">ZcGrid</span></code></a>
+objects if they were initialized in the project.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>cell</strong> (<em>tuple</em>) – Indices of cell location within grid</p></li>
+<li><p><strong>alph</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether or not to estimate parameter <code class="docutils literal notranslate"><span class="pre">alpha</span></code></p></li>
+<li><p><strong>atype</strong> (<em>str</em><em>, </em><em>optional</em>) – Whether to use the admittance (‘admit’), coherence (‘coh’) or both (‘joint’)</p></li>
+<li><p><strong>returned</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether or not to return the estimates</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Additional Attributes</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">trace</span></code><span class="classifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">MultiTrace</span></code></span></dt><dd><p>Posterior samples from the MCMC chains</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">summary</span></code><span class="classifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">DataFrame</span></code></span></dt><dd><p>Summary statistics from Posterior distributions</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">map_estimate</span></code><span class="classifier">dict, optional</span></dt><dd><p>Container for Maximum a Posteriori (MAP) estimates</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">cell</span></code><span class="classifier">tuple</span></dt><dd><p>Indices of cell location within grid</p>
+</dd>
+</dl>
+<p>Results are stored as attributes of <a class="reference internal" href="#plateflex.classes.Project" title="plateflex.classes.Project"><code class="xref py py-class docutils literal notranslate"><span class="pre">Project</span></code></a>
+object.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="plateflex.classes.Project.estimate_grid">
+<code class="sig-name descname">estimate_grid</code><span class="sig-paren">(</span><em class="sig-param">nn=10</em>, <em class="sig-param">alph=False</em>, <em class="sig-param">atype='joint'</em>, <em class="sig-param">parallel=False</em><span class="sig-paren">)</span><a class="headerlink" href="#plateflex.classes.Project.estimate_grid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to estimate the parameters of the flexural model at all grid point locations.
+It is also possible to decimate the number of grid cells at which to estimate parameters.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>nn</strong> (<em>int</em>) – Decimator. If grid shape is <code class="docutils literal notranslate"><span class="pre">(nx,</span> <span class="pre">ny)</span></code>, resulting grids will have
+shape of <code class="docutils literal notranslate"><span class="pre">(int(nx/nn),</span> <span class="pre">int(ny/nn))</span></code>.</p></li>
+<li><p><strong>alph</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether or not to estimate parameter <code class="docutils literal notranslate"><span class="pre">alpha</span></code></p></li>
+<li><p><strong>atype</strong> (<em>str</em><em>, </em><em>optional</em>) – Whether to use the admittance (<cite>‘admit’</cite>), coherence (<cite>‘coh’</cite>) or
+both (<cite>‘joint’</cite>)</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Additional Attributes</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">mean_Te_grid</span></code><span class="classifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></span></dt><dd><p>Grid with mean Te estimates (shape <code class="docutils literal notranslate"><span class="pre">(nx,</span> <span class="pre">ny</span></code>))</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">MAP_Te_grid</span></code><span class="classifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></span></dt><dd><p>Grid with MAP Te estimates (shape <code class="docutils literal notranslate"><span class="pre">(nx,</span> <span class="pre">ny</span></code>))</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">std_Te_grid</span></code><span class="classifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></span></dt><dd><p>Grid with std Te estimates (shape <code class="docutils literal notranslate"><span class="pre">(nx,</span> <span class="pre">ny</span></code>))</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">mean_F_grid</span></code><span class="classifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></span></dt><dd><p>Grid with mean F estimates (shape <code class="docutils literal notranslate"><span class="pre">(nx,</span> <span class="pre">ny</span></code>))</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">MAP_F_grid</span></code><span class="classifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></span></dt><dd><p>Grid with MAP F estimates (shape <code class="docutils literal notranslate"><span class="pre">(nx,</span> <span class="pre">ny</span></code>))</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">std_F_grid</span></code><span class="classifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></span></dt><dd><p>Grid with std F estimates (shape <code class="docutils literal notranslate"><span class="pre">(nx,</span> <span class="pre">ny</span></code>))</p>
+</dd>
+</dl>
+<p class="rubric">Optional Attributes</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">mean_a_grid</span></code><span class="classifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></span></dt><dd><p>Grid with mean alpha estimates (shape <code class="docutils literal notranslate"><span class="pre">(nx,</span> <span class="pre">ny</span></code>)). Only present if <code class="docutils literal notranslate"><span class="pre">alph=True</span></code>.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">MAP_a_grid</span></code><span class="classifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></span></dt><dd><p>Grid with MAP alpha estimates (shape <code class="docutils literal notranslate"><span class="pre">(nx,</span> <span class="pre">ny</span></code>)). Only present if <code class="docutils literal notranslate"><span class="pre">alph=True</span></code>.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">std_a_grid</span></code><span class="classifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></span></dt><dd><p>Grid with std alpha estimates (shape <code class="docutils literal notranslate"><span class="pre">(nx,</span> <span class="pre">ny</span></code>)). Only present if <code class="docutils literal notranslate"><span class="pre">alph=True</span></code>.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">chi2_grid</span></code><span class="classifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></span></dt><dd><p>Grid with reduced chi-squared estimates (shape <code class="docutils literal notranslate"><span class="pre">(nx,</span> <span class="pre">ny</span></code>)).
+Only present if <code class="docutils literal notranslate"><span class="pre">project.inverse='L2'</span></code></p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">new_mask</span></code><span class="classifier">Array</span></dt><dd><p>New grid of masked (boolean) values, corresponding to decimated mask.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="plateflex.classes.Project.plot_bayes_stats">
+<code class="sig-name descname">plot_bayes_stats</code><span class="sig-paren">(</span><em class="sig-param">title=None</em>, <em class="sig-param">save=None</em><span class="sig-paren">)</span><a class="headerlink" href="#plateflex.classes.Project.plot_bayes_stats" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to plot the marginal and joint distributions of samples drawn from the
+posterior distribution as well as the extracted statistics. Calls the function
+<code class="xref py py-func docutils literal notranslate"><span class="pre">plot_stats()</span></code> with attributes as arguments.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>title</strong> (<em>str</em><em>, </em><em>optional</em>) – Title of plot</p></li>
+<li><p><strong>save</strong> (<em>str</em><em>, </em><em>optional</em>) – Name of file for to save figure</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="plateflex.classes.Project.plot_functions">
+<code class="sig-name descname">plot_functions</code><span class="sig-paren">(</span><em class="sig-param">est='mean'</em>, <em class="sig-param">title=None</em>, <em class="sig-param">save=None</em><span class="sig-paren">)</span><a class="headerlink" href="#plateflex.classes.Project.plot_functions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to plot observed and fitted admittance and coherence functions using
+one of <code class="docutils literal notranslate"><span class="pre">mean</span></code> or <code class="docutils literal notranslate"><span class="pre">MAP</span></code> estimates. The <code class="docutils literal notranslate"><span class="pre">MAP</span></code> is only available if the project
+attribute has been set to <code class="docutils literal notranslate"><span class="pre">project='bayes'</span></code>. Calls the function
+<a class="reference internal" href="plotting.html#plateflex.plotting.plot_functions" title="plateflex.plotting.plot_functions"><code class="xref py py-func docutils literal notranslate"><span class="pre">plot_functions()</span></code></a> with attributes as arguments.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>est</strong> (<em>str</em><em>, </em><em>optional</em>) – Type of inference estimate to use for predicting admittance and coherence</p></li>
+<li><p><strong>title</strong> (<em>str</em><em>, </em><em>optional</em>) – Title of plot</p></li>
+<li><p><strong>save</strong> (<em>str</em><em>, </em><em>optional</em>) – Name of file for to save figure</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="plateflex.classes.Project.plot_results">
+<code class="sig-name descname">plot_results</code><span class="sig-paren">(</span><em class="sig-param">mean_Te=False</em>, <em class="sig-param">MAP_Te=False</em>, <em class="sig-param">std_Te=False</em>, <em class="sig-param">mean_F=False</em>, <em class="sig-param">MAP_F=False</em>, <em class="sig-param">std_F=False</em>, <em class="sig-param">mean_a=False</em>, <em class="sig-param">MAP_a=False</em>, <em class="sig-param">std_a=False</em>, <em class="sig-param">chi2=False</em>, <em class="sig-param">mask=False</em>, <em class="sig-param">contours=None</em>, <em class="sig-param">save=None</em>, <em class="sig-param">filter=True</em>, <em class="sig-param">sigma=1</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#plateflex.classes.Project.plot_results" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to plot grids of estimated parameters with fixed labels and titles.
+To have more control over the plot rendering, use the function
+<a class="reference internal" href="plotting.html#plateflex.plotting.plot_real_grid" title="plateflex.plotting.plot_real_grid"><code class="xref py py-func docutils literal notranslate"><span class="pre">plot_real_grid()</span></code></a> with the relevant quantities and
+plotting options.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mean/MAP/std_Te/F/a</strong> (<em>bool</em>) – Type of plot to produce.
+All variables default to False (no plot generated)</p></li>
+<li><p><strong>mask</strong> (<em>bool</em>) – Whether or not to plot the mask</p></li>
+<li><p><strong>contours</strong> (<em>List</em>) – List of contours with coordinate positions</p></li>
+<li><p><strong>filter</strong> (<em>bool</em>) – Whether or not to filter the resulting grid using a Gaussian filter</p></li>
+<li><p><strong>sigma</strong> (<em>int</em>) – Standard deviation of filter (in terms of adjacent cells), if set to <code class="docutils literal notranslate"><span class="pre">True</span></code></p></li>
+<li><p><strong>kwargs</strong> (<em>Keyword arguments</em>) – Keyword arguments allowing more control on plots</p></li>
+</ul>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>It is advisable to plot each grid separately using one call per grid, in order
+to have more control on plot paramters (e.g., colormap, min and max values of
+colorbar, etc.).</p>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="estimate.html" title="Module estimate"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="conf.html" title="Configuration modules"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">plateflex 0.0.1 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2019, Pascal Audet.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.2.0.
+    </div>
+  </body>
+</html>

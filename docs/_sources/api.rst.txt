@@ -1,0 +1,13 @@
+
+.. figure:: ../plateflex/examples/picture/plateflex_logo.png
+   :align: center
+
+Getting Started
+===============
+
+.. automodule:: plateflex
+   :members:
+
+   Functions
+   ---------
+

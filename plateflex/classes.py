@@ -59,6 +59,7 @@ which itself is a container of :class:`~plateflex.classes.Grid` objects
 
 # -*- coding: utf-8 -*-
 import numpy as np
+import time
 import plateflex
 from plateflex.cpwt import cpwt
 from plateflex.cpwt import conf_cpwt as cf_w
@@ -180,11 +181,16 @@ class Grid(object):
     def plot(self, mask=None, title=None, save=None, clabel=None, contours=None, **kwargs):
 
         if title is not None:
-            plotting.plot_real_grid(self.data, title=title, mask=mask, save=save, \
-                clabel=self.units, contours=contours, **kwargs)
+            title = title
         else:
-            plotting.plot_real_grid(self.data, title=self.title, mask=mask, save=save, \
-                clabel=self.units, contours=contours, **kwargs)
+            title = self.title
+        if clabel is not None:
+            clabel = clabel
+        else:
+            clabel = self.units
+
+        plotting.plot_real_grid(self.data, title=title, mask=mask, save=save, \
+            clabel=clabel, contours=contours, **kwargs)
 
     def wlet_transform(self):
         """
@@ -906,7 +912,7 @@ class Project(object):
 
         return 
 
-    def plot_admit_coh(self, kindex=None, mask=None, title=None, save=None, clabel=None, contours=None, **kwargs):
+    def plot_admit_coh(self, kindex=None, mask=None, save=None, contours=None, **kwargs):
         """
         Method to plot grids of wavelet admittance and coherence at a given  wavenumber index. 
 
@@ -941,9 +947,9 @@ class Project(object):
         if kindex>self.ns or kindex<0:
             raise(Exception('Invalid index: should be between 0 and '+str(self.ns)))
 
-        plotting.plot_real_grid(adm, mask=mask, title=title, save=save, clabel='mGal/m', \
+        plotting.plot_real_grid(adm, mask=mask, title='Admittance', save=save, clabel='mGal/m', \
             contours=contours, **kwargs)
-        plotting.plot_real_grid(coh, mask=mask, title=title, save=save, clabel=None, \
+        plotting.plot_real_grid(coh, mask=mask, title='Coherence', save=save, clabel=None, \
             contours=contours, **kwargs)
 
 
@@ -1119,11 +1125,11 @@ class Project(object):
             #     for i in range(0, self.nx-nn, nn) for j in range(0, self.ny-nn, nn))
 
         else:
-            for i in range(0, self.nx-nn, nn):
+            for i in _progressbar(range(0, self.nx-nn, nn), 'Computing: ', 10):
                 for j in range(0, self.ny-nn, nn):
                     
-                    # For reference - index values
-                    print(i,j)
+                    # # For reference - index values
+                    # print(i,j)
 
                     # tuple of cell indices
                     cell = (i,j)
@@ -1273,6 +1279,10 @@ class Project(object):
             ecoh = self.ewl_coh[cell[0], cell[1], :]
             cf_f.wd = self.water_depth[cell[0], cell[1]]
 
+        except:
+            raise(Exception("No cell specified. Aborting"))
+
+        try:
             ma = np.pi/2.
 
             if self.inverse=='bayes':
@@ -1313,7 +1323,6 @@ class Project(object):
             plotting.plot_functions(k, adm, eadm, coh, ecoh, \
                 title=title, save=save)
 
-            print("No estimate yet available. Plotting observed data only")
 
     def plot_results(self, mean_Te=False, MAP_Te=False, std_Te=False, \
         mean_F=False, MAP_F=False, std_F=False, mean_a=False, MAP_a=False, \
@@ -1526,3 +1535,18 @@ def _lam2k(nx, ny, dx, dy, p=0.85):
     k = np.array(2.*np.pi/lam)
 
     return ns, k
+
+import sys
+
+def _progressbar(it, prefix="", size=60, file=sys.stdout):
+    count = len(it)
+    def show(j):
+        x = int(size*j/count)
+        file.write("%s[%s%s] %i/%i\r" % (prefix, "#"*x, "."*(size-x), j, count))
+        file.flush()        
+    show(0)
+    for i, item in enumerate(it):
+        yield item
+        show(i+1)
+    file.write("\n")
+    file.flush()

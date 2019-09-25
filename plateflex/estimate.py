@@ -93,7 +93,7 @@ def bayes_estimate_cell(k, adm, eadm, coh, ecoh, alph=False, atype='joint'):
         k_obs = pm.Normal('k', mu=k, sigma=1., observed=k)
 
         # Prior distributions
-        Te = pm.Uniform('Te', lower=1., upper=200.)
+        Te = pm.Uniform('Te', lower=1., upper=250.)
         F = pm.Uniform('F', lower=0., upper=0.9999)
 
         if alph:
@@ -263,7 +263,7 @@ def L2_estimate_cell(k, adm, eadm, coh, ecoh, alph=False, atype='joint'):
             function = lambda k, Te, F, alpha: pred_admit(k, Te, F, alpha)
             p1fit, p1cov = curve_fit(function, k, y_obs, p0=theta0, \
                 sigma=y_err, absolute_sigma=True, max_nfev=1000, \
-                bounds=([2., 0.0001, 0.0001], [200., 0.9999, np.pi-0.001]))
+                bounds=([2., 0.0001, 0.0001], [250., 0.9999, np.pi-0.001]))
 
             # Calculate best fit function
             pred = pred_admit(k, p1fit[0], p1fit[1], p1fit[2])
@@ -277,7 +277,7 @@ def L2_estimate_cell(k, adm, eadm, coh, ecoh, alph=False, atype='joint'):
             function = lambda k, Te, F: pred_admit(k, Te, F, alpha=np.pi/2.)
             p1fit, p1cov = curve_fit(function, k, y_obs, p0=theta0, \
                 sigma=y_err, absolute_sigma=True, max_nfev=1000, \
-                bounds=([2., 0.0001], [200., 0.9999]))
+                bounds=([2., 0.0001], [250., 0.9999]))
 
             # Calculate best fit function
             pred = pred_admit(k, p1fit[0], p1fit[1], np.pi/2.)
@@ -294,7 +294,7 @@ def L2_estimate_cell(k, adm, eadm, coh, ecoh, alph=False, atype='joint'):
             function = lambda k, Te, F, alpha: pred_coh(k, Te, F, alpha)
             p1fit, p1cov = curve_fit(function, k, y_obs, p0=theta0, \
                 sigma=y_err, absolute_sigma=True, max_nfev=1000, \
-                bounds=([2., 0.0001, 0.0001], [200., 0.9999, np.pi-0.001]))
+                bounds=([2., 0.0001, 0.0001], [250., 0.9999, np.pi-0.001]))
 
             # Calculate best fit function
             pred = pred_coh(k, p1fit[0], p1fit[1], p1fit[2])
@@ -308,7 +308,7 @@ def L2_estimate_cell(k, adm, eadm, coh, ecoh, alph=False, atype='joint'):
             function = lambda k, Te, F: pred_coh(k, Te, F, alpha=np.pi/2.)
             p1fit, p1cov = curve_fit(function, k, y_obs, p0=theta0, \
                 sigma=y_err, absolute_sigma=True, max_nfev=1000, \
-                bounds=([2., 0.0001], [200., 0.9999]))
+                bounds=([2., 0.0001], [250., 0.9999]))
 
             # Calculate best fit function
             pred = pred_coh(k, p1fit[0], p1fit[1], np.pi/2.)
@@ -325,7 +325,7 @@ def L2_estimate_cell(k, adm, eadm, coh, ecoh, alph=False, atype='joint'):
             function = lambda k, Te, F, alpha: pred_joint(k, Te, F, alpha)
             p1fit, p1cov = curve_fit(function, k, y_obs, p0=theta0, \
                 sigma=y_err, absolute_sigma=True, max_nfev=1000, \
-                bounds=([2., 0.0001, 0.0001], [200., 0.9999, np.pi-0.001]))
+                bounds=([2., 0.0001, 0.0001], [250., 0.9999, np.pi-0.001]))
 
             # Calculate best fit function
             pred = pred_joint(k, p1fit[0], p1fit[1], p1fit[2])
@@ -339,7 +339,7 @@ def L2_estimate_cell(k, adm, eadm, coh, ecoh, alph=False, atype='joint'):
             function = lambda k, Te, F: pred_joint(k, Te, F, alpha=np.pi/2.)
             p1fit, p1cov = curve_fit(function, k, y_obs, p0=theta0, \
                 sigma=y_err, absolute_sigma=True, max_nfev=1000, \
-                bounds=([2., 0.0001], [200., 0.9999]))
+                bounds=([2., 0.0001], [250., 0.9999]))
 
             # Calculate best fit function
             pred = pred_joint(k, p1fit[0], p1fit[1], np.pi/2.)

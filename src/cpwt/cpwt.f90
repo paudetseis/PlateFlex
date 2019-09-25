@@ -103,7 +103,7 @@
 ! 
 ! Taper data
 !
-        CALL taper_data(grid_mirror,2*nx,2*ny,6)
+        ! CALL taper_data(grid_mirror,2*nx,2*ny,6)
 !
 ! Pad with zeros and remove mean value
 !

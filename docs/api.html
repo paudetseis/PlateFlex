@@ -1,0 +1,243 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>Getting Started &#8212; plateflex 0.0.1 documentation</title>
+    <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Configuration modules" href="conf.html" />
+    <link rel="prev" title="PlateFlex Project Documentation" href="index.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="conf.html" title="Configuration modules"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="PlateFlex Project Documentation"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">plateflex 0.0.1 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Getting Started</a><ul>
+<li><a class="reference internal" href="#licence">Licence</a></li>
+<li><a class="reference internal" href="#installation">Installation</a><ul>
+<li><a class="reference internal" href="#dependencies">Dependencies</a></li>
+<li><a class="reference internal" href="#download-the-software">Download the software</a></li>
+<li><a class="reference internal" href="#conda-environment">Conda environment</a></li>
+<li><a class="reference internal" href="#installing-using-pip">Installing using pip</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#functions">Functions</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="index.html"
+                        title="previous chapter">PlateFlex Project Documentation</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="conf.html"
+                        title="next chapter">Configuration modules</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/api.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="figure align-center">
+<img alt="_images/plateflex_logo.png" src="_images/plateflex_logo.png" />
+</div>
+<div class="section" id="module-plateflex">
+<span id="getting-started"></span><h1>Getting Started<a class="headerlink" href="#module-plateflex" title="Permalink to this headline">¶</a></h1>
+<p>PlateFlex is a software for estimating the effective elastic thickness of the lithosphere
+from the inversion of flexural isostatic response functions calculated from a wavelet
+analysis of gravity and topography data.</p>
+<div class="section" id="licence">
+<h2>Licence<a class="headerlink" href="#licence" title="Permalink to this headline">¶</a></h2>
+<p>Copyright 2019 Pascal Audet</p>
+<p>Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the “Software”), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:</p>
+<p>The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.</p>
+<p>THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.</p>
+</div>
+<div class="section" id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="dependencies">
+<h3>Dependencies<a class="headerlink" href="#dependencies" title="Permalink to this headline">¶</a></h3>
+<p>The current version was developed using <strong>Python3.7</strong> Also, the following packages are required:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">gfortran</span></code> (<a class="reference external" href="https://gcc.gnu.org/wiki/GFortran">https://gcc.gnu.org/wiki/GFortran</a>) (or any Fortran compiler)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">numpy</span></code> (<a class="reference external" href="https://numpy.org">https://numpy.org</a>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pymc3</span></code> (<a class="reference external" href="https://docs.pymc.io">https://docs.pymc.io</a>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">seaborn</span></code> (<a class="reference external" href="https://seaborn.pydata.org">https://seaborn.pydata.org</a>)</p></li>
+</ul>
+<p>The following package is useful to draw outline of land areas:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">scikit-image</span></code> (<a class="reference external" href="https://scikit-image.org">https://scikit-image.org</a>)</p></li>
+</ul>
+<p>See below for full installation details.</p>
+</div>
+<div class="section" id="download-the-software">
+<h3>Download the software<a class="headerlink" href="#download-the-software" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>Clone the repository:</p></li>
+</ul>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git clone https://github.com/paudetseis/PlateFlex.git
+<span class="nb">cd</span> PlateFlex
+</pre></div>
+</div>
+</div>
+<div class="section" id="conda-environment">
+<h3>Conda environment<a class="headerlink" href="#conda-environment" title="Permalink to this headline">¶</a></h3>
+<p>We recommend creating a custom <code class="docutils literal notranslate"><span class="pre">conda</span></code> environment
+where <code class="docutils literal notranslate"><span class="pre">plateflex</span></code> can be installed along with its dependencies.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>conda create -n pflex <span class="nv">python</span><span class="o">=</span><span class="m">3</span>.7 numpy pymc3 matplotlib seaborn -c conda-forge
+</pre></div>
+</div>
+<p>or create it from the <code class="docutils literal notranslate"><span class="pre">pflex_env.yml</span></code> file:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>conda env create -f pflex_env.yml
+</pre></div>
+</div>
+<p>Activate the newly created environment:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>conda activate pflex
+</pre></div>
+</div>
+</div>
+<div class="section" id="installing-using-pip">
+<h3>Installing using pip<a class="headerlink" href="#installing-using-pip" title="Permalink to this headline">¶</a></h3>
+<p>Once the previous steps are performed, you can install <code class="docutils literal notranslate"><span class="pre">plateflex</span></code> using pip:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip install .
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Please note, if you are actively working on the code, or making frequent edits, it is advisable
+to perform the pip installation with the <code class="docutils literal notranslate"><span class="pre">-e</span></code> flag. This enables an editable installation, where
+symbolic links are used rather than straight copies. This means that any changes made in the
+local folders will be reflected in the packages available on the system.</p>
+</div>
+</div>
+</div>
+<div class="section" id="functions">
+<h2>Functions<a class="headerlink" href="#functions" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="plateflex.get_conf_cpwt">
+<code class="sig-prename descclassname">plateflex.</code><code class="sig-name descname">get_conf_cpwt</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#plateflex.get_conf_cpwt" title="Permalink to this definition">¶</a></dt>
+<dd><p>Print global variable that controls the spatio-spectral resolution of the
+wavelet transform</p>
+<p class="rubric">Example</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">plateflex</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plateflex</span><span class="o">.</span><span class="n">get_conf_cpwt</span><span class="p">()</span>
+<span class="go">Wavelet parameter used in plateflex.cpwt:</span>
+<span class="go">-----------------------------------------</span>
+<span class="go">[Internal wavenumber]      k0 (float):     5.336</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="plateflex.get_conf_flex">
+<code class="sig-prename descclassname">plateflex.</code><code class="sig-name descname">get_conf_flex</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#plateflex.get_conf_flex" title="Permalink to this definition">¶</a></dt>
+<dd><p>Print global variables that control the setup of the flexural isostatic model</p>
+<p class="rubric">Example</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">plateflex</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plateflex</span><span class="o">.</span><span class="n">get_conf_flex</span><span class="p">()</span>
+<span class="go">Global model parameters currently in use by plateflex:</span>
+<span class="go">------------------------------------------------------</span>
+<span class="go">[Crustal thickness]        zc (float):     35000 m</span>
+<span class="go">[Mantle density]           rhom (float):   3200 kg/m^3</span>
+<span class="go">[Crustal density]          rhoc (float):   2700 kg/m^3</span>
+<span class="go">[Water density]            rhow (float):   1030 kg/m^3</span>
+<span class="go">[Air density]              rhoa (float):   0 kg/m^3</span>
+<span class="go">[Fluid density]            rhof (float):   0 kg/m^3</span>
+<span class="go">[Water depth]              wd (float):     0 m</span>
+<span class="go">[Bouguer analysis?]        boug (int):     1 ; True</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="conf.html" title="Configuration modules"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="PlateFlex Project Documentation"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">plateflex 0.0.1 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2019, Pascal Audet.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.2.0.
+    </div>
+  </body>
+</html>
