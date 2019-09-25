@@ -29,8 +29,7 @@ setup(
     packages            = ['plateflex'],
     package_data        = {
         'plateflex': [
-            # 'examples/*.ipynb',
-            'examples/data/*.txt',
-            'examples/Notebooks/*.py']
+            'examples/data.zip',
+            'examples/Notebooks/*.ipynb']
     }
 )
