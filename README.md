@@ -160,11 +160,11 @@ as those of [Kalnins and Watts (2009)](#references) for the NW Pacific.
 - [Ex6_full_suite_North_America.ipynb](./plateflex/examples/Notebooks/Ex6_full_suite_North_America.ipynb): Carrying out the full suite at once for North America with new `Grid` objects to improve modeling.
 - [Ex7_full_suite_NW_Pacific.ipynb](./plateflex/examples/Notebooks/Ex7_full_suite_NW_Pacific.ipynb): Same as Example 6 but for the NW Pacific.
 
-After [installing `plateflex`](#installation), these notebooks can be locally installed (i.e., in a local folder `Notebooks`) from the package by running:
+After [installing `plateflex`](#installation), these notebooks can be locally installed (i.e., in a local folder `Examples`) from the package by running:
 
 ```python
 from plateflex import doc
-doc.install_doc(path='Notebooks')
+doc.install_doc(path='Examples')
 ```
 
 To run the notebooks you will have to further install `jupyter`:
