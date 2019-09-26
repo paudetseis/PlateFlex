@@ -183,6 +183,11 @@ jupyter notebook
 
 You can then save the notebooks as `python` scripts and you should be good to go!
 
+### How to make new gridded data sets
+
+Although the examples above work as advertised, making new grids for your own project can be a daunting task. In the [wiki](https://github.com/paudetseis/PlateFlex/wiki/How-to-make-gridded-data-sets-to-use-with-PlateFlex) page we provide examples of how to reproduce the data sets used in the Jupyter notebooks from publicly available topography and gravity models. 
+
+
 <!-- ### Testing
 
 A series of tests are located in the ``tests`` subdirectory. In order to perform these tests, clone the repository and run `pytest` (`conda install pytest` if needed):
