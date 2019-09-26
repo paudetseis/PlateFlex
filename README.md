@@ -123,7 +123,7 @@ Next we recommend following the steps for creating a `conda` environment (see [a
 pip install .
 ``` 
 
----
+<!-- ---
 **_NOTE_**
 
 If you are actively working on the code, or making frequent edits, it is advisable to perform 
@@ -138,7 +138,7 @@ copies. This means that any changes made in the local folders will be reflected 
 package available on the system.
 
 ---
-
+ -->
 ## Usage 
 
 ### Documentation
