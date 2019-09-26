@@ -177,7 +177,7 @@ Then:
 
 ```bash
 unzip data.zip
-cd Notebooks
+cd Examples
 jupyter notebook
 ```
 
