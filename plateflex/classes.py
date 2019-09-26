@@ -285,7 +285,7 @@ class Grid(object):
 
         return
 
-    def plot_transform(self, kindex=None, aindex=None, log=False, mask=None, title='Wavelet transform', \
+    def plot_transform(self, kindex=None, aindex=None, log=False, mask=None, \
         save=None, clabel=None, contours=None, **kwargs):
         """
         This method plots the real and imaginary components of the wavelet transform of a
@@ -321,9 +321,9 @@ class Grid(object):
             rdata = np.real(self.wl_trans[:,:,aindex,kindex])
             idata = np.imag(self.wl_trans[:,:,aindex,kindex])
 
-        plotting.plot_real_grid(rdata, title=title, mask=mask, save=save, clabel=self.units, \
+        plotting.plot_real_grid(rdata, title='Real part of wavelet coefficients', mask=mask, save=save, clabel=self.units, \
             contours=contours, **kwargs)
-        plotting.plot_real_grid(idata, title=title, mask=mask, save=save, clabel=self.units, \
+        plotting.plot_real_grid(idata, title='Imaginary part of wavelet coefficients', mask=mask, save=save, clabel=self.units, \
             contours=contours, **kwargs)
 
 
@@ -1376,7 +1376,7 @@ class Project(object):
             else:
                 mean_Te_grid = self.mean_Te_grid
             plotting.plot_real_grid(mean_Te_grid, mask=new_mask, \
-                title='Mean estimated $T_e$', clabel='$T_e$ (km)', contours=contours, \
+                title='Elastic thickness', clabel='$T_e$ (km)', contours=contours, \
                 save=save, **kwargs)
         if MAP_Te:
             if filter:
@@ -1400,7 +1400,7 @@ class Project(object):
             else:
                 mean_F_grid = self.mean_F_grid
             plotting.plot_real_grid(mean_F_grid, mask=new_mask, \
-                title='Mean estimated $F$', clabel='$F$', contours=contours, \
+                title='Initial load ratio', clabel='$F$', contours=contours, \
                 save=save, **kwargs)
         if MAP_F:
             if filter:
@@ -1425,7 +1425,7 @@ class Project(object):
                 else:
                     mean_a_grid = self.mean_a_grid
                 plotting.plot_real_grid(mean_a_grid, mask=new_mask, \
-                    title=r'Mean estimated $\alpha$', clabel=r'$\alpha$', \
+                    title=r'Phase difference between initial loads', clabel=r'$\alpha$', \
                     contours=contours, save=save, **kwargs)
             except:
                 print("parameter 'alpha' was not estimated")
@@ -1458,7 +1458,7 @@ class Project(object):
                 else:
                     chi2_grid = self.chi2_grid
                 plotting.plot_real_grid(chi2_grid, mask=new_mask, \
-                    title='Reduced chi-squared', clabel=r'$\chi_{\nu}^2$', \
+                    title='Reduced chi-squared error', clabel=r'$\chi_{\nu}^2$', \
                     contours=contours, save=save, **kwargs)
             except:
                 print("parameter 'chi2' was not estimated")

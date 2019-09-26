@@ -29,11 +29,12 @@ used to determine the parameters of the effectively elastic plate, such as the
 effective elastic thickness (<i>T<sub>e</sub></i>), the initial subsurface-to-surface
 load ratio (<i>F</i>) and optionally the initial phase difference between
 surface and subsurface loads (<i>alpha</i>). The software uses the analytical
-functions with *uniform F and alpha* to fit the admittance and/or coherence functions 
-using a probabilistic inference method. 
+functions with *uniform F and alpha* to fit the admittance and/or coherence functions. 
+The estimation can be done using non-linear least-squares or probabilistic (i.e., bayesian)
+inference methods. 
 
 The analysis can be done using either the Bouguer or Free air gravity anomalies, and
-over land or ocean areas. Common computational workflows are covered in the Jupyter 
+over land or ocean areas. Computational workflows are covered in the Jupyter 
 notebooks bundled with this package. The software contains methods to make beautiful and
 insightful plots using the `seaborn` package.
     
