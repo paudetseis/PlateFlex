@@ -38,7 +38,7 @@ over land or ocean areas. Computational workflows are covered in the Jupyter
 notebooks bundled with this package. The software contains methods to make beautiful and
 insightful plots using the `seaborn` package.
     
-> **_NOTE:_**  The cross-spectral quantities calculated here are the real-valued admittance and real-squared-coherency, as discussed in the [references](#references)
+> **_NOTE:_**  The cross-spectral quantities calculated here are the real-valued admittance and squared-real coherency, as discussed in the [references](#references)
 
 ## Installation
 
