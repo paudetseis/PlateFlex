@@ -7,6 +7,7 @@
     <title>Classes &#8212; plateflex 0.0.1 documentation</title>
     <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/style.css" />
     <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
@@ -316,7 +317,7 @@ the wavelet transform first.</p>
 
 <dl class="method">
 <dt id="plateflex.classes.Grid.plot_transform">
-<code class="sig-name descname">plot_transform</code><span class="sig-paren">(</span><em class="sig-param">kindex=None</em>, <em class="sig-param">aindex=None</em>, <em class="sig-param">log=False</em>, <em class="sig-param">mask=None</em>, <em class="sig-param">title='Wavelet transform'</em>, <em class="sig-param">save=None</em>, <em class="sig-param">clabel=None</em>, <em class="sig-param">contours=None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#plateflex.classes.Grid.plot_transform" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">plot_transform</code><span class="sig-paren">(</span><em class="sig-param">kindex=None</em>, <em class="sig-param">aindex=None</em>, <em class="sig-param">log=False</em>, <em class="sig-param">mask=None</em>, <em class="sig-param">save=None</em>, <em class="sig-param">clabel=None</em>, <em class="sig-param">contours=None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#plateflex.classes.Grid.plot_transform" title="Permalink to this definition">¶</a></dt>
 <dd><p>This method plots the real and imaginary components of the wavelet transform of a
 <a class="reference internal" href="#plateflex.classes.Grid" title="plateflex.classes.Grid"><code class="xref py py-class docutils literal notranslate"><span class="pre">Grid</span></code></a> object at wavenumber and angle indices (int).
 Raises <code class="docutils literal notranslate"><span class="pre">Exception</span></code> for the cases where:</p>
@@ -705,11 +706,11 @@ them first.</p>
 <dl>
 <dt><code class="docutils literal notranslate"><span class="pre">wl_admit</span></code><span class="classifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></span></dt><dd><p>Wavelet admittance (shape (<cite>nx,ny,ns</cite>))</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">wl_eadmit</span></code><span class="classifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></span></dt><dd><p>Error of wavelet admittance (shape (<cite>nx,ny,ns</cite>))</p>
+<dt><code class="docutils literal notranslate"><span class="pre">ewl_admit</span></code><span class="classifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></span></dt><dd><p>Error of wavelet admittance (shape (<cite>nx,ny,ns</cite>))</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">wl_coh</span></code><span class="classifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></span></dt><dd><p>Wavelet coherence (shape (<cite>nx,ny,ns</cite>))</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">wl_ecoh</span></code><span class="classifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></span></dt><dd><p>Error of wavelet coherence (shape (<cite>nx,ny,ns</cite>))</p>
+<dt><code class="docutils literal notranslate"><span class="pre">ewl_coh</span></code><span class="classifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></span></dt><dd><p>Error of wavelet coherence (shape (<cite>nx,ny,ns</cite>))</p>
 </dd>
 </dl>
 </dd></dl>
@@ -871,8 +872,32 @@ All variables default to False (no plot generated)</p></li>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>It is advisable to plot each grid separately using one call per grid, in order
-to have more control on plot paramters (e.g., colormap, min and max values of
+to have more control on plot parameters (e.g., colormap, min and max values of
 colorbar, etc.).</p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="plateflex.classes.Project.save_results">
+<code class="sig-name descname">save_results</code><span class="sig-paren">(</span><em class="sig-param">mean_Te=False</em>, <em class="sig-param">MAP_Te=False</em>, <em class="sig-param">std_Te=False</em>, <em class="sig-param">mean_F=False</em>, <em class="sig-param">MAP_F=False</em>, <em class="sig-param">std_F=False</em>, <em class="sig-param">mean_a=False</em>, <em class="sig-param">MAP_a=False</em>, <em class="sig-param">std_a=False</em>, <em class="sig-param">chi2=False</em>, <em class="sig-param">mask=False</em>, <em class="sig-param">contours=None</em>, <em class="sig-param">filter=True</em>, <em class="sig-param">sigma=1</em>, <em class="sig-param">prefix='PlateFlex_'</em><span class="sig-paren">)</span><a class="headerlink" href="#plateflex.classes.Project.save_results" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to save grids of estimated parameters with default file names.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mean/MAP/std_Te/F/a</strong> (<em>bool</em>) – Type of grid to save.
+All variables default to False (no grid saved)</p></li>
+<li><p><strong>mask</strong> (<em>bool</em>) – Whether or not to save the mask</p></li>
+<li><p><strong>contours</strong> (<em>List</em>) – List of contours with coordinate positions</p></li>
+<li><p><strong>filter</strong> (<em>bool</em>) – Whether or not to filter the resulting grid using a Gaussian filter</p></li>
+<li><p><strong>sigma</strong> (<em>int</em>) – Standard deviation of filter (in terms of adjacent cells), if set to <code class="docutils literal notranslate"><span class="pre">True</span></code></p></li>
+<li><p><strong>prefix</strong> (<em>str</em>) – Prefix of file name.</p></li>
+</ul>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>It is advisable to save each grid separately using one call per grid, in order
+to have more control on file names.</p>
 </div>
 </dd></dl>
 
