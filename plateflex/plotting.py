@@ -42,7 +42,7 @@ def plot_real_grid(grid, log=False, mask=None, title=None, save=None, clabel=Non
     Plot 2D image of any real-valued 2D array, used in several context throughout
     :mod:`~plateflex`. For example, it can be used to plot the input grids of topography
     or gravity anomalies, the real or imaginary values of the wavelet transform at a
-    giben wavenumber index, the wavelet scalograms at a given wavenumber index, the
+    given wavenumber index, the wavelet scalograms at a given wavenumber index, the
     wavelet admittance or coherence at a given wavenumber index, or the final grids of
     results.
 

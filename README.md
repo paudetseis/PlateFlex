@@ -117,7 +117,8 @@ git clone https://github.com/paudetseis/PlateFlex.git
 cd PlateFlex
 ```
 
-Next we recommend following the steps for creating a `conda` environment (see [above](#conda-environment)). Then install using `pip`:
+Next we recommend following the steps for creating a `conda` environment 
+(see [above](#conda-environment)). Then install using `pip`:
 
 ```bash
 pip install .

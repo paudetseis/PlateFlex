@@ -849,6 +849,8 @@ class Project(object):
         self.ns = self.grids[0].ns
         self.nx = self.grids[0].nx
         self.ny = self.grids[0].ny
+        self.dx = self.grids[0].dx
+        self.dy = self.grids[0].dy
         self.initialized = True
 
 
@@ -872,11 +874,11 @@ class Project(object):
 
         ``wl_admit`` : :class:`~numpy.ndarray`
             Wavelet admittance (shape (`nx,ny,ns`))
-        ``wl_eadmit`` : :class:`~numpy.ndarray`
+        ``ewl_admit`` : :class:`~numpy.ndarray`
             Error of wavelet admittance (shape (`nx,ny,ns`))
         ``wl_coh`` : :class:`~numpy.ndarray`
             Wavelet coherence (shape (`nx,ny,ns`))
-        ``wl_ecoh`` : :class:`~numpy.ndarray`
+        ``ewl_coh`` : :class:`~numpy.ndarray`
             Error of wavelet coherence (shape (`nx,ny,ns`))
 
         """
@@ -1179,7 +1181,7 @@ class Project(object):
                         summary = self.estimate_cell(cell=cell, \
                             alph=alph, atype=atype, returned=True)
 
-                        # Extract estimates from summary and map_estimate
+                        # Extract estimates from summary
                         res = estimate.get_L2_estimates(summary)
 
                         # Distribute the parameters back to space
@@ -1351,7 +1353,7 @@ class Project(object):
         .. note::
 
            It is advisable to plot each grid separately using one call per grid, in order
-           to have more control on plot paramters (e.g., colormap, min and max values of 
+           to have more control on plot parameters (e.g., colormap, min and max values of 
            colorbar, etc.).
 
         """
@@ -1365,7 +1367,7 @@ class Project(object):
                 new_mask = None
                 print('No new mask found. Plotting without mask')
         else:
-            new_mask=None
+            new_mask = None
 
         if contours is not None:
             contours = np.array(contours)/self.nn
@@ -1463,6 +1465,140 @@ class Project(object):
             except:
                 print("parameter 'chi2' was not estimated")
 
+
+    def save_results(self, mean_Te=False, MAP_Te=False, std_Te=False, \
+        mean_F=False, MAP_F=False, std_F=False, mean_a=False, MAP_a=False, \
+        std_a=False, chi2=False, mask=False, contours=None, \
+        filter=True, sigma=1, prefix='PlateFlex_'):
+        """
+        Method to save grids of estimated parameters with default file names. 
+
+        :type mean/MAP/std_Te/F/a: bool
+        :param mean/MAP/std_Te/F/a: Type of grid to save. 
+            All variables default to False (no grid saved)
+        :type mask: bool
+        :param mask: Whether or not to save the mask
+        :type contours: List
+        :param contours: List of contours with coordinate positions
+        :type filter: bool
+        :param filter: Whether or not to filter the resulting grid using a Gaussian filter
+        :type sigma: int
+        :param sigma: Standard deviation of filter (in terms of adjacent cells), if set to ``True``
+        :type prefix: str
+        :param prefix: Prefix of file name. 
+
+        .. note::
+
+           It is advisable to save each grid separately using one call per grid, in order
+           to have more control on file names.
+
+        """
+
+        def save_grid(pars, grid, label, prefix):
+
+            import pandas as pd
+
+            xx, yy = np.mgrid[0:pars[0], 0:pars[1]]
+            data = np.array([pars[3]*yy.flatten(), pars[2]*xx.flatten(), grid.flatten()]).T
+            columns = ['x', 'y', label]
+
+            df = pd.DataFrame(data=data, columns=columns)
+
+            df.to_csv(prefix + label + '.csv', index=False)
+
+
+        from skimage.filters import gaussian
+
+        (nnx, nny) = self.mean_Te_grid.shape
+        (ddx, ddy) = self.dx*self.nn, self.dy*self.nn
+
+        pars = [nnx, nny, ddx, ddy]
+
+        if mask:
+            try:
+                new_mask = self.new_mask_grid
+                save_grid(pars, new_mask, 'mask', prefix)
+            except:
+                new_mask = None
+                print('No new mask found. Skipping')
+        else:
+            new_mask = None
+
+        if contours is not None:
+            contours = np.array(contours)/self.nn
+
+        if mean_Te:
+            if filter:
+                mean_Te_grid = gaussian(self.mean_Te_grid, sigma=sigma)
+            else:
+                mean_Te_grid = self.mean_Te_grid
+            save_grid(pars, mean_Te_grid, 'mean_Te', prefix)
+        if MAP_Te:
+            if filter:
+                MAP_Te_grid = gaussian(self.MAP_Te_grid, sigma=sigma)
+            else:
+                MAP_Te_grid = self.MAP_Te_grid
+            save_grid(pars, MAP_Te_grid, 'MAP_Te', prefix)
+        if std_Te:
+            if filter:
+                std_Te_grid = gaussian(self.std_Te_grid, sigma=sigma)
+            else:
+                std_Te_grid = self.std_Te_grid
+            save_grid(pars, std_Te_grid, 'std_Te', prefix)
+        if mean_F:
+            if filter:
+                mean_F_grid = gaussian(self.mean_F_grid, sigma=sigma)
+            else:
+                mean_F_grid = self.mean_F_grid
+            save_grid(pars, mean_F_grid, 'mean_F', prefix)
+        if MAP_F:
+            if filter:
+                MAP_F_grid = gaussian(self.MAP_F_grid, sigma=sigma)
+            else:
+                MAP_F_grid = self.MAP_F_grid
+            save_grid(pars, MAP_F_grid, 'MAP_F', prefix)
+        if std_F:
+            if filter:
+                std_F_grid = gaussian(self.std_F_grid, sigma=sigma)
+            else:
+                std_F_grid = self.std_F_grid       
+            save_grid(pars, std_F_grid, 'std_F', prefix)
+        if mean_a:
+            try:
+                if filter:
+                    mean_a_grid = gaussian(mean_a_grid, sigma)
+                else:
+                    mean_a_grid = self.mean_a_grid
+                save_grid(pars, mean_a_grid, 'mean_a', prefix)
+            except:
+                print("parameter 'alpha' was not estimated")
+        if MAP_a:
+            try:
+                if filter:
+                    MAP_a_grid = gaussian(MAP_a_grid, sigma=sigma)
+                else:
+                    MAP_a_grid = self.MAP_a_grid
+                save_grid(pars, MAP_a_grid, 'MAP_a', prefix)
+            except:
+                print("parameter 'alpha' was not estimated")
+        if std_a:
+            try:
+                if filter:
+                    std_a_grid = gaussian(std_a_grid, sigma=sigma)
+                else:
+                    std_a_grid = self.std_a_grid
+                save_grid(pars, std_a_grid, 'std_a', prefix)
+            except:
+                print("parameter 'alpha' was not estimated")
+        if chi2:
+            try:
+                if filter:
+                    chi2_grid = gaussian(self.chi2_grid, sigma=sigma)
+                else:
+                    chi2_grid = self.chi2_grid
+                save_grid(pars, chi2_grid, 'chi2', prefix)
+            except:
+                print("parameter 'chi2' was not estimated")
 
 
 def _lam2k(nx, ny, dx, dy, p=0.85):
