@@ -31,8 +31,8 @@
 - :class:`~plateflex.classes.RhocGrid`
 - :class:`~plateflex.classes.ZcGrid`
 
-These classes can be initialized with a grid of topography/bathymetry or gravity
-anomaly (Bouguer/Free-air) data, and contain methods for the following functionality:
+These classes can be initialized with a grid of the corresponding data
+type, and contain methods for the following functionality:
 
 - Extracting contours at some level of the grid
 - Performing a wavelet transform using a Morlet wavelet

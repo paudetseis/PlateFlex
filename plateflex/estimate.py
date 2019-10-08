@@ -31,11 +31,11 @@ This :mod:`~plateflex` module contains the following functions:
 - :func:`~plateflex.estimate.real_xspec_functions`: Calculate the analytical admittance and coherence functions. 
 
 Internal functions are also available to define predicted admittance and coherence data
-with ``theano`` decorators to be incorporated as pymc variables. These functions are
+with ``theano`` decorators to be incorporated as ``pymc`` variables. These functions are
 used within :class:`~plateflex.classes.Project` methods as with :mod:`~plateflex.plotting`
 functions.
 
-.. warning::
+.. note::
 
     If you plan to estimate model parameters over entire grids, the non-linear least-squares method
     is orders of magnitude faster than the probabilistic method and should be preferred. The probabilistic

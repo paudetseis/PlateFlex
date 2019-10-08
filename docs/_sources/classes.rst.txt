@@ -1,8 +1,3 @@
-Classes
-=======
-
-.. automodule:: plateflex.classes
-   :members: _lam2k
 
 Grid
 ----

@@ -1,175 +1,182 @@
 
-<!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
-  <head>
-    <meta charset="utf-8" />
-    <title>Classes &#8212; plateflex 0.0.1 documentation</title>
-    <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-    <script type="text/javascript" src="_static/jquery.js"></script>
-    <script type="text/javascript" src="_static/underscore.js"></script>
-    <script type="text/javascript" src="_static/doctools.js"></script>
-    <script type="text/javascript" src="_static/language_data.js"></script>
-    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Grid &mdash; plateflex 0.0.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Module estimate" href="estimate.html" />
-    <link rel="prev" title="Configuration modules" href="conf.html" /> 
-  </head><body>
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="genindex.html" title="General Index"
-             accesskey="I">index</a></li>
-        <li class="right" >
-          <a href="py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="right" >
-          <a href="estimate.html" title="Module estimate"
-             accesskey="N">next</a> |</li>
-        <li class="right" >
-          <a href="conf.html" title="Configuration modules"
-             accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">plateflex 0.0.1 documentation</a> &#187;</li> 
-      </ul>
-    </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-  <h3><a href="index.html">Table of Contents</a></h3>
-  <ul>
-<li><a class="reference internal" href="#">Classes</a><ul>
-<li><a class="reference internal" href="#grid">Grid</a></li>
-<li><a class="reference internal" href="#topogrid">TopoGrid</a></li>
-<li><a class="reference internal" href="#gravgrid">GravGrid</a></li>
-<li><a class="reference internal" href="#bouggrid">BougGrid</a></li>
-<li><a class="reference internal" href="#fairgrid">FairGrid</a></li>
-<li><a class="reference internal" href="#rhocgrid">RhocGrid</a></li>
-<li><a class="reference internal" href="#zcgrid">ZcGrid</a></li>
-<li><a class="reference internal" href="#project">Project</a></li>
+    <link rel="prev" title="plateflex.cpwt.conf_cpwt" href="conf.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> plateflex
+          
+
+          
+            
+            <img src="_static/logo_plateflex.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api.html">Licence</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html#installation">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html#global-variables">Global Variables</a></li>
 </ul>
-</li>
+<p class="caption"><span class="caption-text">Configuration modules</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="conf.html">plateflex.cpwt.conf_cpwt</a></li>
+<li class="toctree-l1"><a class="reference internal" href="conf.html#plateflex-flex-conf-flex">plateflex.flex.conf_flex</a></li>
+<li class="toctree-l1"><a class="reference internal" href="conf.html#plateflex-conf">plateflex.conf</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Classes</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Grid</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#topogrid">TopoGrid</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#gravgrid">GravGrid</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#bouggrid">BougGrid</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#fairgrid">FairGrid</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#rhocgrid">RhocGrid</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#zcgrid">ZcGrid</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#project">Project</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Modules</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="estimate.html">Module estimate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="plotting.html">Module plotting</a></li>
 </ul>
 
-  <h4>Previous topic</h4>
-  <p class="topless"><a href="conf.html"
-                        title="previous chapter">Configuration modules</a></p>
-  <h4>Next topic</h4>
-  <p class="topless"><a href="estimate.html"
-                        title="next chapter">Module estimate</a></p>
-  <div role="note" aria-label="source link">
-    <h3>This Page</h3>
-    <ul class="this-page-menu">
-      <li><a href="_sources/classes.rst.txt"
-            rel="nofollow">Show Source</a></li>
-    </ul>
-   </div>
-<div id="searchbox" style="display: none" role="search">
-  <h3 id="searchlabel">Quick search</h3>
-    <div class="searchformwrapper">
-    <form class="search" action="search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" />
-      <input type="submit" value="Go" />
-    </form>
-    </div>
-</div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
+            
+          
         </div>
       </div>
+    </nav>
 
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          <div class="body" role="main">
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">plateflex</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Grid</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
             
-  <div class="section" id="module-plateflex.classes">
-<span id="classes"></span><h1>Classes<a class="headerlink" href="#module-plateflex.classes" title="Permalink to this headline">¶</a></h1>
-<p><a class="reference internal" href="api.html#module-plateflex" title="plateflex"><code class="xref py py-mod docutils literal notranslate"><span class="pre">plateflex</span></code></a> defines the following <code class="docutils literal notranslate"><span class="pre">Grid</span></code> classes:</p>
-<ul class="simple">
-<li><p><a class="reference internal" href="#plateflex.classes.Grid" title="plateflex.classes.Grid"><code class="xref py py-class docutils literal notranslate"><span class="pre">Grid</span></code></a></p></li>
-<li><p><a class="reference internal" href="#plateflex.classes.TopoGrid" title="plateflex.classes.TopoGrid"><code class="xref py py-class docutils literal notranslate"><span class="pre">TopoGrid</span></code></a></p></li>
-<li><p><a class="reference internal" href="#plateflex.classes.GravGrid" title="plateflex.classes.GravGrid"><code class="xref py py-class docutils literal notranslate"><span class="pre">GravGrid</span></code></a></p></li>
-<li><p><a class="reference internal" href="#plateflex.classes.BougGrid" title="plateflex.classes.BougGrid"><code class="xref py py-class docutils literal notranslate"><span class="pre">BougGrid</span></code></a></p></li>
-<li><p><a class="reference internal" href="#plateflex.classes.FairGrid" title="plateflex.classes.FairGrid"><code class="xref py py-class docutils literal notranslate"><span class="pre">FairGrid</span></code></a></p></li>
-<li><p><a class="reference internal" href="#plateflex.classes.RhocGrid" title="plateflex.classes.RhocGrid"><code class="xref py py-class docutils literal notranslate"><span class="pre">RhocGrid</span></code></a></p></li>
-<li><p><a class="reference internal" href="#plateflex.classes.ZcGrid" title="plateflex.classes.ZcGrid"><code class="xref py py-class docutils literal notranslate"><span class="pre">ZcGrid</span></code></a></p></li>
-</ul>
-<p>These classes can be initialized with a grid of topography/bathymetry or gravity
-anomaly (Bouguer/Free-air) data, and contain methods for the following functionality:</p>
-<ul class="simple">
-<li><p>Extracting contours at some level of the grid</p></li>
-<li><p>Performing a wavelet transform using a Morlet wavelet</p></li>
-<li><p>Obtaining the wavelet scalogram from the wavelet transform</p></li>
-<li><p>Plotting the input grids, wavelet transform components, and scalograms</p></li>
-</ul>
-<p>This module further contains the class <a class="reference internal" href="#plateflex.classes.Project" title="plateflex.classes.Project"><code class="xref py py-class docutils literal notranslate"><span class="pre">Project</span></code></a>,
-which itself is a container of <a class="reference internal" href="#plateflex.classes.Grid" title="plateflex.classes.Grid"><code class="xref py py-class docutils literal notranslate"><span class="pre">Grid</span></code></a> objects
-(at least one each of <a class="reference internal" href="#plateflex.classes.TopoGrid" title="plateflex.classes.TopoGrid"><code class="xref py py-class docutils literal notranslate"><span class="pre">TopoGrid</span></code></a> and
-<a class="reference internal" href="#plateflex.classes.GravGrid" title="plateflex.classes.GravGrid"><code class="xref py py-class docutils literal notranslate"><span class="pre">GravGrid</span></code></a>). Methods are available to:</p>
-<ul class="simple">
-<li><p>Add <a class="reference internal" href="#plateflex.classes.Grid" title="plateflex.classes.Grid"><code class="xref py py-class docutils literal notranslate"><span class="pre">Grid</span></code></a> or <a class="reference internal" href="#plateflex.classes.Project" title="plateflex.classes.Project"><code class="xref py py-class docutils literal notranslate"><span class="pre">Project</span></code></a> objects to the project</p></li>
-<li><p>Iterate over <a class="reference internal" href="#plateflex.classes.Grid" title="plateflex.classes.Grid"><code class="xref py py-class docutils literal notranslate"><span class="pre">Grid</span></code></a> objects</p></li>
-<li><p>Initialize the project</p></li>
-<li><p>Perform the wavelet admittance and coherence between topography (<a class="reference internal" href="#plateflex.classes.TopoGrid" title="plateflex.classes.TopoGrid"><code class="xref py py-class docutils literal notranslate"><span class="pre">TopoGrid</span></code></a> object) and gravity anomalies (<a class="reference internal" href="#plateflex.classes.GravGrid" title="plateflex.classes.GravGrid"><code class="xref py py-class docutils literal notranslate"><span class="pre">GravGrid</span></code></a> object)</p></li>
-<li><p>Plot the wavelet admnittance and coherence spectra</p></li>
-<li><p>Estimate model parameters at single grid cell</p></li>
-<li><p>Estimate model parameters at every (or decimated) grid cell</p></li>
-<li><p>Plot the statistics of the estimated parameters at single grid cell</p></li>
-<li><p>Plot the observed and predicted admittance and coherence functions at single grid cell</p></li>
-<li><p>Plot the final grids of model parameters</p></li>
-</ul>
-<dl class="function">
-<dt id="plateflex.classes._lam2k">
-<code class="sig-prename descclassname">plateflex.classes.</code><code class="sig-name descname">_lam2k</code><span class="sig-paren">(</span><em class="sig-param">nx</em>, <em class="sig-param">ny</em>, <em class="sig-param">dx</em>, <em class="sig-param">dy</em>, <em class="sig-param">p=0.85</em><span class="sig-paren">)</span><a class="headerlink" href="#plateflex.classes._lam2k" title="Permalink to this definition">¶</a></dt>
-<dd><p>Calculate the optimal set of equally-spaced equivalent wavenumbers for given grid
-parameters to be used in the wavelet analysis through the <code class="xref py py-mod docutils literal notranslate"><span class="pre">cpwt</span></code>
-module.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>nx</strong> (<em>int</em>) – Size of grid in x direction</p></li>
-<li><p><strong>ny</strong> (<em>int</em>) – Size of grid in y direction</p></li>
-<li><p><strong>dx</strong> (<em>float</em>) – Sample distance in x direction (km)</p></li>
-<li><p><strong>dy</strong> (<em>float</em>) – Sample distance in y direction (km)</p></li>
-<li><p><strong>p</strong> (<em>float</em>) – Fractional amplitude at which wavelets overlap in wavenumber space</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p><dl class="simple">
-<dt>(tuple): Tuple containing:</dt><dd><ul class="simple">
-<li><p>ns (int): Size of wavenumber array</p></li>
-<li><p>k (<code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code>): Wavenumbers (rad/m)</p></li>
-</ul>
-</dd>
-</dl>
-</p>
-</dd>
-</dl>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>This is different from the exact Fourier wavenumbers calculated for
-the grid using <code class="xref py py-func docutils literal notranslate"><span class="pre">fftfreq()</span></code>, as the continuous wavelet
-transform can be defined at arbitrary wavenumbers.</p>
-</div>
-<p class="rubric">Example</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">plateflex</span> <span class="k">import</span> <span class="n">classes</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Define fake grid</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">nx</span> <span class="o">=</span> <span class="n">ny</span> <span class="o">=</span> <span class="mi">300</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">dx</span> <span class="o">=</span> <span class="n">dy</span> <span class="o">=</span> <span class="mf">20.</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">classes</span><span class="o">.</span><span class="n">_lam2k</span><span class="p">(</span><span class="n">nx</span><span class="p">,</span> <span class="n">ny</span><span class="p">,</span> <span class="n">dx</span><span class="p">,</span> <span class="n">dy</span><span class="p">)</span>
-<span class="go">(18, array([2.96192196e-06, 3.67056506e-06, 4.54875180e-06, 5.63704569e-06,</span>
-<span class="go">       6.98571509e-06, 8.65705514e-06, 1.07282651e-05, 1.32950144e-05,</span>
-<span class="go">       1.64758613e-05, 2.04177293e-05, 2.53026936e-05, 3.13563910e-05,</span>
-<span class="go">       3.88584421e-05, 4.81553673e-05, 5.96765921e-05, 7.39542826e-05,</span>
-<span class="go">       9.16479263e-05, 1.13574794e-04]))</span>
-</pre></div>
-</div>
-</dd></dl>
+            <a href="_sources/classes.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
 
-<div class="section" id="grid">
-<h2>Grid<a class="headerlink" href="#grid" title="Permalink to this headline">¶</a></h2>
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="grid">
+<h1>Grid<a class="headerlink" href="#grid" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
 <dt id="plateflex.classes.Grid">
 <em class="property">class </em><code class="sig-prename descclassname">plateflex.classes.</code><code class="sig-name descname">Grid</code><span class="sig-paren">(</span><em class="sig-param">grid</em>, <em class="sig-param">dx</em>, <em class="sig-param">dy</em><span class="sig-paren">)</span><a class="headerlink" href="#plateflex.classes.Grid" title="Permalink to this definition">¶</a></dt>
@@ -352,7 +359,7 @@ the wavelet scalogram (and maybe also the wavelet transform) first.</p>
 
 </div>
 <div class="section" id="topogrid">
-<h2>TopoGrid<a class="headerlink" href="#topogrid" title="Permalink to this headline">¶</a></h2>
+<h1>TopoGrid<a class="headerlink" href="#topogrid" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
 <dt id="plateflex.classes.TopoGrid">
 <em class="property">class </em><code class="sig-prename descclassname">plateflex.classes.</code><code class="sig-name descname">TopoGrid</code><span class="sig-paren">(</span><em class="sig-param">grid</em>, <em class="sig-param">dx</em>, <em class="sig-param">dy</em><span class="sig-paren">)</span><a class="headerlink" href="#plateflex.classes.TopoGrid" title="Permalink to this definition">¶</a></dt>
@@ -386,7 +393,7 @@ than 20</p>
 
 </div>
 <div class="section" id="gravgrid">
-<h2>GravGrid<a class="headerlink" href="#gravgrid" title="Permalink to this headline">¶</a></h2>
+<h1>GravGrid<a class="headerlink" href="#gravgrid" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
 <dt id="plateflex.classes.GravGrid">
 <em class="property">class </em><code class="sig-prename descclassname">plateflex.classes.</code><code class="sig-name descname">GravGrid</code><span class="sig-paren">(</span><em class="sig-param">grid</em>, <em class="sig-param">dx</em>, <em class="sig-param">dy</em><span class="sig-paren">)</span><a class="headerlink" href="#plateflex.classes.GravGrid" title="Permalink to this definition">¶</a></dt>
@@ -415,7 +422,7 @@ from <a class="reference internal" href="#plateflex.classes.Grid" title="platefl
 
 </div>
 <div class="section" id="bouggrid">
-<h2>BougGrid<a class="headerlink" href="#bouggrid" title="Permalink to this headline">¶</a></h2>
+<h1>BougGrid<a class="headerlink" href="#bouggrid" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
 <dt id="plateflex.classes.BougGrid">
 <em class="property">class </em><code class="sig-prename descclassname">plateflex.classes.</code><code class="sig-name descname">BougGrid</code><span class="sig-paren">(</span><em class="sig-param">grid</em>, <em class="sig-param">dx</em>, <em class="sig-param">dy</em><span class="sig-paren">)</span><a class="headerlink" href="#plateflex.classes.BougGrid" title="Permalink to this definition">¶</a></dt>
@@ -440,7 +447,7 @@ from <a class="reference internal" href="#plateflex.classes.GravGrid" title="pla
 
 </div>
 <div class="section" id="fairgrid">
-<h2>FairGrid<a class="headerlink" href="#fairgrid" title="Permalink to this headline">¶</a></h2>
+<h1>FairGrid<a class="headerlink" href="#fairgrid" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
 <dt id="plateflex.classes.FairGrid">
 <em class="property">class </em><code class="sig-prename descclassname">plateflex.classes.</code><code class="sig-name descname">FairGrid</code><span class="sig-paren">(</span><em class="sig-param">grid</em>, <em class="sig-param">dx</em>, <em class="sig-param">dy</em><span class="sig-paren">)</span><a class="headerlink" href="#plateflex.classes.FairGrid" title="Permalink to this definition">¶</a></dt>
@@ -465,7 +472,7 @@ from <a class="reference internal" href="#plateflex.classes.GravGrid" title="pla
 
 </div>
 <div class="section" id="rhocgrid">
-<h2>RhocGrid<a class="headerlink" href="#rhocgrid" title="Permalink to this headline">¶</a></h2>
+<h1>RhocGrid<a class="headerlink" href="#rhocgrid" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
 <dt id="plateflex.classes.RhocGrid">
 <em class="property">class </em><code class="sig-prename descclassname">plateflex.classes.</code><code class="sig-name descname">RhocGrid</code><span class="sig-paren">(</span><em class="sig-param">grid</em>, <em class="sig-param">dx</em>, <em class="sig-param">dy</em><span class="sig-paren">)</span><a class="headerlink" href="#plateflex.classes.RhocGrid" title="Permalink to this definition">¶</a></dt>
@@ -488,7 +495,7 @@ methods are still available, they are not useful in this context.</p>
 
 </div>
 <div class="section" id="zcgrid">
-<h2>ZcGrid<a class="headerlink" href="#zcgrid" title="Permalink to this headline">¶</a></h2>
+<h1>ZcGrid<a class="headerlink" href="#zcgrid" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
 <dt id="plateflex.classes.ZcGrid">
 <em class="property">class </em><code class="sig-prename descclassname">plateflex.classes.</code><code class="sig-name descname">ZcGrid</code><span class="sig-paren">(</span><em class="sig-param">grid</em>, <em class="sig-param">dx</em>, <em class="sig-param">dy</em><span class="sig-paren">)</span><a class="headerlink" href="#plateflex.classes.ZcGrid" title="Permalink to this definition">¶</a></dt>
@@ -511,7 +518,7 @@ methods are still available, they are not useful in this context.</p>
 
 </div>
 <div class="section" id="project">
-<h2>Project<a class="headerlink" href="#project" title="Permalink to this headline">¶</a></h2>
+<h1>Project<a class="headerlink" href="#project" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
 <dt id="plateflex.classes.Project">
 <em class="property">class </em><code class="sig-prename descclassname">plateflex.classes.</code><code class="sig-name descname">Project</code><span class="sig-paren">(</span><em class="sig-param">grids=None</em><span class="sig-paren">)</span><a class="headerlink" href="#plateflex.classes.Project" title="Permalink to this definition">¶</a></dt>
@@ -903,35 +910,54 @@ to have more control on file names.</p>
 </dd></dl>
 
 </div>
-</div>
 
 
+           </div>
+           
           </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="estimate.html" class="btn btn-neutral float-right" title="Module estimate" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="conf.html" class="btn btn-neutral float-left" title="plateflex.cpwt.conf_cpwt" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, Pascal Audet
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
         </div>
       </div>
-      <div class="clearer"></div>
-    </div>
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="genindex.html" title="General Index"
-             >index</a></li>
-        <li class="right" >
-          <a href="py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="right" >
-          <a href="estimate.html" title="Module estimate"
-             >next</a> |</li>
-        <li class="right" >
-          <a href="conf.html" title="Configuration modules"
-             >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">plateflex 0.0.1 documentation</a> &#187;</li> 
-      </ul>
-    </div>
-    <div class="footer" role="contentinfo">
-        &#169; Copyright 2019, Pascal Audet.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.2.0.
-    </div>
-  </body>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
 </html>
