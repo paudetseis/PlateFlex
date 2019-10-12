@@ -7,8 +7,7 @@ PlateFlex Project Documentation
 
 PlateFlex is a software for estimating the effective elastic thickness (Te) of the 
 lithosphere from the inversion of flexural isostatic response functions calculated 
-from a wavelet analysis of gravity and topography data. The software is bundled with ``Jupyter`` notebooks that describe the processing steps
-required for the estimation of Te. 
+from a wavelet analysis of gravity and topography data. The software is bundled with ``Jupyter`` notebooks that describe the processing steps required for the estimation of Te. 
 
 
 
