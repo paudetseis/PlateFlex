@@ -1,5 +1,5 @@
 
-.. figure:: ../plateflex/examples/picture/plateflex_logo.png
+.. figure:: ../plateflex/examples/picture/logo_plateflex.png
    :align: center
 
 PlateFlex Project Documentation
