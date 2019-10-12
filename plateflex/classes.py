@@ -58,16 +58,14 @@ which itself is a container of :class:`~plateflex.classes.Grid` objects
 """
 
 # -*- coding: utf-8 -*-
+import sys
 import numpy as np
-import time
 import plateflex
 from plateflex.cpwt import cpwt
 from plateflex.cpwt import conf_cpwt as cf_w
 from plateflex.flex import conf_flex as cf_f
 from plateflex import plotting
 from plateflex import estimate
-import seaborn as sns
-sns.set()
 
 
 class Grid(object):
@@ -988,6 +986,9 @@ class Project(object):
         object.
         """
 
+        if not self.initialized: 
+            raise(Exception('Project not initialized. Aborting'))
+
         if not isinstance(alph, bool):
             raise(Exception("'alph' should be a boolean: defaults to False"))
 
@@ -1114,6 +1115,9 @@ class Project(object):
 
         elif self.inverse=='L2':
             chi2_grid = np.zeros((int(self.nx/nn),int(self.ny/nn)))
+
+        else:
+            raise(Exception('Inverse method invalid: '+str(self.inverse)))
 
         if parallel:
 
@@ -1672,7 +1676,6 @@ def _lam2k(nx, ny, dx, dy, p=0.85):
 
     return ns, k
 
-import sys
 
 def _progressbar(it, prefix="", size=60, file=sys.stdout):
     count = len(it)

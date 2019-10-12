@@ -12,10 +12,11 @@ required for the estimation of Te.
 
 
 
-Quick links
-"""""""""""
+.. toctree::
+   :maxdepth: 1
+   :caption: Quick Links
 
-* `Git repositories <https://github.com/paudetseis/PlateFlex>`_
+   links
 
 .. toctree::
    :maxdepth: 1

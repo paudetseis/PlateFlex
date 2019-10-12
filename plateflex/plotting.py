@@ -276,8 +276,6 @@ def plot_functions(k, adm, eadm, coh, ecoh, padm=None, pcoh=None, title=None, sa
 
     """
 
-    from plateflex import estimate
-
     # Plot as 2 subplots
     f, (ax1, ax2) = plt.subplots(2, 1, sharex=True)
 
