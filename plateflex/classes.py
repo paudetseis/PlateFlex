@@ -9,8 +9,8 @@
 # copies of the Software, and to permit persons to whom the Software is
 # furnished to do so, subject to the following conditions:
 #
-# The above copyright notice and this permission notice shall be included in all
-# copies or substantial portions of the Software.
+# The above copyright notice and this permission notice shall be included in
+# all copies or substantial portions of the Software.
 #
 # THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 # IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -141,9 +141,9 @@ class Grid(object):
         self.ns, self.k = _lam2k(nx, ny, dx, dy)
 
         if np.any(np.isnan(np.array(grid))):
-            
+
             print('grid contains NaN values. Performing interpolation...')
-            
+
             from scipy.interpolate import griddata
 
             # Now interpolate grid where NaNs
@@ -172,11 +172,13 @@ class Grid(object):
         try:
             from skimage import measure
         except:
-            raise(Exception("Package 'scikit-image' not available to make contours."))
+            raise(Exception(
+                "Package 'scikit-image' not available to make contours."))
 
         return measure.find_contours(self.data, level)
 
-    def plot(self, mask=None, title=None, save=None, clabel=None, contours=None, **kwargs):
+    def plot(self, mask=None, title=None, save=None,
+             clabel=None, contours=None, **kwargs):
 
         if title is not None:
             title = title
@@ -187,8 +189,8 @@ class Grid(object):
         else:
             clabel = self.units
 
-        plotting.plot_real_grid(self.data, title=title, mask=mask, save=save, \
-            clabel=clabel, contours=contours, **kwargs)
+        plotting.plot_real_grid(self.data, title=title, mask=mask, save=save,
+                                clabel=clabel, contours=contours, **kwargs)
 
     def wlet_transform(self):
         """
@@ -201,7 +203,7 @@ class Grid(object):
 
         ``wl_trans`` : :class:`~numpy.ndarray`
             Wavelet transform of the grid (shape (`nx,ny,na,ns`))
-        
+
         .. rubric:: Example
 
         >>> import numpy as np
@@ -248,7 +250,7 @@ class Grid(object):
 
         >>> import numpy as np
         >>> from plateflex import Grid
- 
+
         >>> # Create random-valued square grid
         >>> nn = 200; dd = 10.
         >>> xmin = ymin = 0.
@@ -283,8 +285,8 @@ class Grid(object):
 
         return
 
-    def plot_transform(self, kindex=None, aindex=None, log=False, mask=None, \
-        save=None, clabel=None, contours=None, **kwargs):
+    def plot_transform(self, kindex=None, aindex=None, log=False, mask=None,
+                       save=None, clabel=None, contours=None, **kwargs):
         """
         This method plots the real and imaginary components of the wavelet transform of a
         :class:`~plateflex.classes.Grid` object at wavenumber and angle indices (int). 
@@ -302,31 +304,46 @@ class Grid(object):
         """
 
         if kindex is None or aindex is None:
-            raise(Exception('Specify index of wavenumber and angle to plot the transform'))
+            raise(
+                Exception(
+                    'Specify index of wavenumber and angle ' +
+                    'to plot the transform'))
 
-        if kindex>self.ns-1 or kindex<0:
-            raise(Exception('Invalid index: should be between 0 and '+str(ns)))
+        if kindex > self.ns-1 or kindex < 0:
+            raise(Exception(
+                'Invalid index: should be between 0 and '+str(ns)))
 
-        if aindex>10 or aindex<0:
-            raise(Exception('Invalid index: should be between 0 and 10'))
+        if aindex > 10 or aindex < 0:
+            raise(Exception(
+                'Invalid index: should be between 0 and 10'))
 
         try:
-            rdata = np.real(self.wl_trans[:,:,aindex,kindex])
-            idata = np.imag(self.wl_trans[:,:,aindex,kindex])
+            rdata = np.real(self.wl_trans[:, :, aindex, kindex])
+            idata = np.imag(self.wl_trans[:, :, aindex, kindex])
         except:
             print('Calculating the transform first')
             self.wlet_transform()
-            rdata = np.real(self.wl_trans[:,:,aindex,kindex])
-            idata = np.imag(self.wl_trans[:,:,aindex,kindex])
+            rdata = np.real(self.wl_trans[:, :, aindex, kindex])
+            idata = np.imag(self.wl_trans[:, :, aindex, kindex])
 
-        plotting.plot_real_grid(rdata, title='Real part of wavelet coefficients', mask=mask, save=save, clabel=self.units, \
+        plotting.plot_real_grid(
+            rdata,
+            title='Real part of wavelet coefficients',
+            mask=mask,
+            save=save,
+            clabel=self.units,
             contours=contours, **kwargs)
-        plotting.plot_real_grid(idata, title='Imaginary part of wavelet coefficients', mask=mask, save=save, clabel=self.units, \
+        plotting.plot_real_grid(
+            idata,
+            title='Imaginary part of wavelet coefficients',
+            mask=mask,
+            save=save,
+            clabel=self.units,
             contours=contours, **kwargs)
 
-
-    def plot_scalogram(self, kindex=None, log=True, mask=None, title='Wavelet scalogram', \
-        save=None, clabel=None, contours=None, **kwargs):
+    def plot_scalogram(self, kindex=None, log=True, mask=None,
+                       title='Wavelet scalogram', save=None, clabel=None,
+                       contours=None, **kwargs):
         """
         This method plots the wavelet scalogram of a :class:`~plateflex.classes.Grid` 
         object at a wavenumber index (int). Raises ``Exception`` for the cases where:
@@ -342,24 +359,41 @@ class Grid(object):
         """
 
         if kindex is None:
-            raise(Exception('Specify index of wavenumber for plotting'))
+            raise(
+                Exception(
+                    'Specify index of wavenumber for plotting'))
 
-        if kindex>self.ns-1 or kindex<0:
-            raise(Exception('Invalid index: should be between 0 and '+str(self.ns)))
+        if kindex > self.ns-1 or kindex < 0:
+            raise(
+                Exception(
+                    'Invalid index: should be between 0 and ' +
+                    str(self.ns)))
 
         try:
-            data = self.wl_sg[:,:,kindex]
+            data = self.wl_sg[:, :, kindex]
         except:
             print('Calculating the scalogram first')
             self.wlet_scalogram()
-            data = self.wl_sg[:,:,kindex]
+            data = self.wl_sg[:, :, kindex]
 
         if log:
-            plotting.plot_real_grid(data, log=log, mask=mask, title=title, save=save, \
-                clabel=self.logsg_units, contours=contours, **kwargs)
+            plotting.plot_real_grid(
+                data,
+                log=log,
+                mask=mask,
+                title=title,
+                save=save,
+                clabel=self.logsg_units,
+                contours=contours, **kwargs)
         else:
-            plotting.plot_real_grid(data, log=log, mask=mask, title=title, save=save, \
-                clabel=self.sg_units, contours=contours, **kwargs)
+            plotting.plot_real_grid(
+                data,
+                log=log,
+                mask=mask,
+                title=title,
+                save=save,
+                clabel=self.sg_units,
+                contours=contours, **kwargs)
 
 
 class GravGrid(Grid):
@@ -396,6 +430,7 @@ class GravGrid(Grid):
         self.logsg_units = r'log(mGal$^2$/|k|)'
         self.title = 'Gravity anomaly'
 
+
 class BougGrid(GravGrid):
     """
     Basic grid class of :mod:`~plateflex` for Bouguer gravity data that inherits 
@@ -424,6 +459,7 @@ class BougGrid(GravGrid):
         GravGrid.__init__(self, grid, dx, dy)
         self.title = 'Bouguer anomaly'
 
+
 class FairGrid(GravGrid):
     """
     Basic grid class of :mod:`~plateflex` for Free-air gravity data that inherits 
@@ -451,6 +487,7 @@ class FairGrid(GravGrid):
         GravGrid.__init__(self, grid, dx, dy)
         self.title = 'Free-air anomaly'
 
+
 class TopoGrid(Grid):
     """
     Basic grid class of :mod:`~plateflex` for Topography data that inherits 
@@ -468,7 +505,7 @@ class TopoGrid(Grid):
         Descriptor for Topography data
 
     .. rubric: Example
-    
+
     >>> import numpy as np
     >>> from plateflex import Grid, TopoGrid
     >>> nn = 200; dd = 10.
@@ -494,7 +531,7 @@ class TopoGrid(Grid):
             self.data *= 1.e3
 
         water_depth = grid
-        water_depth[grid>0.] = 0.
+        water_depth[grid > 0.] = 0.
 
         self.water_depth = -1.*water_depth
 
@@ -502,21 +539,33 @@ class TopoGrid(Grid):
         from skimage.filters import gaussian
 
         water_depth = gaussian(self.data, sigma=sigma)
-        water_depth[self.data>0.] = 0.
+        water_depth[self.data > 0.] = 0.
 
         self.water_depth = -1.*water_depth
-        
+
         if returned:
             return water_depth
 
-    def plot_water_depth(self, mask=None, title=None, save=None, clabel=None, contours=None, **kwargs):
+    def plot_water_depth(
+            self, mask=None, title=None, save=None,
+            clabel=None, contours=None, **kwargs):
 
         if title is not None:
-            plotting.plot_real_grid(self.water_depth, title=title, mask=mask, save=save, \
-                clabel=self.units, contours=contours, **kwargs)
+            plotting.plot_real_grid(
+                self.water_depth,
+                title=title,
+                mask=mask,
+                save=save,
+                clabel=self.units,
+                contours=contours, **kwargs)
         else:
-            plotting.plot_real_grid(self.water_depth, title='Water depth', mask=mask, save=save, \
-                clabel=self.units, contours=contours, **kwargs)
+            plotting.plot_real_grid(
+                self.water_depth,
+                title='Water depth',
+                mask=mask,
+                save=save,
+                clabel=self.units,
+                contours=contours, **kwargs)
 
 
 class RhocGrid(Grid):
@@ -550,6 +599,7 @@ class RhocGrid(Grid):
         if np.std(self.data) < 10.:
             self.data *= 1.e3
 
+
 class ZcGrid(Grid):
     """
     Basic grid class of :mod:`~plateflex` for crustal thickness data that inherits 
@@ -567,7 +617,7 @@ class ZcGrid(Grid):
         This class should only be used to specify the thickness of the
         crust at each cell location. Although the :class:`~plateflex.classes.Grid`
         methods are still available, they are not useful in this context.
-         
+
     """
 
     def __init__(self, grid, dx, dy):
@@ -580,6 +630,7 @@ class ZcGrid(Grid):
 
         if np.std(self.data) < 20.:
             self.data *= 1.e3
+
 
 class Project(object):
     """
@@ -715,7 +766,7 @@ class Project(object):
         :param grid: object to append to project
 
         .. rubric:: Example
-            
+
         >>> import numpy as np
         >>> from plateflex import Grid, Project
         >>> nn = 200; dd = 10.
@@ -723,7 +774,7 @@ class Project(object):
         >>> project = Project()
         >>> project.append(grid)
         """
-        
+
         if isinstance(grid, Grid):
             self.grids.append(grid)
         else:
@@ -764,7 +815,6 @@ class Project(object):
             raise TypeError(msg)
         return self
 
-
     def init(self):
         """
         Method to initialize a project. This step is required before calculating
@@ -790,7 +840,7 @@ class Project(object):
             1D array of wavenumbers
         ``initialized`` : bool
             Set to ``True`` when method is called successfully
-            
+
         .. rubric:: Optional Attributes
 
         ``rhoc`` : :class:`~numpy.ndarray`
@@ -807,29 +857,41 @@ class Project(object):
 
         # Methods will fail if there is no ``TopoGrid`` object in list
         if not any(isinstance(g, TopoGrid) for g in self.grids):
-            raise(Exception('There needs to be one TopoGrid object in Project'))
+            raise(
+                Exception(
+                    'There needs to be one TopoGrid object in Project'))
 
         # Methods will fail if there is no ``GravGrid`` object in list
         if not any(isinstance(g, GravGrid) for g in self.grids):
-            raise(Exception('There needs to be one GravGrid object in Project'))
+            raise(
+                Exception(
+                    'There needs to be one GravGrid object in Project'))
 
-        # Check that all grids have the same shape 
+        # Check that all grids have the same shape
         shape = [grid.data.shape for grid in self.grids]
-        if not (len(set(shape))==1):
-            raise(Exception('Grids do not have the same shape - aborting:'+str(shape)))
+        if not (len(set(shape)) == 1):
+            raise(
+                Exception(
+                    'Grids do not have the same shape - aborting:' +
+                    str(shape)))
 
         # Check that all grids have the same sampling intervals
         dd = [(grid.dx, grid.dy) for grid in self.grids]
-        if not (len(set(dd))==1):
-            raise(Exception('Grids do not have the same sampling intervals - aborting:'+str(dd)))
+        if not (len(set(dd)) == 1):
+            raise(
+                Exception(
+                    'Grids do not have the same sampling intervals - ' +
+                    'aborting:' + str(dd)))
 
-        # Check whether gravity grid is Free air or Bouguer and set global variable accordingly
+        # Check whether gravity grid is Free air or Bouguer and
+        # set global variable accordingly
         if any(isinstance(g, BougGrid) for g in self.grids):
             cf_f.boug = 1
         elif any(isinstance(g, FairGrid) for g in self.grids):
             cf_f.boug = 0
 
-        # Initialize model attributes to None (i.e., default values will be used)
+        # Initialize model attributes to None (i.e., default values
+        # will be used)
         self.rhoc = None
         self.zc = None
 
@@ -850,7 +912,6 @@ class Project(object):
         self.dx = self.grids[0].dx
         self.dy = self.grids[0].dy
         self.initialized = True
-
 
     def wlet_admit_coh(self):
         """
@@ -884,7 +945,8 @@ class Project(object):
         if not self.initialized:
             raise(Exception("Project not yet initialized - Abort"))
 
-        # Identify the ``Grid`` types for proper calculation of admittance and coherence 
+        # Identify the ``Grid`` types for proper calculation of
+        # admittance and coherence
         for grid in self.grids:
             if isinstance(grid, TopoGrid):
                 try:
@@ -899,8 +961,8 @@ class Project(object):
                     grid.wlet_transform()
                     wl_trans_grav = grid.wl_trans
 
-        # Calculate wavelet admittance and coherence by calling function wlet_admit_coh
-        # from module ``plateflex.cpwt.cpwt``
+        # Calculate wavelet admittance and coherence by calling
+        # function wlet_admit_coh from module ``plateflex.cpwt.cpwt``
         wl_admit, ewl_admit, wl_coh, ewl_coh = \
             cpwt.wlet_admit_coh(wl_trans_topo, wl_trans_grav)
 
@@ -910,9 +972,10 @@ class Project(object):
         self.wl_coh = wl_coh
         self.ewl_coh = ewl_coh
 
-        return 
+        return
 
-    def plot_admit_coh(self, kindex=None, mask=None, save=None, contours=None, **kwargs):
+    def plot_admit_coh(self, kindex=None, mask=None, save=None,
+                       contours=None, **kwargs):
         """
         Method to plot grids of wavelet admittance and coherence at a given  wavenumber index. 
 
@@ -936,24 +999,37 @@ class Project(object):
             raise(Exception('Specify index of wavenumber for plotting'))
 
         try:
-            adm = self.wl_admit[:,:,kindex]
-            coh = self.wl_coh[:,:,kindex]
+            adm = self.wl_admit[:, :, kindex]
+            coh = self.wl_coh[:, :, kindex]
         except:
             print('Calculating the admittance and coherence first')
             self.wlet_admit_coh()
-            adm = self.wl_admit[:,:,kindex]
-            coh = self.wl_coh[:,:,kindex]
+            adm = self.wl_admit[:, :, kindex]
+            coh = self.wl_coh[:, :, kindex]
 
-        if kindex>self.ns or kindex<0:
-            raise(Exception('Invalid index: should be between 0 and '+str(self.ns)))
+        if kindex > self.ns or kindex < 0:
+            raise(Exception('Invalid index: should be between 0 and ' +
+                            str(self.ns)))
 
-        plotting.plot_real_grid(adm, mask=mask, title='Admittance', save=save, clabel='mGal/m', \
-            contours=contours, **kwargs)
-        plotting.plot_real_grid(coh, mask=mask, title='Coherence', save=save, clabel=None, \
-            contours=contours, **kwargs)
+        plotting.plot_real_grid(
+            adm,
+            mask=mask,
+            title='Admittance',
+            save=save,
+            clabel='mGal/m',
+            contours=contours,
+            **kwargs)
+        plotting.plot_real_grid(
+            coh,
+            mask=mask,
+            title='Coherence',
+            save=save,
+            clabel=None,
+            contours=contours,
+            **kwargs)
 
-
-    def estimate_cell(self, cell=(0,0), alph=False, atype='joint', returned=False):
+    def estimate_cell(self, cell=(0, 0), alph=False,
+                      atype='joint', returned=False):
         """
         Method to estimate the parameters of the flexural model at a single cell location
         of the input grids. The type of estimation performed is set by the project attribute 
@@ -981,19 +1057,25 @@ class Project(object):
             Container for Maximum a Posteriori (MAP) estimates
         ``cell`` : tuple 
             Indices of cell location within grid
-        
+
         Results are stored as attributes of :class:`~plateflex.classes.Project` 
         object.
         """
 
-        if not self.initialized: 
-            raise(Exception('Project not initialized. Aborting'))
+        if not self.initialized:
+            raise(
+                Exception(
+                    'Project not initialized. Aborting'))
 
         if not isinstance(alph, bool):
-            raise(Exception("'alph' should be a boolean: defaults to False"))
+            raise(
+                Exception(
+                    "'alph' should be a boolean: defaults to False"))
 
         if atype not in ['admit', 'coh', 'joint']:
-            raise(Exception("'atype' should be one among: 'admit', 'coh', or 'joint'"))
+            raise(
+                Exception(
+                    "'atype' should be one among: 'admit', 'coh', or 'joint'"))
 
         # Extract admittance and coherence at cell indices
         adm = self.wl_admit[cell[0], cell[1], :]
@@ -1008,8 +1090,8 @@ class Project(object):
         if self.zc is not None:
             cf_f.zc = self.zc[cell[0], cell[1]]
 
-        if self.inverse=='L2':
-            summary = estimate.L2_estimate_cell( \
+        if self.inverse == 'L2':
+            summary = estimate.L2_estimate_cell(
                 self.k, adm, eadm, coh, ecoh, alph, atype)
 
             # Return estimates if requested
@@ -1023,8 +1105,8 @@ class Project(object):
                 self.cell = cell
                 self.summary = summary
 
-        elif self.inverse=='bayes':
-            trace, summary, map_estimate = estimate.bayes_estimate_cell( \
+        elif self.inverse == 'bayes':
+            trace, summary, map_estimate = estimate.bayes_estimate_cell(
                 self.k, adm, eadm, coh, ecoh, alph, atype)
 
             # Return estimates if requested
@@ -1088,72 +1170,79 @@ class Project(object):
         self.nn = nn
 
         if not isinstance(alph, bool):
-            raise(Exception("'alph' should be a boolean: defaults to False"))
+            raise(
+                Exception(
+                    "'alph' should be a boolean: defaults to False"))
         self.alph = alph
 
         if atype not in ['admit', 'coh', 'joint']:
-            raise(Exception("'atype' should be one among: 'admit', 'coh', or 'joint'"))
+            raise(
+                Exception(
+                    "'atype' should be one among: 'admit', 'coh', or 'joint'"))
         self.atype = atype
 
         # Initialize result grids to zeroes
         if self.mask is not None:
-            new_mask_grid = np.zeros((int(self.nx/nn),int(self.ny/nn)), dtype=bool)
+            new_mask_grid = np.zeros(
+                (int(self.nx/nn), int(self.ny/nn)), dtype=bool)
 
-        mean_Te_grid = np.zeros((int(self.nx/nn),int(self.ny/nn)))
-        std_Te_grid = np.zeros((int(self.nx/nn),int(self.ny/nn)))
-        mean_F_grid = np.zeros((int(self.nx/nn),int(self.ny/nn)))
-        std_F_grid = np.zeros((int(self.nx/nn),int(self.ny/nn)))
+        mean_Te_grid = np.zeros((int(self.nx/nn), int(self.ny/nn)))
+        std_Te_grid = np.zeros((int(self.nx/nn), int(self.ny/nn)))
+        mean_F_grid = np.zeros((int(self.nx/nn), int(self.ny/nn)))
+        std_F_grid = np.zeros((int(self.nx/nn), int(self.ny/nn)))
         if self.alph:
-            mean_a_grid = np.zeros((int(self.nx/nn),int(self.ny/nn)))
-            std_a_grid = np.zeros((int(self.nx/nn),int(self.ny/nn)))
+            mean_a_grid = np.zeros((int(self.nx/nn), int(self.ny/nn)))
+            std_a_grid = np.zeros((int(self.nx/nn), int(self.ny/nn)))
 
-        if self.inverse=='bayes':
-            MAP_Te_grid = np.zeros((int(self.nx/nn),int(self.ny/nn)))
-            MAP_F_grid = np.zeros((int(self.nx/nn),int(self.ny/nn)))
+        if self.inverse == 'bayes':
+            MAP_Te_grid = np.zeros((int(self.nx/nn), int(self.ny/nn)))
+            MAP_F_grid = np.zeros((int(self.nx/nn), int(self.ny/nn)))
             if self.alph:
-                MAP_a_grid = np.zeros((int(self.nx/nn),int(self.ny/nn)))
+                MAP_a_grid = np.zeros((int(self.nx/nn), int(self.ny/nn)))
 
-        elif self.inverse=='L2':
-            chi2_grid = np.zeros((int(self.nx/nn),int(self.ny/nn)))
+        elif self.inverse == 'L2':
+            chi2_grid = np.zeros((int(self.nx/nn), int(self.ny/nn)))
 
         else:
-            raise(Exception('Inverse method invalid: '+str(self.inverse)))
+            raise(
+                Exception(
+                    'Inverse method invalid: '+str(self.inverse)))
 
         if parallel:
 
-            raise(Exception('Parallel implementation does not work - check again later'))
-            # from joblib import Parallel, delayed
-            # cf.cores=1
-
-            # # Run nested for loop in parallel to cover the whole grid
-            # results = Parallel(n_jobs=4)(delayed(self.estimate_cell) \
-            #     (cell=(i,j), alph=alph, atype=atype, returned=True) \
-            #     for i in range(0, self.nx-nn, nn) for j in range(0, self.ny-nn, nn))
-
+            raise(
+                Exception(
+                    'Parallel implementation does not work - ' +
+                    'check again later'))
         else:
             for i in _progressbar(range(0, self.nx-nn, nn), 'Computing: ', 10):
                 for j in range(0, self.ny-nn, nn):
-                    
+
                     # # For reference - index values
                     # print(i,j)
 
                     # tuple of cell indices
-                    cell = (i,j)
+                    cell = (i, j)
 
                     # Skip masked cells
                     if self.mask is not None:
-                        new_mask_grid[int(i/nn),int(j/nn)] = self.mask[i,j]
-                        if self.mask[i,j]:
+                        new_mask_grid[int(i/nn), int(j/nn)] = self.mask[i, j]
+                        if self.mask[i, j]:
                             continue
 
-                    if self.inverse=='bayes':
+                    if self.inverse == 'bayes':
 
-                        # Carry out calculations by calling the ``estimate_cell`` method
-                        summary, map_estimate = self.estimate_cell(cell=cell, \
-                            alph=alph, atype=atype, returned=True)
+                        # Carry out calculations by calling the
+                        # ``estimate_cell`` method
+                        summary, map_estimate = self.estimate_cell(
+                            cell=cell,
+                            alph=alph,
+                            atype=atype,
+                            returned=True)
 
                         # Extract estimates from summary and map_estimate
-                        res = estimate.get_bayes_estimates(summary, map_estimate)
+                        res = estimate.get_bayes_estimates(
+                            summary, map_estimate)
 
                         # Distribute the parameters back to space
                         mean_Te = res[0]
@@ -1168,22 +1257,26 @@ class Project(object):
                             MAP_a = res[14]
 
                         # Store values in smaller arrays
-                        mean_Te_grid[int(i/nn),int(j/nn)] = mean_Te
-                        MAP_Te_grid[int(i/nn),int(j/nn)] = MAP_Te
-                        std_Te_grid[int(i/nn),int(j/nn)] = std_Te
-                        mean_F_grid[int(i/nn),int(j/nn)] = mean_F
-                        MAP_F_grid[int(i/nn),int(j/nn)] = MAP_F
-                        std_F_grid[int(i/nn),int(j/nn)] = std_F
+                        mean_Te_grid[int(i/nn), int(j/nn)] = mean_Te
+                        MAP_Te_grid[int(i/nn), int(j/nn)] = MAP_Te
+                        std_Te_grid[int(i/nn), int(j/nn)] = std_Te
+                        mean_F_grid[int(i/nn), int(j/nn)] = mean_F
+                        MAP_F_grid[int(i/nn), int(j/nn)] = MAP_F
+                        std_F_grid[int(i/nn), int(j/nn)] = std_F
                         if self.alph:
-                            mean_a_grid[int(i/nn),int(j/nn)] = mean_a
-                            MAP_a_grid[int(i/nn),int(j/nn)] = MAP_a
-                            std_a_grid[int(i/nn),int(j/nn)] = std_a
+                            mean_a_grid[int(i/nn), int(j/nn)] = mean_a
+                            MAP_a_grid[int(i/nn), int(j/nn)] = MAP_a
+                            std_a_grid[int(i/nn), int(j/nn)] = std_a
 
-                    elif self.inverse=='L2':
+                    elif self.inverse == 'L2':
 
-                        # Carry out calculations by calling the ``estimate_cell`` method
-                        summary = self.estimate_cell(cell=cell, \
-                            alph=alph, atype=atype, returned=True)
+                        # Carry out calculations by calling the
+                        # ``estimate_cell`` method
+                        summary = self.estimate_cell(
+                            cell=cell,
+                            alph=alph,
+                            atype=atype,
+                            returned=True)
 
                         # Extract estimates from summary
                         res = estimate.get_L2_estimates(summary)
@@ -1201,19 +1294,19 @@ class Project(object):
                             chi2 = res[4]
 
                         # Store values in smaller arrays
-                        mean_Te_grid[int(i/nn),int(j/nn)] = mean_Te
-                        std_Te_grid[int(i/nn),int(j/nn)] = std_Te
-                        mean_F_grid[int(i/nn),int(j/nn)] = mean_F
-                        std_F_grid[int(i/nn),int(j/nn)] = std_F
-                        chi2_grid[int(i/nn),int(j/nn)] = chi2
+                        mean_Te_grid[int(i/nn), int(j/nn)] = mean_Te
+                        std_Te_grid[int(i/nn), int(j/nn)] = std_Te
+                        mean_F_grid[int(i/nn), int(j/nn)] = mean_F
+                        std_F_grid[int(i/nn), int(j/nn)] = std_F
+                        chi2_grid[int(i/nn), int(j/nn)] = chi2
                         if self.alph:
-                            mean_a_grid[int(i/nn),int(j/nn)] = mean_a
-                            std_a_grid[int(i/nn),int(j/nn)] = std_a
+                            mean_a_grid[int(i/nn), int(j/nn)] = mean_a
+                            std_a_grid[int(i/nn), int(j/nn)] = std_a
 
         if self.mask is not None:
             self.new_mask_grid = new_mask_grid
 
-        if self.inverse=='bayes':
+        if self.inverse == 'bayes':
 
             # Store grids as attributes
             self.mean_Te_grid = mean_Te_grid
@@ -1227,7 +1320,7 @@ class Project(object):
                 self.MAP_a_grid = MAP_a_grid
                 self.std_a_grid = std_a_grid
 
-        elif self.inverse=='L2':
+        elif self.inverse == 'L2':
             # Store grids as attributes
             self.chi2_grid = chi2_grid
             self.mean_Te_grid = mean_Te_grid
@@ -1237,7 +1330,6 @@ class Project(object):
             if self.alph:
                 self.mean_a_grid = mean_a_grid
                 self.std_a_grid = std_a_grid
-
 
     def plot_bayes_stats(self, title=None, save=None):
         """
@@ -1253,8 +1345,10 @@ class Project(object):
         """
 
         try:
-            plotting.plot_bayes_stats(self.trace, self.summary, \
-                self.map_estimate, title=title, save=save)
+            plotting.plot_bayes_stats(
+                self.trace, self.summary,
+                self.map_estimate, title=title,
+                save=save)
         except:
             raise(Exception("No 'cell' estimate available"))
 
@@ -1275,7 +1369,7 @@ class Project(object):
 
         if est not in ['mean', 'MAP']:
             raise(Exception("Choose one among: 'mean', or 'MAP'"))
-            
+
         try:
             cell = self.cell
             k = self.k
@@ -1291,49 +1385,54 @@ class Project(object):
         try:
             ma = np.pi/2.
 
-            if self.inverse=='bayes':
+            if self.inverse == 'bayes':
                 # Extract statistics from summary object
-                if est=='mean':
+                if est == 'mean':
                     mte = self.summary.loc['Te', est]
                     mF = self.summary.loc['F', est]
-                    if sum(self.summary.index.isin(['alpha']))==1:
+                    if sum(self.summary.index.isin(['alpha'])) == 1:
                         ma = self.summary.loc['alpha', est]
 
                 # Extract MAP from map_estimate object
-                elif est=='MAP':
+                elif est == 'MAP':
                     mte = np.float(self.map_estimate['Te'])
                     mF = np.float(self.map_estimate['F'])
                     if 'alpha' in self.map_estimate:
                         ma = np.float(self.map_estimate['alpha'])
                 else:
-                    raise(Exception("estimate does not exist. Choose among: 'mean' or 'MAP'"))
+                    raise(
+                        Exception(
+                            "estimate does not exist. Choose among: " +
+                            "'mean' or 'MAP'"))
 
-            elif self.inverse=='L2':
+            elif self.inverse == 'L2':
 
                 # Extract statistics from summary object
                 mte = self.summary.loc['Te', 'mean']
                 mF = self.summary.loc['F', 'mean']
-                if sum(self.summary.index.isin(['alpha']))==1:
+                if sum(self.summary.index.isin(['alpha'])) == 1:
                     ma = self.summary.loc['alpha', 'mean']
 
             # Calculate predicted admittance and coherence from estimates
             padm, pcoh = estimate.real_xspec_functions(k, mte, mF, ma)
 
             # Call function from ``plotting`` module
-            plotting.plot_functions(k, adm, eadm, coh, ecoh, \
+            plotting.plot_functions(
+                k, adm, eadm, coh, ecoh,
                 padm=padm, pcoh=pcoh, title=title, save=save)
 
         except:
 
             # Call function from ``plotting`` module
-            plotting.plot_functions(k, adm, eadm, coh, ecoh, \
+            plotting.plot_functions(
+                k, adm, eadm, coh, ecoh,
                 title=title, save=save)
 
-
-    def plot_results(self, mean_Te=False, MAP_Te=False, std_Te=False, \
-        mean_F=False, MAP_F=False, std_F=False, mean_a=False, MAP_a=False, \
-        std_a=False, chi2=False, mask=False, contours=None, save=None, \
-        filter=True, sigma=1, **kwargs):
+    def plot_results(
+            self, mean_Te=False, MAP_Te=False, std_Te=False,
+            mean_F=False, MAP_F=False, std_F=False, mean_a=False, MAP_a=False,
+            std_a=False, chi2=False, mask=False, contours=None, save=None,
+            filter=True, sigma=1, **kwargs):
         """
         Method to plot grids of estimated parameters with fixed labels and titles. 
         To have more control over the plot rendering, use the function 
@@ -1381,58 +1480,93 @@ class Project(object):
                 mean_Te_grid = gaussian(self.mean_Te_grid, sigma=sigma)
             else:
                 mean_Te_grid = self.mean_Te_grid
-            plotting.plot_real_grid(mean_Te_grid, mask=new_mask, \
-                title='Elastic thickness', clabel='$T_e$ (km)', contours=contours, \
-                save=save, **kwargs)
+            plotting.plot_real_grid(
+                mean_Te_grid,
+                mask=new_mask,
+                title='Elastic thickness',
+                clabel='$T_e$ (km)',
+                contours=contours,
+                save=save,
+                **kwargs)
         if MAP_Te:
             if filter:
                 MAP_Te_grid = gaussian(self.MAP_Te_grid, sigma=sigma)
             else:
                 MAP_Te_grid = self.MAP_Te_grid
-            plotting.plot_real_grid(MAP_Te_grid, mask=new_mask, \
-                title='MAP estimate of $T_e$', clabel='$T_e$ (km)', contours=contours, \
-                save=save, **kwargs)
+            plotting.plot_real_grid(
+                MAP_Te_grid,
+                mask=new_mask,
+                title='MAP estimate of $T_e$',
+                clabel='$T_e$ (km)',
+                contours=contours,
+                save=save,
+                **kwargs)
         if std_Te:
             if filter:
                 std_Te_grid = gaussian(self.std_Te_grid, sigma=sigma)
             else:
                 std_Te_grid = self.std_Te_grid
-            plotting.plot_real_grid(std_Te_grid, mask=new_mask, \
-                title='Error on $T_e$', clabel='$T_e$ (km)', contours=contours, \
-                save=save, **kwargs)
+            plotting.plot_real_grid(
+                std_Te_grid,
+                mask=new_mask,
+                title='Error on $T_e$',
+                clabel='$T_e$ (km)',
+                contours=contours,
+                save=save,
+                **kwargs)
         if mean_F:
             if filter:
                 mean_F_grid = gaussian(self.mean_F_grid, sigma=sigma)
             else:
                 mean_F_grid = self.mean_F_grid
-            plotting.plot_real_grid(mean_F_grid, mask=new_mask, \
-                title='Initial load ratio', clabel='$F$', contours=contours, \
-                save=save, **kwargs)
+            plotting.plot_real_grid(
+                mean_F_grid,
+                mask=new_mask,
+                title='Initial load ratio',
+                clabel='$F$',
+                contours=contours,
+                save=save,
+                **kwargs)
         if MAP_F:
             if filter:
                 MAP_F_grid = gaussian(self.MAP_F_grid, sigma=sigma)
             else:
                 MAP_F_grid = self.MAP_F_grid
-            plotting.plot_real_grid(MAP_F_grid, mask=new_mask, \
-                title='MAP estimate of $F$', clabel='$F$', contours=contours, \
-                save=save, **kwargs)
+            plotting.plot_real_grid(
+                MAP_F_grid,
+                mask=new_mask,
+                title='MAP estimate of $F$',
+                clabel='$F$',
+                contours=contours,
+                save=save,
+                **kwargs)
         if std_F:
             if filter:
                 std_F_grid = gaussian(self.std_F_grid, sigma=sigma)
             else:
-                std_F_grid = self.std_F_grid       
-            plotting.plot_real_grid(std_F_grid, mask=new_mask, \
-                title='Error on $F$', clabel='$F$', contours=contours, \
-                save=save, **kwargs)
+                std_F_grid = self.std_F_grid
+            plotting.plot_real_grid(
+                std_F_grid,
+                mask=new_mask,
+                title='Error on $F$',
+                clabel='$F$',
+                contours=contours,
+                save=save,
+                **kwargs)
         if mean_a:
             try:
                 if filter:
                     mean_a_grid = gaussian(mean_a_grid, sigma)
                 else:
                     mean_a_grid = self.mean_a_grid
-                plotting.plot_real_grid(mean_a_grid, mask=new_mask, \
-                    title=r'Phase difference between initial loads', clabel=r'$\alpha$', \
-                    contours=contours, save=save, **kwargs)
+                plotting.plot_real_grid(
+                    mean_a_grid,
+                    mask=new_mask,
+                    title=r'Phase difference between initial loads',
+                    clabel=r'$\alpha$',
+                    contours=contours,
+                    save=save,
+                    **kwargs)
             except:
                 print("parameter 'alpha' was not estimated")
         if MAP_a:
@@ -1441,9 +1575,14 @@ class Project(object):
                     MAP_a_grid = gaussian(MAP_a_grid, sigma=sigma)
                 else:
                     MAP_a_grid = self.MAP_a_grid
-                plotting.plot_real_grid(MAP_a_grid, mask=new_mask, \
-                    title=r'MAP estimate of $\alpha$', clabel=r'$\alpha$', \
-                    contours=contours, save=save, **kwargs)
+                plotting.plot_real_grid(
+                    MAP_a_grid,
+                    mask=new_mask,
+                    title=r'MAP estimate of $\alpha$',
+                    clabel=r'$\alpha$',
+                    contours=contours,
+                    save=save,
+                    **kwargs)
             except:
                 print("parameter 'alpha' was not estimated")
         if std_a:
@@ -1452,9 +1591,14 @@ class Project(object):
                     std_a_grid = gaussian(std_a_grid, sigma=sigma)
                 else:
                     std_a_grid = self.std_a_grid
-                plotting.plot_real_grid(std_a_grid, mask=new_mask, \
-                    title=r'Error on $\alpha$', clabel=r'$\alpha$', contours=contours, \
-                    save=save, **kwargs)
+                plotting.plot_real_grid(
+                    std_a_grid,
+                    mask=new_mask,
+                    title=r'Error on $\alpha$',
+                    clabel=r'$\alpha$',
+                    contours=contours,
+                    save=save,
+                    **kwargs)
             except:
                 print("parameter 'alpha' was not estimated")
         if chi2:
@@ -1463,17 +1607,22 @@ class Project(object):
                     chi2_grid = gaussian(self.chi2_grid, sigma=sigma)
                 else:
                     chi2_grid = self.chi2_grid
-                plotting.plot_real_grid(chi2_grid, mask=new_mask, \
-                    title='Reduced chi-squared error', clabel=r'$\chi_{\nu}^2$', \
-                    contours=contours, save=save, **kwargs)
+                plotting.plot_real_grid(
+                    chi2_grid,
+                    mask=new_mask,
+                    title='Reduced chi-squared error',
+                    clabel=r'$\chi_{\nu}^2$',
+                    contours=contours,
+                    save=save,
+                    **kwargs)
             except:
                 print("parameter 'chi2' was not estimated")
 
-
-    def save_results(self, mean_Te=False, MAP_Te=False, std_Te=False, \
-        mean_F=False, MAP_F=False, std_F=False, mean_a=False, MAP_a=False, \
-        std_a=False, chi2=False, mask=False, contours=None, \
-        filter=True, sigma=1, prefix='PlateFlex_'):
+    def save_results(
+            self, mean_Te=False, MAP_Te=False, std_Te=False,
+            mean_F=False, MAP_F=False, std_F=False, mean_a=False, MAP_a=False,
+            std_a=False, chi2=False, mask=False, contours=None,
+            filter=True, sigma=1, prefix='PlateFlex_'):
         """
         Method to save grids of estimated parameters with default file names. 
 
@@ -1503,13 +1652,13 @@ class Project(object):
             import pandas as pd
 
             xx, yy = np.mgrid[0:pars[0], 0:pars[1]]
-            data = np.array([pars[3]*yy.flatten(), pars[2]*xx.flatten(), grid.flatten()]).T
+            data = np.array([pars[3]*yy.flatten(), pars[2] *
+                             xx.flatten(), grid.flatten()]).T
             columns = ['x', 'y', label]
 
             df = pd.DataFrame(data=data, columns=columns)
 
             df.to_csv(prefix + label + '.csv', index=False)
-
 
         from skimage.filters import gaussian
 
@@ -1565,7 +1714,7 @@ class Project(object):
             if filter:
                 std_F_grid = gaussian(self.std_F_grid, sigma=sigma)
             else:
-                std_F_grid = self.std_F_grid       
+                std_F_grid = self.std_F_grid
             save_grid(pars, std_F_grid, 'std_F', prefix)
         if mean_a:
             try:
@@ -1649,12 +1798,14 @@ def _lam2k(nx, ny, dx, dy, p=0.85):
 
     # Max is quarter of maximum possible wavelength from grid size
     maxlam = np.sqrt((nx*dx)**2. + (ny*dy)**2.)/4.*1.e3
-    
+
     # Min is twice the minimum possible wavelength from grid size
     minlam = np.sqrt((2.*dx)**2. + (2.*dy)**2.)*1.e3
 
     # Assign first wavenumber
-    lam = []; k = []; s = []
+    lam = []
+    k = []
+    s = []
     lam.append(maxlam)
     k.append(2.*np.pi/lam[0])
     s.append(cf_w.k0/k[0])
@@ -1662,12 +1813,12 @@ def _lam2k(nx, ny, dx, dy, p=0.85):
     ss = 1
 
     # Loop through k's until minlam is reached
-    while lam[ss-1]>minlam:
-            s = (cf_w.k0-np.sqrt(-2.*np.log(p)))/(k[ss-1]+dk)
-            k.append(cf_w.k0/s)
-            lam.append(2.*np.pi/k[ss])
-            dk = np.sqrt(-2.0*np.log(p))/s
-            ss = ss + 1
+    while lam[ss-1] > minlam:
+        s = (cf_w.k0-np.sqrt(-2.*np.log(p)))/(k[ss-1]+dk)
+        k.append(cf_w.k0/s)
+        lam.append(2.*np.pi/k[ss])
+        dk = np.sqrt(-2.0*np.log(p))/s
+        ss = ss + 1
     ns = ss
 
     # Compute wavenumbers
@@ -1679,10 +1830,12 @@ def _lam2k(nx, ny, dx, dy, p=0.85):
 
 def _progressbar(it, prefix="", size=60, file=sys.stdout):
     count = len(it)
+
     def show(j):
         x = int(size*j/count)
-        file.write("%s[%s%s] %i/%i\r" % (prefix, "#"*x, "."*(size-x), j, count))
-        file.flush()        
+        file.write("%s[%s%s] %i/%i\r" %
+                   (prefix, "#"*x, "."*(size-x), j, count))
+        file.flush()
     show(0)
     for i, item in enumerate(it):
         yield item
