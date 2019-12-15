@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>PlateFlex Project Documentation &mdash; plateflex 0.1.0 documentation</title>
+  <title>Documentation &mdash; plateflex 0.1.0 documentation</title>
   
 
   
@@ -54,6 +54,9 @@
           
 
           
+            
+            <img src="_static/logo_plateflex_small.png" class="logo" alt="Logo"/>
+          
           </a>
 
           
@@ -83,34 +86,22 @@
               <p class="caption"><span class="caption-text">Quick Links</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="links.html">GitHub Repository</a></li>
+<li class="toctree-l1"><a class="reference internal" href="links.html#references">References</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Getting Started</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="api.html">Licence</a></li>
-<li class="toctree-l1"><a class="reference internal" href="api.html#installation">Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="api.html#global-variables">Global Variables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Licence</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html#installation">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html#global-variables">Global Variables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html#making-gridded-data">Making gridded data</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Configuration modules</span></p>
+<p class="caption"><span class="caption-text">API Documentation</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="conf.html">plateflex.cpwt.conf_cpwt</a></li>
-<li class="toctree-l1"><a class="reference internal" href="conf.html#plateflex-flex-conf-flex">plateflex.flex.conf_flex</a></li>
-<li class="toctree-l1"><a class="reference internal" href="conf.html#plateflex-conf">plateflex.conf</a></li>
-</ul>
-<p class="caption"><span class="caption-text">Classes</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="classes.html">Grid</a></li>
-<li class="toctree-l1"><a class="reference internal" href="classes.html#topogrid">TopoGrid</a></li>
-<li class="toctree-l1"><a class="reference internal" href="classes.html#gravgrid">GravGrid</a></li>
-<li class="toctree-l1"><a class="reference internal" href="classes.html#bouggrid">BougGrid</a></li>
-<li class="toctree-l1"><a class="reference internal" href="classes.html#fairgrid">FairGrid</a></li>
-<li class="toctree-l1"><a class="reference internal" href="classes.html#rhocgrid">RhocGrid</a></li>
-<li class="toctree-l1"><a class="reference internal" href="classes.html#zcgrid">ZcGrid</a></li>
-<li class="toctree-l1"><a class="reference internal" href="classes.html#project">Project</a></li>
-</ul>
-<p class="caption"><span class="caption-text">Modules</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="estimate.html">Module estimate</a></li>
-<li class="toctree-l1"><a class="reference internal" href="plotting.html">Module plotting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="conf.html">Configuration module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="classes.html">Grid Classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="classes.html#project-class">Project Class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="estimate.html">Estimate functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="plotting.html">Plotting functions</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Jupyter Notebooks</span></p>
 <ul>
@@ -166,7 +157,7 @@
     
       <li><a href="#">Docs</a> &raquo;</li>
         
-      <li>PlateFlex Project Documentation</li>
+      <li>Documentation</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -188,8 +179,8 @@
   <div class="figure align-center">
 <img alt="_images/logo_plateflex.png" src="_images/logo_plateflex.png" />
 </div>
-<div class="section" id="plateflex-project-documentation">
-<h1>PlateFlex Project Documentation<a class="headerlink" href="#plateflex-project-documentation" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="documentation">
+<h1>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">¶</a></h1>
 <p>The flexure of elastic plates is a central concept in the theory of plate tectonics,
 where the Earth’s lithosphere (crust and uppermost mantle) reacts to applied loads
 by bending, a process referred to as flexural isostasy. The plate elasticity is
@@ -197,17 +188,10 @@ parameterized by the <em>flexural rigidity</em>, which is proportional to the pr
 Young’s modulus with the cube of the elastic plate thickness. Estimating the <em>effective</em>
 elastic thickness (<span class="math notranslate nohighlight">\(T_e\)</span>) of the lithosphere (thickness
 of an equivalent ideal elastic plate) gives important clues on the rheology of the
-lithosphere and its thermal state.</p>
-<p>Estimating <span class="math notranslate nohighlight">\(T_e\)</span> can be done by modeling the cross-spectral properties
-(admittance and coherence) between topography and gravity anomaly data,
-which are proxies for the distribution of flexurally compensated surface and subsurface
-loads. These spectral properties can be calculated using different spectral
-estimation techniques - however, to map <span class="math notranslate nohighlight">\(T_e\)</span> variations it is
-important to use analysis windows small enough for good spatial resolution, but
-large enough to capture the effect of flexure at long wavelengths. The wavelet
-transform is particularly well suited for this analysis because it avoids splitting
-the grids into small windows and can therefore produce cross-spectral functions
-at each point of the input grid.</p>
+lithosphere and its thermal state. Estimating <span class="math notranslate nohighlight">\(T_e\)</span> is typically done by
+modeling the cross-spectral properties (admittance and coherence) between
+topography and gravity anomaly data, which are proxies for the distribution of
+flexurally compensated surface and subsurface loads.</p>
 <p>This package contains <code class="docutils literal notranslate"><span class="pre">python</span></code> and <code class="docutils literal notranslate"><span class="pre">fortran</span></code> modules to calculate the wavelet spectral
 and cross-spectral quantities of 2D gridded data of topography and gravity anomalies.
 Once obtained, the wavelet cross-spectral quantities (admittance and coherence) are
@@ -217,8 +201,7 @@ load ratio (<span class="math notranslate nohighlight">\(F\)</span>) and optiona
 surface and subsurface loads (<span class="math notranslate nohighlight">\(\alpha\)</span>). The software uses the analytical
 functions with uniform <span class="math notranslate nohighlight">\(F\)</span> and <span class="math notranslate nohighlight">\(\alpha\)</span> to fit the admittance and/or coherence functions.
 The estimation can be done using non-linear least-squares or probabilistic (i.e., bayesian)
-inference methods.</p>
-<p>The analysis can be done using either the Bouguer or Free air gravity anomalies, and
+inference methods. The analysis can be done using either the Bouguer or Free air gravity anomalies, and
 over land or ocean areas. Computational workflows are covered in the Jupyter
 notebooks bundled with this package. The software contains methods to make beautiful and
 insightful plots using the <cite>seaborn</cite> package.</p>
@@ -232,42 +215,26 @@ admittance and squared-real coherency, as discussed in the references</p>
 <p class="caption"><span class="caption-text">Quick Links</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="links.html">GitHub Repository</a></li>
+<li class="toctree-l1"><a class="reference internal" href="links.html#references">References</a></li>
 </ul>
 </div>
 <div class="toctree-wrapper compound">
 <p class="caption"><span class="caption-text">Getting Started</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="api.html">Licence</a></li>
-<li class="toctree-l1"><a class="reference internal" href="api.html#installation">Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="api.html#global-variables">Global Variables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Licence</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html#installation">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html#global-variables">Global Variables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html#making-gridded-data">Making gridded data</a></li>
 </ul>
 </div>
 <div class="toctree-wrapper compound">
-<p class="caption"><span class="caption-text">Configuration modules</span></p>
+<p class="caption"><span class="caption-text">API Documentation</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="conf.html">plateflex.cpwt.conf_cpwt</a></li>
-<li class="toctree-l1"><a class="reference internal" href="conf.html#plateflex-flex-conf-flex">plateflex.flex.conf_flex</a></li>
-<li class="toctree-l1"><a class="reference internal" href="conf.html#plateflex-conf">plateflex.conf</a></li>
-</ul>
-</div>
-<div class="toctree-wrapper compound">
-<p class="caption"><span class="caption-text">Classes</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="classes.html">Grid</a></li>
-<li class="toctree-l1"><a class="reference internal" href="classes.html#topogrid">TopoGrid</a></li>
-<li class="toctree-l1"><a class="reference internal" href="classes.html#gravgrid">GravGrid</a></li>
-<li class="toctree-l1"><a class="reference internal" href="classes.html#bouggrid">BougGrid</a></li>
-<li class="toctree-l1"><a class="reference internal" href="classes.html#fairgrid">FairGrid</a></li>
-<li class="toctree-l1"><a class="reference internal" href="classes.html#rhocgrid">RhocGrid</a></li>
-<li class="toctree-l1"><a class="reference internal" href="classes.html#zcgrid">ZcGrid</a></li>
-<li class="toctree-l1"><a class="reference internal" href="classes.html#project">Project</a></li>
-</ul>
-</div>
-<div class="toctree-wrapper compound">
-<p class="caption"><span class="caption-text">Modules</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="estimate.html">Module estimate</a></li>
-<li class="toctree-l1"><a class="reference internal" href="plotting.html">Module plotting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="conf.html">Configuration module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="classes.html">Grid Classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="classes.html#project-class">Project Class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="estimate.html">Estimate functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="plotting.html">Plotting functions</a></li>
 </ul>
 </div>
 <div class="toctree-wrapper compound">

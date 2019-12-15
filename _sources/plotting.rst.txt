@@ -1,5 +1,5 @@
-Module plotting
----------------
+Plotting functions
+++++++++++++++++++
 
 .. automodule:: plateflex.plotting
    :members:

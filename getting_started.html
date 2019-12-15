@@ -36,7 +36,7 @@
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="plateflex.cpwt.conf_cpwt" href="conf.html" />
+    <link rel="next" title="Configuration module" href="conf.html" />
     <link rel="prev" title="GitHub Repository" href="links.html" /> 
 </head>
 
@@ -54,6 +54,9 @@
             <a href="index.html" class="icon icon-home"> plateflex
           
 
+          
+            
+            <img src="_static/logo_plateflex_small.png" class="logo" alt="Logo"/>
           
           </a>
 
@@ -84,6 +87,7 @@
               <p class="caption"><span class="caption-text">Quick Links</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="links.html">GitHub Repository</a></li>
+<li class="toctree-l1"><a class="reference internal" href="links.html#references">References</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Getting Started</span></p>
 <ul class="current">
@@ -96,28 +100,20 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="#global-variables">Global Variables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#making-gridded-data">Making gridded data</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id1">WGM2012</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id2">GEBCO</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id3">CRUST1.0</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Configuration modules</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="conf.html">plateflex.cpwt.conf_cpwt</a></li>
-<li class="toctree-l1"><a class="reference internal" href="conf.html#plateflex-flex-conf-flex">plateflex.flex.conf_flex</a></li>
-<li class="toctree-l1"><a class="reference internal" href="conf.html#plateflex-conf">plateflex.conf</a></li>
+</li>
 </ul>
-<p class="caption"><span class="caption-text">Classes</span></p>
+<p class="caption"><span class="caption-text">API Documentation</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="classes.html">Grid</a></li>
-<li class="toctree-l1"><a class="reference internal" href="classes.html#topogrid">TopoGrid</a></li>
-<li class="toctree-l1"><a class="reference internal" href="classes.html#gravgrid">GravGrid</a></li>
-<li class="toctree-l1"><a class="reference internal" href="classes.html#bouggrid">BougGrid</a></li>
-<li class="toctree-l1"><a class="reference internal" href="classes.html#fairgrid">FairGrid</a></li>
-<li class="toctree-l1"><a class="reference internal" href="classes.html#rhocgrid">RhocGrid</a></li>
-<li class="toctree-l1"><a class="reference internal" href="classes.html#zcgrid">ZcGrid</a></li>
-<li class="toctree-l1"><a class="reference internal" href="classes.html#project">Project</a></li>
-</ul>
-<p class="caption"><span class="caption-text">Modules</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="estimate.html">Module estimate</a></li>
-<li class="toctree-l1"><a class="reference internal" href="plotting.html">Module plotting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="conf.html">Configuration module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="classes.html">Grid Classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="classes.html#project-class">Project Class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="estimate.html">Estimate functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="plotting.html">Plotting functions</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Jupyter Notebooks</span></p>
 <ul>
@@ -179,7 +175,7 @@
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="_sources/api.rst.txt" rel="nofollow"> View page source</a>
+            <a href="_sources/getting_started.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -270,8 +266,20 @@ match those published in Audet (2014) and Kirby and Swain. (2009) for North Amer
 as those of Kalnins and Watts (2009) for the NW Pacific.</p>
 <p>After installing <code class="docutils literal notranslate"><span class="pre">plateflex</span></code>, these notebooks can be locally installed (i.e., in a local folder <code class="docutils literal notranslate"><span class="pre">Examples</span></code>)
 from the package by running:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">plateflex</span> <span class="kn">import</span> <span class="n">doc</span>
+<span class="n">doc</span><span class="o">.</span><span class="n">install_doc</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s1">&#39;Examples&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
 <p>To run the notebooks you will have to further install <code class="docutils literal notranslate"><span class="pre">jupyter</span></code>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>conda install jupyter
+</pre></div>
+</div>
 <p>Then:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>unzip data.zip
+<span class="nb">cd</span> Examples
+jupyter notebook
+</pre></div>
+</div>
 <p>You can then save the notebooks as <code class="docutils literal notranslate"><span class="pre">python</span></code> scripts and you should be good to go!</p>
 </div>
 </div>
@@ -314,6 +322,120 @@ wavelet transform</p>
 </dd></dl>
 
 </div>
+<div class="section" id="making-gridded-data">
+<h1>Making gridded data<a class="headerlink" href="#making-gridded-data" title="Permalink to this headline">¶</a></h1>
+<p>Packaged with this software is a set of topography, gravity and crustal structure data that
+are easily imported into the <code class="docutils literal notranslate"><span class="pre">PlateFlex</span></code> package. Those data sets have been produced by
+processing global grids of data from the
+<a class="reference external" href="http://bgi.omp.obs-mip.fr/data-products/Grids-and-models/wgm2012">WGM2012</a>,
+<a class="reference external" href="https://www.gebco.net/data_and_products/gridded_bathymetry_data/">GEBCO</a> and
+<a class="reference external" href="https://igppweb.ucsd.edu/~gabi/crust1.html">CRUST1.0</a> models using
+<a class="reference external" href="https://www.generic-mapping-tools.org">GMT</a>.</p>
+<p>The WGM2012 models are used to extract Topography, Bouguer and Free-air anomaly data
+over North America, and Free-air anomaly data over the NW Pacific.
+The GEBCO model is used for the Bathymetry over the NW Pacific.
+The CRUST1.0 models are used to extract the crustal thickness and crustal
+density (corresponding to upper crust, or layer #6) over both North America and the NW Pacific.
+Since those models are all defined using a different registration and grid sampling,
+we use GMT to manipulate the grids and produce consistent data sets to use with
+<code class="docutils literal notranslate"><span class="pre">PlateFlex</span></code>. We used GMT 5.4.1 in the following examples. These commands should be
+copied to a bash script file and executed from the terminal.</p>
+<div class="section" id="id1">
+<h2>WGM2012<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<p>These models are defined at a resolution of 2’ with a gridline registration.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set region and projection for North America. Use a transverse mercator</span>
+<span class="c1"># with a central meridian of -95 degrees to minimize high-latitude distortions.</span>
+<span class="nv">reg</span><span class="o">=</span>-R-125/13/-28/58+r
+<span class="nv">proj</span><span class="o">=</span>-JT-95/3i
+
+<span class="c1"># Make map of region</span>
+<span class="nv">ps</span><span class="o">=</span>Bouguer_NA.ps
+gmt grdimage WGM2012_Bouguer_ponc_2min.grd <span class="nv">$reg</span> <span class="nv">$proj</span> -K -P <span class="se">\</span>
+            -B10WSne -CPALET_WGM_Bouguer_Global.cpt -X1.5i -Y1.25i &gt; <span class="nv">$ps</span>
+gmt psscale -CPALET_WGM_Bouguer_Global.cpt -DJRM+o0.25i/0+e+mc -R -J -O &gt;&gt; <span class="nv">$ps</span>
+
+<span class="c1"># Project onto Cartesian grid with sampling interval of 20 km</span>
+gmt grdproject WGM2012_Bouguer_ponc_2min.grd -GBouguer_NA.grd <span class="nv">$proj</span> <span class="nv">$reg</span> -D20 -Fk
+
+<span class="c1"># Save grid information as header for use with PlateFlex software</span>
+gmt grdinfo -C Bouguer_NA.grd &gt; header.txt
+sed <span class="s1">&#39;s/^/# /g&#39;</span> header.txt &gt; Bouguer_NA.xyz
+gmt grd2xyz Bouguer_NA.grd &gt;&gt; Bouguer_NA.xyz
+</pre></div>
+</div>
+<p>You can repeat these commands for the corresponding Free-air anomaly and Topography data.</p>
+</div>
+<div class="section" id="id2">
+<h2>GEBCO<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<p>This model is defined on a very fine grid (15” resolution) with a gridline registration.
+We first resample the grid onto a 2’ grid.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set region and projection for NW Pacific - here we use a regular</span>
+<span class="c1"># Mercator since it straddles the equator.</span>
+<span class="nv">reg</span><span class="o">=</span>-R145/215/-15/45
+<span class="nv">proj</span><span class="o">=</span>-JM3i
+
+<span class="c1"># Resample on a 2&#39; grid</span>
+gmt grdsample GEBCO_data/GEBCO_2019.nc -GGEBCO_resampled_2m.grd -I2m -Rd
+
+<span class="c1"># Make map of region</span>
+<span class="nv">ps</span><span class="o">=</span>Bathy_PAC.ps
+gmt grdimage GEBCO_resampled_2m.grd <span class="nv">$reg</span> <span class="nv">$proj</span> -K -P <span class="se">\</span>
+            -B10WSne -CPALET_WGM_ETOPO1_Global.cpt -X1.5i -Y1.25i &gt; <span class="nv">$ps</span>
+gmt psscale -CPALET_WGM_ETOPO1_Global.cpt -DJRM+o0.25i/0+e+mc -R -J -O &gt;&gt; <span class="nv">$ps</span>
+
+<span class="c1"># Project onto Cartesian grid</span>
+gmt grdproject GEBCO_resampled_2m.grd -GBathy_PAC.grd <span class="nv">$proj</span> <span class="nv">$reg</span> -D10 -Fk
+
+<span class="c1"># Dump grid onto ASCII file with header</span>
+gmt grdinfo -C Bathy_PAC.grd &gt; header.txt
+sed <span class="s1">&#39;s/^/# /g&#39;</span> header.txt &gt; Bathy_PAC.xyz
+gmt grd2xyz Bathy_PAC.grd &gt;&gt; Bathy_PAC.xyz
+</pre></div>
+</div>
+</div>
+<div class="section" id="id3">
+<h2>CRUST1.0<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
+<p>The CRUST1.0 model is defined on a very coarse grid (1 degree). This is not a
+problem as we only use those fields in the inversion step, and not in the
+calculation of the wavelet transform. However, we still require an identical
+grid specification, so the first step is to resample them on a fine grid
+using spline interpolation.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>You first need to extract the proper layer within CRUST1.0. For crustal
+thickness, the weblink contains a global grid of crustal thickness (crsthk.xyz).
+For the density layer, you will have to use the provided fortran code getCN1xyz.f
+and rename the output file xyz-ro6 to something like crustal_density.xyz
+(for example). Layer 6 corresponds to the upper crustal layer. See the weblink for details.</p>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set region and projection for North America</span>
+<span class="nv">reg</span><span class="o">=</span>-R145/215/-15/45
+<span class="nv">proj</span><span class="o">=</span>-JM3i
+
+<span class="c1"># Create 2 .grd file from the ASCII data</span>
+gmt xyz2grd crsthk.xyz -Gcrust_thickness_1deg.grd -Rd -I1 -T
+
+<span class="c1"># Resample on a 2&#39; grid using spline interpolation</span>
+gmt grdsample crust_thickness_1deg.grd -Gcrust_thickness_2m.grd -nb -Rg -I2m
+
+<span class="c1"># Make map of region</span>
+<span class="nv">ps</span><span class="o">=</span>Crust_thick_PAC.ps
+gmt makecpt -Chaxby -T5/30/1 &gt; crust.cpt
+gmt grdimage crust_thickness_2m.grd <span class="nv">$reg</span> <span class="nv">$proj</span> -K -P <span class="se">\</span>
+            -B10WSne -Ccrust.cpt -X1.5i -Y1.25i &gt; <span class="nv">$ps</span>
+gmt psscale -Ccrust.cpt -DJRM+o0.25i/0+e+mc -R -J -O &gt;&gt; <span class="nv">$ps</span>
+
+<span class="c1"># Project onto Cartesian grid</span>
+gmt grdproject crust_thickness_2m.grd -Gcrust_thickness.grd <span class="nv">$proj</span> <span class="nv">$reg</span> -D10 -Fk
+
+<span class="c1"># Dump grid onto ASCII file with header</span>
+gmt grdinfo -C crust_thickness.grd &gt; header.txt
+sed <span class="s1">&#39;s/^/# /g&#39;</span> header.txt &gt; crustal_thickness_PAC.xyz
+gmt grd2xyz crust_thickness.grd &gt;&gt; crustal_thickness_PAC.xyz
+</pre></div>
+</div>
+</div>
+</div>
 
 
            </div>
@@ -323,7 +445,7 @@ wavelet transform</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="conf.html" class="btn btn-neutral float-right" title="plateflex.cpwt.conf_cpwt" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="conf.html" class="btn btn-neutral float-right" title="Configuration module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="links.html" class="btn btn-neutral float-left" title="GitHub Repository" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>

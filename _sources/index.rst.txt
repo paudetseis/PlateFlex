@@ -2,8 +2,8 @@
 .. figure:: ../plateflex/examples/picture/logo_plateflex.png
    :align: center
 
-PlateFlex Project Documentation
-===============================
+Documentation
+=============
 
 The flexure of elastic plates is a central concept in the theory of plate tectonics,
 where the Earth's lithosphere (crust and uppermost mantle) reacts to applied loads 
@@ -12,18 +12,10 @@ parameterized by the *flexural rigidity*, which is proportional to the product o
 Young's modulus with the cube of the elastic plate thickness. Estimating the *effective* 
 elastic thickness (:math:`T_e`) of the lithosphere (thickness 
 of an equivalent ideal elastic plate) gives important clues on the rheology of the 
-lithosphere and its thermal state. 
-
-Estimating :math:`T_e` can be done by modeling the cross-spectral properties 
-(admittance and coherence) between topography and gravity anomaly data, 
-which are proxies for the distribution of flexurally compensated surface and subsurface 
-loads. These spectral properties can be calculated using different spectral
-estimation techniques - however, to map :math:`T_e` variations it is 
-important to use analysis windows small enough for good spatial resolution, but 
-large enough to capture the effect of flexure at long wavelengths. The wavelet 
-transform is particularly well suited for this analysis because it avoids splitting
-the grids into small windows and can therefore produce cross-spectral functions
-at each point of the input grid.
+lithosphere and its thermal state. Estimating :math:`T_e` is typically done by 
+modeling the cross-spectral properties (admittance and coherence) between 
+topography and gravity anomaly data, which are proxies for the distribution of 
+flexurally compensated surface and subsurface loads. 
 
 This package contains ``python`` and ``fortran`` modules to calculate the wavelet spectral
 and cross-spectral quantities of 2D gridded data of topography and gravity anomalies.
@@ -34,9 +26,7 @@ load ratio (:math:`F`) and optionally the initial phase difference between
 surface and subsurface loads (:math:`\alpha`). The software uses the analytical
 functions with uniform :math:`F` and :math:`\alpha` to fit the admittance and/or coherence functions. 
 The estimation can be done using non-linear least-squares or probabilistic (i.e., bayesian)
-inference methods. 
-
-The analysis can be done using either the Bouguer or Free air gravity anomalies, and
+inference methods. The analysis can be done using either the Bouguer or Free air gravity anomalies, and
 over land or ocean areas. Computational workflows are covered in the Jupyter 
 notebooks bundled with this package. The software contains methods to make beautiful and
 insightful plots using the `seaborn` package.
@@ -49,6 +39,7 @@ insightful plots using the `seaborn` package.
 .. image:: https://travis-ci.com/paudetseis/PlateFlex.svg?branch=master
     :target: https://travis-ci.com/paudetseis/PlateFlex
 
+
 .. toctree::
    :maxdepth: 1
    :caption: Quick Links
@@ -59,24 +50,14 @@ insightful plots using the `seaborn` package.
    :maxdepth: 1
    :caption: Getting Started
 
-   api
+   getting_started
 
 .. toctree::
    :maxdepth: 1
-   :caption: Configuration modules
+   :caption: API Documentation
 
    conf
-
-.. toctree::
-   :maxdepth: 1
-   :caption: Classes
-
    classes
-
-.. toctree::
-   :maxdepth: 1
-   :caption: Modules
-
    estimate
    plotting
 

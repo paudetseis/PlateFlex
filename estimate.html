@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Module estimate &mdash; plateflex 0.1.0 documentation</title>
+  <title>Estimate functions &mdash; plateflex 0.1.0 documentation</title>
   
 
   
@@ -36,8 +36,8 @@
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Module plotting" href="plotting.html" />
-    <link rel="prev" title="Grid" href="classes.html" /> 
+    <link rel="next" title="Plotting functions" href="plotting.html" />
+    <link rel="prev" title="Grid Classes" href="classes.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -54,6 +54,9 @@
             <a href="index.html" class="icon icon-home"> plateflex
           
 
+          
+            
+            <img src="_static/logo_plateflex_small.png" class="logo" alt="Logo"/>
           
           </a>
 
@@ -84,34 +87,22 @@
               <p class="caption"><span class="caption-text">Quick Links</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="links.html">GitHub Repository</a></li>
+<li class="toctree-l1"><a class="reference internal" href="links.html#references">References</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Getting Started</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="api.html">Licence</a></li>
-<li class="toctree-l1"><a class="reference internal" href="api.html#installation">Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="api.html#global-variables">Global Variables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Licence</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html#installation">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html#global-variables">Global Variables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html#making-gridded-data">Making gridded data</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Configuration modules</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="conf.html">plateflex.cpwt.conf_cpwt</a></li>
-<li class="toctree-l1"><a class="reference internal" href="conf.html#plateflex-flex-conf-flex">plateflex.flex.conf_flex</a></li>
-<li class="toctree-l1"><a class="reference internal" href="conf.html#plateflex-conf">plateflex.conf</a></li>
-</ul>
-<p class="caption"><span class="caption-text">Classes</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="classes.html">Grid</a></li>
-<li class="toctree-l1"><a class="reference internal" href="classes.html#topogrid">TopoGrid</a></li>
-<li class="toctree-l1"><a class="reference internal" href="classes.html#gravgrid">GravGrid</a></li>
-<li class="toctree-l1"><a class="reference internal" href="classes.html#bouggrid">BougGrid</a></li>
-<li class="toctree-l1"><a class="reference internal" href="classes.html#fairgrid">FairGrid</a></li>
-<li class="toctree-l1"><a class="reference internal" href="classes.html#rhocgrid">RhocGrid</a></li>
-<li class="toctree-l1"><a class="reference internal" href="classes.html#zcgrid">ZcGrid</a></li>
-<li class="toctree-l1"><a class="reference internal" href="classes.html#project">Project</a></li>
-</ul>
-<p class="caption"><span class="caption-text">Modules</span></p>
+<p class="caption"><span class="caption-text">API Documentation</span></p>
 <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Module estimate</a></li>
-<li class="toctree-l1"><a class="reference internal" href="plotting.html">Module plotting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="conf.html">Configuration module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="classes.html">Grid Classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="classes.html#project-class">Project Class</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Estimate functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="plotting.html">Plotting functions</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Jupyter Notebooks</span></p>
 <ul>
@@ -167,7 +158,7 @@
     
       <li><a href="index.html">Docs</a> &raquo;</li>
         
-      <li>Module estimate</li>
+      <li>Estimate functions</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -187,8 +178,8 @@
            <div itemprop="articleBody">
             
   <div class="section" id="module-plateflex.estimate">
-<span id="module-estimate"></span><h1>Module estimate<a class="headerlink" href="#module-plateflex.estimate" title="Permalink to this headline">¶</a></h1>
-<p>This <a class="reference internal" href="api.html#module-plateflex" title="plateflex"><code class="xref py py-mod docutils literal notranslate"><span class="pre">plateflex</span></code></a> module contains the following functions:</p>
+<span id="estimate-functions"></span><h1>Estimate functions<a class="headerlink" href="#module-plateflex.estimate" title="Permalink to this headline">¶</a></h1>
+<p>This <a class="reference internal" href="getting_started.html#module-plateflex" title="plateflex"><code class="xref py py-mod docutils literal notranslate"><span class="pre">plateflex</span></code></a> module contains the following functions:</p>
 <ul class="simple">
 <li><p><a class="reference internal" href="#plateflex.estimate.bayes_estimate_cell" title="plateflex.estimate.bayes_estimate_cell"><code class="xref py py-func docutils literal notranslate"><span class="pre">bayes_estimate_cell()</span></code></a>:
 Set up <code class="xref py py-mod docutils literal notranslate"><span class="pre">pymc</span></code> model and estimate the parameters
@@ -392,10 +383,10 @@ and coherence functions.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="plotting.html" class="btn btn-neutral float-right" title="Module plotting" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="plotting.html" class="btn btn-neutral float-right" title="Plotting functions" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="classes.html" class="btn btn-neutral float-left" title="Grid" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="classes.html" class="btn btn-neutral float-left" title="Grid Classes" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
