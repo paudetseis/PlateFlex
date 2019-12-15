@@ -190,9 +190,44 @@
 </div>
 <div class="section" id="plateflex-project-documentation">
 <h1>PlateFlex Project Documentation<a class="headerlink" href="#plateflex-project-documentation" title="Permalink to this headline">¶</a></h1>
-<p>PlateFlex is a software for estimating the effective elastic thickness (Te) of the
-lithosphere from the inversion of flexural isostatic response functions calculated
-from a wavelet analysis of gravity and topography data. The software is bundled with <code class="docutils literal notranslate"><span class="pre">Jupyter</span></code> notebooks that describe the processing steps required for the estimation of Te.</p>
+<p>The flexure of elastic plates is a central concept in the theory of plate tectonics,
+where the Earth’s lithosphere (crust and uppermost mantle) reacts to applied loads
+by bending, a process referred to as flexural isostasy. The plate elasticity is
+parameterized by the <em>flexural rigidity</em>, which is proportional to the product of
+Young’s modulus with the cube of the elastic plate thickness. Estimating the <em>effective</em>
+elastic thickness (<span class="math notranslate nohighlight">\(T_e\)</span>) of the lithosphere (thickness
+of an equivalent ideal elastic plate) gives important clues on the rheology of the
+lithosphere and its thermal state.</p>
+<p>Estimating <span class="math notranslate nohighlight">\(T_e\)</span> can be done by modeling the cross-spectral properties
+(admittance and coherence) between topography and gravity anomaly data,
+which are proxies for the distribution of flexurally compensated surface and subsurface
+loads. These spectral properties can be calculated using different spectral
+estimation techniques - however, to map <span class="math notranslate nohighlight">\(T_e\)</span> variations it is
+important to use analysis windows small enough for good spatial resolution, but
+large enough to capture the effect of flexure at long wavelengths. The wavelet
+transform is particularly well suited for this analysis because it avoids splitting
+the grids into small windows and can therefore produce cross-spectral functions
+at each point of the input grid.</p>
+<p>This package contains <code class="docutils literal notranslate"><span class="pre">python</span></code> and <code class="docutils literal notranslate"><span class="pre">fortran</span></code> modules to calculate the wavelet spectral
+and cross-spectral quantities of 2D gridded data of topography and gravity anomalies.
+Once obtained, the wavelet cross-spectral quantities (admittance and coherence) are
+used to determine the parameters of the effectively elastic plate, such as the
+effective elastic thickness (<span class="math notranslate nohighlight">\(T_e\)</span>), the initial subsurface-to-surface
+load ratio (<span class="math notranslate nohighlight">\(F\)</span>) and optionally the initial phase difference between
+surface and subsurface loads (<span class="math notranslate nohighlight">\(\alpha\)</span>). The software uses the analytical
+functions with uniform <span class="math notranslate nohighlight">\(F\)</span> and <span class="math notranslate nohighlight">\(\alpha\)</span> to fit the admittance and/or coherence functions.
+The estimation can be done using non-linear least-squares or probabilistic (i.e., bayesian)
+inference methods.</p>
+<p>The analysis can be done using either the Bouguer or Free air gravity anomalies, and
+over land or ocean areas. Computational workflows are covered in the Jupyter
+notebooks bundled with this package. The software contains methods to make beautiful and
+insightful plots using the <cite>seaborn</cite> package.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The cross-spectral quantities calculated here are the real-valued
+admittance and squared-real coherency, as discussed in the references</p>
+</div>
+<a class="reference external image-reference" href="https://travis-ci.com/paudetseis/PlateFlex"><img alt="https://travis-ci.com/paudetseis/PlateFlex.svg?branch=master" src="https://travis-ci.com/paudetseis/PlateFlex.svg?branch=master" /></a>
 <div class="toctree-wrapper compound">
 <p class="caption"><span class="caption-text">Quick Links</span></p>
 <ul>

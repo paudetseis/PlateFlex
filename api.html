@@ -90,9 +90,9 @@
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Licence</a></li>
 <li class="toctree-l1"><a class="reference internal" href="#installation">Installation</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#dependencies">Dependencies</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#download-the-software">Download the software</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#conda-environment">Conda environment</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#installing-using-pip">Installing using pip</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#installing-from-source">Installing from source</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#jupyter-notebooks">Jupyter Notebooks</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="#global-variables">Global Variables</a></li>
@@ -234,25 +234,11 @@ SOFTWARE.</p>
 </ul>
 <p>See below for full installation details.</p>
 </div>
-<div class="section" id="download-the-software">
-<h2>Download the software<a class="headerlink" href="#download-the-software" title="Permalink to this headline">¶</a></h2>
-<ul class="simple">
-<li><p>Clone the repository:</p></li>
-</ul>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git clone https://github.com/paudetseis/PlateFlex.git
-<span class="nb">cd</span> PlateFlex
-</pre></div>
-</div>
-</div>
 <div class="section" id="conda-environment">
 <h2>Conda environment<a class="headerlink" href="#conda-environment" title="Permalink to this headline">¶</a></h2>
 <p>We recommend creating a custom <code class="docutils literal notranslate"><span class="pre">conda</span></code> environment
 where <code class="docutils literal notranslate"><span class="pre">plateflex</span></code> can be installed along with its dependencies.</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>conda create -n pflex <span class="nv">python</span><span class="o">=</span><span class="m">3</span>.7 numpy pymc3 matplotlib seaborn -c conda-forge
-</pre></div>
-</div>
-<p>or create it from the <code class="docutils literal notranslate"><span class="pre">pflex_env.yml</span></code> file:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>conda env create -f pflex_env.yml
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>conda create -n pflex <span class="nv">python</span><span class="o">=</span><span class="m">3</span>.7 numpy pymc3 matplotlib seaborn scikit-image -c conda-forge
 </pre></div>
 </div>
 <p>Activate the newly created environment:</p>
@@ -260,19 +246,33 @@ where <code class="docutils literal notranslate"><span class="pre">plateflex</sp
 </pre></div>
 </div>
 </div>
-<div class="section" id="installing-using-pip">
-<h2>Installing using pip<a class="headerlink" href="#installing-using-pip" title="Permalink to this headline">¶</a></h2>
-<p>Once the previous steps are performed, you can install <code class="docutils literal notranslate"><span class="pre">plateflex</span></code> using pip:</p>
+<div class="section" id="installing-from-source">
+<h2>Installing from source<a class="headerlink" href="#installing-from-source" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Clone the repository:</p></li>
+</ul>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git clone https://github.com/paudetseis/PlateFlex.git
+<span class="nb">cd</span> PlateFlex
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Install using pip:</p></li>
+</ul>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip install .
 </pre></div>
 </div>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>Please note, if you are actively working on the code, or making frequent edits, it is advisable
-to perform the pip installation with the <code class="docutils literal notranslate"><span class="pre">-e</span></code> flag. This enables an editable installation, where
-symbolic links are used rather than straight copies. This means that any changes made in the
-local folders will be reflected in the packages available on the system.</p>
 </div>
+<div class="section" id="jupyter-notebooks">
+<h2>Jupyter Notebooks<a class="headerlink" href="#jupyter-notebooks" title="Permalink to this headline">¶</a></h2>
+<p>Included in this package is a set of Jupyter Notebooks, which give examples on how to create <code class="docutils literal notranslate"><span class="pre">Grid</span></code> objects and estimate
+the flexural parameters over whole grids. The Notebooks describe how to produce pulication quality results that closely
+match those published in Audet (2014) and Kirby and Swain. (2009) for North America, as well
+as those of Kalnins and Watts (2009) for the NW Pacific.</p>
+<p>After installing <code class="docutils literal notranslate"><span class="pre">plateflex</span></code>, these notebooks can be locally installed (i.e., in a local folder <code class="docutils literal notranslate"><span class="pre">Examples</span></code>)
+from the package by running:</p>
+<p>To run the notebooks you will have to further install <code class="docutils literal notranslate"><span class="pre">jupyter</span></code>:</p>
+<p>Then:</p>
+<p>You can then save the notebooks as <code class="docutils literal notranslate"><span class="pre">python</span></code> scripts and you should be good to go!</p>
 </div>
 </div>
 <div class="section" id="global-variables">

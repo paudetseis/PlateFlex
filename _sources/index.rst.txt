@@ -5,11 +5,49 @@
 PlateFlex Project Documentation
 ===============================
 
-PlateFlex is a software for estimating the effective elastic thickness (Te) of the 
-lithosphere from the inversion of flexural isostatic response functions calculated 
-from a wavelet analysis of gravity and topography data. The software is bundled with ``Jupyter`` notebooks that describe the processing steps required for the estimation of Te. 
+The flexure of elastic plates is a central concept in the theory of plate tectonics,
+where the Earth's lithosphere (crust and uppermost mantle) reacts to applied loads 
+by bending, a process referred to as flexural isostasy. The plate elasticity is 
+parameterized by the *flexural rigidity*, which is proportional to the product of 
+Young's modulus with the cube of the elastic plate thickness. Estimating the *effective* 
+elastic thickness (:math:`T_e`) of the lithosphere (thickness 
+of an equivalent ideal elastic plate) gives important clues on the rheology of the 
+lithosphere and its thermal state. 
 
+Estimating :math:`T_e` can be done by modeling the cross-spectral properties 
+(admittance and coherence) between topography and gravity anomaly data, 
+which are proxies for the distribution of flexurally compensated surface and subsurface 
+loads. These spectral properties can be calculated using different spectral
+estimation techniques - however, to map :math:`T_e` variations it is 
+important to use analysis windows small enough for good spatial resolution, but 
+large enough to capture the effect of flexure at long wavelengths. The wavelet 
+transform is particularly well suited for this analysis because it avoids splitting
+the grids into small windows and can therefore produce cross-spectral functions
+at each point of the input grid.
 
+This package contains ``python`` and ``fortran`` modules to calculate the wavelet spectral
+and cross-spectral quantities of 2D gridded data of topography and gravity anomalies.
+Once obtained, the wavelet cross-spectral quantities (admittance and coherence) are
+used to determine the parameters of the effectively elastic plate, such as the 
+effective elastic thickness (:math:`T_e`), the initial subsurface-to-surface
+load ratio (:math:`F`) and optionally the initial phase difference between
+surface and subsurface loads (:math:`\alpha`). The software uses the analytical
+functions with uniform :math:`F` and :math:`\alpha` to fit the admittance and/or coherence functions. 
+The estimation can be done using non-linear least-squares or probabilistic (i.e., bayesian)
+inference methods. 
+
+The analysis can be done using either the Bouguer or Free air gravity anomalies, and
+over land or ocean areas. Computational workflows are covered in the Jupyter 
+notebooks bundled with this package. The software contains methods to make beautiful and
+insightful plots using the `seaborn` package.
+    
+.. note:: 
+
+   The cross-spectral quantities calculated here are the real-valued 
+   admittance and squared-real coherency, as discussed in the references
+
+.. image:: https://travis-ci.com/paudetseis/PlateFlex.svg?branch=master
+    :target: https://travis-ci.com/paudetseis/PlateFlex
 
 .. toctree::
    :maxdepth: 1
@@ -53,12 +91,3 @@ from a wavelet analysis of gravity and topography data. The software is bundled 
    Example 5: Flexural parameters mapped over grid <https://github.com/paudetseis/PlateFlex/blob/master/plateflex/examples/Notebooks/Ex5_estimate_flex_parameters_grid.ipynb>
    Example 6: Full suite for North America <https://github.com/paudetseis/PlateFlex/blob/master/plateflex/examples/Notebooks/Ex6_full_suite_North_America.ipynb>
    Example 7: Full suite for NW Pacific <https://github.com/paudetseis/PlateFlex/blob/master/plateflex/examples/Notebooks/Ex7_full_suite_NW_Pacific.ipynb>
-
-
-
-.. Indices and tables
-.. """"""""""""""""""
-
-.. * :ref:`genindex`
-.. * :ref:`modindex`
-.. * :ref:`search`
