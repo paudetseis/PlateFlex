@@ -68,16 +68,6 @@ The following package is useful to draw outline of land areas:
 
 See below for full installation details. 
 
-Download the software
-+++++++++++++++++++++
-
-- Clone the repository:
-
-.. sourcecode:: bash
-
-   git clone https://github.com/paudetseis/PlateFlex.git
-   cd PlateFlex
-
 Conda environment
 +++++++++++++++++
 
@@ -86,13 +76,7 @@ where ``plateflex`` can be installed along with its dependencies.
 
 .. sourcecode:: bash
 
-   conda create -n pflex python=3.7 numpy pymc3 matplotlib seaborn -c conda-forge
-
-or create it from the ``pflex_env.yml`` file:
-
-.. sourcecode:: bash
-
-   conda env create -f pflex_env.yml
+   conda create -n pflex python=3.7 numpy pymc3 matplotlib seaborn scikit-image -c conda-forge
 
 Activate the newly created environment:
 
@@ -100,22 +84,50 @@ Activate the newly created environment:
 
    conda activate pflex
 
-Installing using pip
-++++++++++++++++++++
+Installing from source
+++++++++++++++++++++++
 
-Once the previous steps are performed, you can install ``plateflex`` using pip:
+- Clone the repository:
+
+.. sourcecode:: bash
+
+   git clone https://github.com/paudetseis/PlateFlex.git
+   cd PlateFlex
+
+- Install using pip:
 
 .. sourcecode:: bash
 
    pip install .
 
-.. note::
+Jupyter Notebooks
++++++++++++++++++
 
-   Please note, if you are actively working on the code, or making frequent edits, it is advisable
-   to perform the pip installation with the ``-e`` flag. This enables an editable installation, where
-   symbolic links are used rather than straight copies. This means that any changes made in the
-   local folders will be reflected in the packages available on the system.
+Included in this package is a set of Jupyter Notebooks, which give examples on how to create ``Grid`` objects and estimate
+the flexural parameters over whole grids. The Notebooks describe how to produce pulication quality results that closely
+match those published in Audet (2014) and Kirby and Swain. (2009) for North America, as well
+as those of Kalnins and Watts (2009) for the NW Pacific.
 
+After installing ``plateflex``, these notebooks can be locally installed (i.e., in a local folder ``Examples``) 
+from the package by running:
+
+.. sourcecode:: python
+    from plateflex import doc
+    doc.install_doc(path='Examples')
+
+To run the notebooks you will have to further install ``jupyter``:
+
+.. sourcecode:: bash
+    conda install jupyter
+
+Then:
+
+.. sourcecode:: bash
+    unzip data.zip
+    cd Examples
+    jupyter notebook
+
+You can then save the notebooks as ``python`` scripts and you should be good to go!
 
 """
 
