@@ -112,17 +112,20 @@ After installing ``plateflex``, these notebooks can be locally installed (i.e., 
 from the package by running:
 
 .. sourcecode:: python
+
     from plateflex import doc
     doc.install_doc(path='Examples')
 
 To run the notebooks you will have to further install ``jupyter``:
 
 .. sourcecode:: bash
+
     conda install jupyter
 
 Then:
 
 .. sourcecode:: bash
+
     unzip data.zip
     cd Examples
     jupyter notebook

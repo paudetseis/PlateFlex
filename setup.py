@@ -1,7 +1,7 @@
 import os.path
 import re
 from numpy.distutils.core import setup, Extension
-
+from numpy.distutils.system_info import get_info
 
 def find_version(*paths):
     fname = os.path.join(os.path.dirname(__file__), *paths)
@@ -14,9 +14,13 @@ def find_version(*paths):
 
 
 ext_cpwt = Extension(name='plateflex.cpwt',
-                     sources=['src/cpwt/cpwt.f90', 'src/cpwt/cpwt_sub.f90'])
+                     sources=['src/cpwt/cpwt.f90', 'src/cpwt/cpwt_sub.f90'],
+                     libraries=['gfortran'],
+                     library_dirs=get_info('gfortran').get('library_dirs'))
 ext_flex = Extension(name='plateflex.flex',
-                     sources=['src/flex/flex.f90'])
+                     sources=['src/flex/flex.f90'],
+                     libraries=['gfortran'],
+                     library_dirs=get_info('gfortran').get('library_dirs'))
 
 setup(
     name='plateflex',

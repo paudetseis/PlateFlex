@@ -20,7 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 """
-This :mod:`~plateflex`` module contains the following functions for plotting:
+This :mod:`~plateflex` module contains the following functions for plotting:
 
 - :func:`~plateflex.plotting.plot_real_grid`
 - :func:`~plateflex.plotting.plot_bayes_stats`
