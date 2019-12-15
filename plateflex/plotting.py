@@ -9,8 +9,8 @@
 # copies of the Software, and to permit persons to whom the Software is
 # furnished to do so, subject to the following conditions:
 #
-# The above copyright notice and this permission notice shall be included in all
-# copies or substantial portions of the Software.
+# The above copyright notice and this permission notice shall be included in
+# all copies or substantial portions of the Software.
 #
 # THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 # IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -37,7 +37,8 @@ import seaborn as sns
 sns.set()
 
 
-def plot_real_grid(grid, log=False, mask=None, title=None, save=None, clabel=None, contours=None, **kwargs):
+def plot_real_grid(grid, log=False, mask=None, title=None, save=None,
+                   clabel=None, contours=None, **kwargs):
     """
     Plot 2D image of any real-valued 2D array, used in several context throughout
     :mod:`~plateflex`. For example, it can be used to plot the input grids of topography
@@ -65,7 +66,7 @@ def plot_real_grid(grid, log=False, mask=None, title=None, save=None, clabel=Non
 
     # Take log of real values
     if log:
-        if not np.all(grid==np.absolute(grid)):
+        if not np.all(grid == np.absolute(grid)):
             raise(Exception('cannot plot log of grid containing \
                 negative values'))
         grid = np.log(grid)
@@ -85,16 +86,16 @@ def plot_real_grid(grid, log=False, mask=None, title=None, save=None, clabel=Non
 
     # Add contours
     if contours is not None:
-        try: 
+        try:
             for n, contour in enumerate(contours):
-                plt.plot(contour[:,1], contour[:,0], lw=1.25, c='k')
+                plt.plot(contour[:, 1], contour[:, 0], lw=1.25, c='k')
         except:
             print("No contours exist for map. Passing.")
 
     # Plot title if requested
     if title is not None:
         plt.title(title)
-    
+
     # Save figure
     if save is not None:
         plt.savefig(save+'.png')
@@ -130,18 +131,19 @@ def plot_bayes_stats(trace, summary, map_estimate, title=None, save=None):
     # Collect keys in trace object
     keys = []
     for var in trace.varnames:
-        if var[-1]=='_':
+        if var[-1] == '_':
             continue
         keys.append(var)
 
     # This means we searched for Te and F only
-    if len(keys)==2:
+    if len(keys) == 2:
 
         # Collect pymc chains as ``pandas.DataFrame`` object
         data = np.array([trace['Te'], trace['F']]).transpose()
         data = pd.DataFrame(data, columns=['Te (km)', 'F'])
 
-        # Plot marginal and joint distributions as histograms and kernel density functions
+        # Plot marginal and joint distributions as histograms and
+        # kernel density functions
         g = sns.PairGrid(data)
         g.map_diag(plt.hist, lw=1)
         g.map_lower(sns.kdeplot)
@@ -154,14 +156,15 @@ def plot_bayes_stats(trace, summary, map_estimate, title=None, save=None):
         tetext = '\n'.join((
             r'$\mu$ = {0:.0f} km'.format(results[0]),
             r'$\sigma$ = {0:.0f} km'.format(results[1]),
-            r'$95\%$ CI = [{0:.0f}, {1:.0f}] km'.format(results[2], results[3]),
+            r'$95\%$ CI = [{0:.0f}, {1:.0f}] km'.format(
+                results[2], results[3]),
             r'MAP = {0:.0f} km'.format(results[4])))
 
         # Insert text as box
         ax1 = g.axes[0][0]
         props = dict(boxstyle='round', facecolor='wheat', alpha=0.5)
         ax1.text(1.05, 0.9, tetext, transform=ax1.transAxes, fontsize=10,
-        verticalalignment='top', bbox=props)
+                 verticalalignment='top', bbox=props)
 
         # Text for F statistics
         Ftext = '\n'.join((
@@ -174,16 +177,17 @@ def plot_bayes_stats(trace, summary, map_estimate, title=None, save=None):
         ax2 = g.axes[1][1]
         props = dict(boxstyle='round', facecolor='wheat', alpha=0.5)
         ax2.text(0.135, 1.4, Ftext, transform=ax2.transAxes, fontsize=10,
-        verticalalignment='top', bbox=props)
+                 verticalalignment='top', bbox=props)
 
     # This means we searched for Te, F and alpha
-    elif len(keys)==3:
+    elif len(keys) == 3:
 
         # Collect pymc chains as ``pandas.DataFrame`` object
         data = np.array([trace['Te'], trace['F'], trace['alpha']]).transpose()
         data = pd.DataFrame(data, columns=['Te (km)', 'F', r'$\alpha$'])
 
-        # Plot marginal and joint distributions as histograms and kernel density functions
+        # Plot marginal and joint distributions as histograms and
+        # kernel density functions
         g = sns.PairGrid(data)
         g.map_diag(plt.hist, lw=1)
         g.map_lower(sns.kdeplot)
@@ -200,14 +204,15 @@ def plot_bayes_stats(trace, summary, map_estimate, title=None, save=None):
         tetext = '\n'.join((
             r'$\mu$ = {0:.0f} km'.format(results[0]),
             r'$\sigma$ = {0:.0f} km'.format(results[1]),
-            r'$95\%$ CI = [{0:.0f}, {1:.0f}] km'.format(results[2], results[3]),
+            r'$95\%$ CI = [{0:.0f}, {1:.0f}] km'.format(
+                results[2], results[3]),
             r'MAP = {0:.0f} km'.format(results[4])))
 
         # Insert text as box
         ax1 = g.axes[0][0]
         props = dict(boxstyle='round', facecolor='wheat', alpha=0.5)
         ax1.text(1.05, 0.9, tetext, transform=ax1.transAxes, fontsize=10,
-        verticalalignment='top', bbox=props)
+                 verticalalignment='top', bbox=props)
 
         # Text for F statistics
         Ftext = '\n'.join((
@@ -220,7 +225,7 @@ def plot_bayes_stats(trace, summary, map_estimate, title=None, save=None):
         ax2 = g.axes[1][1]
         props = dict(boxstyle='round', facecolor='wheat', alpha=0.5)
         ax2.text(0.135, 1.4, Ftext, transform=ax2.transAxes, fontsize=10,
-        verticalalignment='top', bbox=props)
+                 verticalalignment='top', bbox=props)
 
         # Text for alpha statistics
         atext = '\n'.join((
@@ -233,10 +238,13 @@ def plot_bayes_stats(trace, summary, map_estimate, title=None, save=None):
         ax3 = g.axes[2][2]
         props = dict(boxstyle='round', facecolor='wheat', alpha=0.5)
         ax3.text(0.135, 1.4, atext, transform=ax3.transAxes, fontsize=10,
-        verticalalignment='top', bbox=props)
+                 verticalalignment='top', bbox=props)
 
     else:
-        raise(Exception('there are less than 2 or more than 3 variables in pymc3 chains'))
+        raise(
+            Exception(
+                'There are less than 2 or more than 3 variables ' +
+                'in pymc3 chains'))
 
     # Plot title if requested
     if title is not None:
@@ -249,11 +257,12 @@ def plot_bayes_stats(trace, summary, map_estimate, title=None, save=None):
     plt.show()
 
 
-def plot_functions(k, adm, eadm, coh, ecoh, padm=None, pcoh=None, title=None, save=None):
+def plot_functions(k, adm, eadm, coh, ecoh,
+                   padm=None, pcoh=None, title=None, save=None):
     """
-    Function to plot observed and predicted (``None`` by default) admittance and coherence functions. 
-    Both admittance and coherence are plotted regardless of method to estimate 
-    the model paramters.
+    Function to plot observed and predicted (``None`` by default) 
+    admittance and coherence functions. Both admittance and coherence 
+    are plotted regardless of method to estimate the model paramters.
 
     :type k: :class:`~numpy.ndarray`
     :param k: 1D array of wavenumbers
@@ -280,18 +289,18 @@ def plot_functions(k, adm, eadm, coh, ecoh, padm=None, pcoh=None, title=None, sa
     f, (ax1, ax2) = plt.subplots(2, 1, sharex=True)
 
     # Plot observed admittance with error bars
-    ax1.errorbar(k*1.e3,adm,yerr=eadm, marker='*')
+    ax1.errorbar(k*1.e3, adm, yerr=eadm, marker='*')
 
     if padm is not None:
         # Plot predicted admittance
-        ax1.plot(k*1.e3,padm)
+        ax1.plot(k*1.e3, padm)
 
     # Plot observed coherence with error bars
-    ax2.errorbar(k*1.e3,coh,yerr=ecoh, marker='*')
+    ax2.errorbar(k*1.e3, coh, yerr=ecoh, marker='*')
 
     if pcoh is not None:
         # Plot predicted coherence
-        ax2.plot(k*1.e3,pcoh)
+        ax2.plot(k*1.e3, pcoh)
 
     # Add all labels
     ax1.set_ylabel('Admittance (mGal/m)')
