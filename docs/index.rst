@@ -2,6 +2,9 @@
 .. figure:: ../plateflex/examples/picture/logo_plateflex.png
    :align: center
 
+.. image:: https://travis-ci.com/paudetseis/PlateFlex.svg?branch=master
+    :target: https://travis-ci.com/paudetseis/PlateFlex
+
 PlateFlex Project Documentation
 ===============================
 
@@ -46,8 +49,6 @@ insightful plots using the `seaborn` package.
    The cross-spectral quantities calculated here are the real-valued 
    admittance and squared-real coherency, as discussed in the references
 
-.. image:: https://travis-ci.com/paudetseis/PlateFlex.svg?branch=master
-    :target: https://travis-ci.com/paudetseis/PlateFlex
 
 .. toctree::
    :maxdepth: 1
