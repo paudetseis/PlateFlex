@@ -47,7 +47,7 @@ insightful plots using the `seaborn` package.
 
 ### Documentation
 
-Installation, Usage and API documentation are described at https://paudetseis.github.io/OBStools/
+Installation, Usage and API documentation are described at https://paudetseis.github.io/PlateFlex/
 
 ### How to make new gridded data sets
 
