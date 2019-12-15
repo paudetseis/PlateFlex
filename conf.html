@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>PlateFlex Project Documentation &mdash; plateflex 0.1.0 documentation</title>
+  <title>plateflex.cpwt.conf_cpwt &mdash; plateflex 0.1.0 documentation</title>
   
 
   
@@ -36,7 +36,8 @@
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="GitHub Repository" href="links.html" /> 
+    <link rel="next" title="Grid" href="classes.html" />
+    <link rel="prev" title="Licence" href="api.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -50,7 +51,7 @@
           
 
           
-            <a href="#" class="icon icon-home"> plateflex
+            <a href="index.html" class="icon icon-home"> plateflex
           
 
           
@@ -91,10 +92,10 @@
 <li class="toctree-l1"><a class="reference internal" href="api.html#global-variables">Global Variables</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Configuration modules</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="conf.html">plateflex.cpwt.conf_cpwt</a></li>
-<li class="toctree-l1"><a class="reference internal" href="conf.html#plateflex-flex-conf-flex">plateflex.flex.conf_flex</a></li>
-<li class="toctree-l1"><a class="reference internal" href="conf.html#plateflex-conf">plateflex.conf</a></li>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">plateflex.cpwt.conf_cpwt</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#plateflex-flex-conf-flex">plateflex.flex.conf_flex</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#plateflex-conf">plateflex.conf</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Classes</span></p>
 <ul>
@@ -135,7 +136,7 @@
       <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="#">plateflex</a>
+          <a href="index.html">plateflex</a>
         
       </nav>
 
@@ -164,15 +165,15 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="#">Docs</a> &raquo;</li>
+      <li><a href="index.html">Docs</a> &raquo;</li>
         
-      <li>PlateFlex Project Documentation</li>
+      <li>plateflex.cpwt.conf_cpwt</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="_sources/index.rst.txt" rel="nofollow"> View page source</a>
+            <a href="_sources/conf.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -185,68 +186,64 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="figure align-center">
-<img alt="_images/logo_plateflex.png" src="_images/logo_plateflex.png" />
+  <span class="target" id="module-plateflex.conf"></span><div class="section" id="plateflex-cpwt-conf-cpwt">
+<h1>plateflex.cpwt.conf_cpwt<a class="headerlink" href="#plateflex-cpwt-conf-cpwt" title="Permalink to this headline">¶</a></h1>
+<p>Global variable that controls the spatio-spectral
+localization of the Morlet wavelet. Default value
+in parentheses.</p>
+<p class="rubric">Internal wavenumber of Morlet wavelet</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">k0</span></code>: float</dt><dd><p>Internal Morlet wavenumber (5.336 or higher)</p>
+</dd>
+</dl>
 </div>
-<div class="section" id="plateflex-project-documentation">
-<h1>PlateFlex Project Documentation<a class="headerlink" href="#plateflex-project-documentation" title="Permalink to this headline">¶</a></h1>
-<p>PlateFlex is a software for estimating the effective elastic thickness (Te) of the
-lithosphere from the inversion of flexural isostatic response functions calculated
-from a wavelet analysis of gravity and topography data. The software is bundled with <code class="docutils literal notranslate"><span class="pre">Jupyter</span></code> notebooks that describe the processing steps required for the estimation of Te.</p>
-<div class="toctree-wrapper compound">
-<p class="caption"><span class="caption-text">Quick Links</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="links.html">GitHub Repository</a></li>
-</ul>
+<div class="section" id="plateflex-flex-conf-flex">
+<h1>plateflex.flex.conf_flex<a class="headerlink" href="#plateflex-flex-conf-flex" title="Permalink to this headline">¶</a></h1>
+<p>Global variables that define model parameters for
+the flexural model. Default values in parentheses.</p>
+<p class="rubric">Earth parameters - fixed</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">E</span></code><span class="classifier">float</span></dt><dd><p>Young’s modulus (100 GPa)</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">nu</span></code><span class="classifier">float</span></dt><dd><p>Poisson’s ratio (0.25)</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">g</span></code><span class="classifier">float</span></dt><dd><p>Gravitational acceleration (9.81 m/s^2)</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">G</span></code><span class="classifier">float)</span></dt><dd><p>Gravitational constant (6.67e-11*1.e5 mGal)</p>
+</dd>
+</dl>
+<p class="rubric">Earth parameters - variable</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">zc</span></code><span class="classifier">float</span></dt><dd><p>Crustal thickness (35.e3 m)</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">rhom</span></code>: float</dt><dd><p>Uppermost mantle density (3200. kg/m^3)</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">rhoc</span></code><span class="classifier">float</span></dt><dd><p>Crustal density (2700. kg/m^3)</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">rhoa</span></code><span class="classifier">float</span></dt><dd><p>Air density (0. kg/m^3)</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">rhow</span></code><span class="classifier">float</span></dt><dd><p>Water density (1030. kg/m^3)</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">rhof</span></code><span class="classifier">float</span></dt><dd><p>Fluid density at topo/fluid interface (==rhoa <em>or</em> ==rhow, depending on water depth)</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">wd</span></code><span class="classifier">float</span></dt><dd><p>Water depth (0.e3 m) -  Automatically determined from
+<a class="reference internal" href="classes.html#plateflex.classes.TopoGrid" title="plateflex.classes.TopoGrid"><code class="xref py py-class docutils literal notranslate"><span class="pre">TopoGrid</span></code></a> object</p>
+</dd>
+</dl>
 </div>
-<div class="toctree-wrapper compound">
-<p class="caption"><span class="caption-text">Getting Started</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="api.html">Licence</a></li>
-<li class="toctree-l1"><a class="reference internal" href="api.html#installation">Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="api.html#global-variables">Global Variables</a></li>
-</ul>
-</div>
-<div class="toctree-wrapper compound">
-<p class="caption"><span class="caption-text">Configuration modules</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="conf.html">plateflex.cpwt.conf_cpwt</a></li>
-<li class="toctree-l1"><a class="reference internal" href="conf.html#plateflex-flex-conf-flex">plateflex.flex.conf_flex</a></li>
-<li class="toctree-l1"><a class="reference internal" href="conf.html#plateflex-conf">plateflex.conf</a></li>
-</ul>
-</div>
-<div class="toctree-wrapper compound">
-<p class="caption"><span class="caption-text">Classes</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="classes.html">Grid</a></li>
-<li class="toctree-l1"><a class="reference internal" href="classes.html#topogrid">TopoGrid</a></li>
-<li class="toctree-l1"><a class="reference internal" href="classes.html#gravgrid">GravGrid</a></li>
-<li class="toctree-l1"><a class="reference internal" href="classes.html#bouggrid">BougGrid</a></li>
-<li class="toctree-l1"><a class="reference internal" href="classes.html#fairgrid">FairGrid</a></li>
-<li class="toctree-l1"><a class="reference internal" href="classes.html#rhocgrid">RhocGrid</a></li>
-<li class="toctree-l1"><a class="reference internal" href="classes.html#zcgrid">ZcGrid</a></li>
-<li class="toctree-l1"><a class="reference internal" href="classes.html#project">Project</a></li>
-</ul>
-</div>
-<div class="toctree-wrapper compound">
-<p class="caption"><span class="caption-text">Modules</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="estimate.html">Module estimate</a></li>
-<li class="toctree-l1"><a class="reference internal" href="plotting.html">Module plotting</a></li>
-</ul>
-</div>
-<div class="toctree-wrapper compound">
-<p class="caption"><span class="caption-text">Jupyter Notebooks</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference external" href="https://github.com/paudetseis/PlateFlex/blob/master/plateflex/examples/Notebooks/Ex1_making_grids.ipynb">Example 1: Making grids</a></li>
-<li class="toctree-l1"><a class="reference external" href="https://github.com/paudetseis/PlateFlex/blob/master/plateflex/examples/Notebooks/Ex2_wavelet_analysis.ipynb">Example 2: Wavelet analysis</a></li>
-<li class="toctree-l1"><a class="reference external" href="https://github.com/paudetseis/PlateFlex/blob/master/plateflex/examples/Notebooks/Ex3_admittance_coherence.ipynb">Example 3: Admittance and coherence</a></li>
-<li class="toctree-l1"><a class="reference external" href="https://github.com/paudetseis/PlateFlex/blob/master/plateflex/examples/Notebooks/Ex4_estimate_flex_parameters_cell.ipynb">Example 4: Flexural parameters at single grid cell</a></li>
-<li class="toctree-l1"><a class="reference external" href="https://github.com/paudetseis/PlateFlex/blob/master/plateflex/examples/Notebooks/Ex5_estimate_flex_parameters_grid.ipynb">Example 5: Flexural parameters mapped over grid</a></li>
-<li class="toctree-l1"><a class="reference external" href="https://github.com/paudetseis/PlateFlex/blob/master/plateflex/examples/Notebooks/Ex6_full_suite_North_America.ipynb">Example 6: Full suite for North America</a></li>
-<li class="toctree-l1"><a class="reference external" href="https://github.com/paudetseis/PlateFlex/blob/master/plateflex/examples/Notebooks/Ex7_full_suite_NW_Pacific.ipynb">Example 7: Full suite for NW Pacific</a></li>
-</ul>
-</div>
+<div class="section" id="plateflex-conf">
+<h1>plateflex.conf<a class="headerlink" href="#plateflex-conf" title="Permalink to this headline">¶</a></h1>
+<p>Global variables that control sampling of the posterior
+from MCMC chains using <code class="xref py py-class docutils literal notranslate"><span class="pre">pymc3</span></code>. Default values in parentheses.</p>
+<p class="rubric">Bayes sampling</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">draws</span></code><span class="classifier">int</span></dt><dd><p>Number of draws (i.e., samples) in single MCMC chain (500)</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">tunes</span></code><span class="classifier">int</span></dt><dd><p>Number of tuning (i.e., burn-in) samples (500)</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">cores</span></code><span class="classifier">int</span></dt><dd><p>Number of cores (i.e., parallel MCMC chains) (4)</p>
+</dd>
+</dl>
 </div>
 
 
@@ -257,8 +254,10 @@ from a wavelet analysis of gravity and topography data. The software is bundled 
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="links.html" class="btn btn-neutral float-right" title="GitHub Repository" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="classes.html" class="btn btn-neutral float-right" title="Grid" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
+      
+        <a href="api.html" class="btn btn-neutral float-left" title="Licence" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
