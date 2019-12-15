@@ -33,7 +33,7 @@ extensions = ['sphinx.ext.autodoc', 'sphinx.ext.napoleon']
 
 autodoc_member_order = 'bysource'
 
-html_logo = '../plateflex/examples/picture/plateflex_docs_icon.png'
+html_logo = '../plateflex/examples/picture/logo_plateflex_small.png'
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
