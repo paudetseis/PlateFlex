@@ -2,6 +2,9 @@
 .. figure:: ../plateflex/examples/picture/logo_plateflex.png
    :align: center
 
+Documentation
+=============
+
 The flexure of elastic plates is a central concept in the theory of plate tectonics,
 where the Earth's lithosphere (crust and uppermost mantle) reacts to applied loads 
 by bending, a process referred to as flexural isostasy. Estimating the *effective* 
@@ -33,7 +36,7 @@ publication-quality plots using the `seaborn` package.
 .. image:: https://zenodo.org/badge/206867590.svg
    :target: https://zenodo.org/badge/latestdoi/206867590
 .. image:: https://travis-ci.com/paudetseis/PlateFlex.svg?branch=master
-    :target: https://travis-ci.com/paudetseis/PlateFlex
+   :target: https://travis-ci.com/paudetseis/PlateFlex
 
 
 .. toctree::
