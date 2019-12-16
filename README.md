@@ -32,10 +32,10 @@ publication-quality plots using the `seaborn` package.
 Installation, Usage, API documentation and Jupyter Notebooks are described at 
 https://paudetseis.github.io/PlateFlex/
 
-<!-- #### Citing
+#### Citing
 
-If you use `PlateFlex` in your work, please cite the Zenodo DOI (https://zenodo.org/badge/latestdoi/204565459)
-and the following paper:
+If you use `PlateFlex` in your work, please cite the [Zenodo DOI](https://zenodo.org/badge/latestdoi/206867590).
+<!-- and the following paper:
 
 - Audet, P., Thomson, C.J., Bostock, M.G., and Eulenfeld, T. (2019). Telewavesim: 
 Python software for teleseismic body wave modeling. Journal of Open Source Software, 
