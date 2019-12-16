@@ -36,6 +36,8 @@ insightful plots using the `seaborn` package.
    The cross-spectral quantities calculated here are the real-valued 
    admittance and squared-real coherency, as discussed in the references
 
+.. image:: https://zenodo.org/badge/206867590.svg
+   :target: https://zenodo.org/badge/latestdoi/206867590
 .. image:: https://travis-ci.com/paudetseis/PlateFlex.svg?branch=master
     :target: https://travis-ci.com/paudetseis/PlateFlex
 
