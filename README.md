@@ -26,6 +26,7 @@ over land or ocean areas. Computational workflows are covered in the Jupyter
 notebooks bundled with this package. The software contains methods to make 
 publication-quality plots using the `seaborn` package.
 
+[![DOI](https://zenodo.org/badge/206867590.svg)](https://zenodo.org/badge/latestdoi/206867590)
 [![Build Status](https://travis-ci.com/paudetseis/PlateFlex.svg?branch=master)](https://travis-ci.com/paudetseis/PlateFlex)
 
 Installation, Usage, API documentation and Jupyter Notebooks are described at 
