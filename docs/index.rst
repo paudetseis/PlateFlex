@@ -2,14 +2,9 @@
 .. figure:: ../plateflex/examples/picture/logo_plateflex.png
    :align: center
 
-Documentation
-=============
-
 The flexure of elastic plates is a central concept in the theory of plate tectonics,
 where the Earth's lithosphere (crust and uppermost mantle) reacts to applied loads 
-by bending, a process referred to as flexural isostasy. The plate elasticity is 
-parameterized by the *flexural rigidity*, which is proportional to the product of 
-Young's modulus with the cube of the elastic plate thickness. Estimating the *effective* 
+by bending, a process referred to as flexural isostasy. Estimating the *effective* 
 elastic thickness (:math:`T_e`) of the lithosphere (thickness 
 of an equivalent ideal elastic plate) gives important clues on the rheology of the 
 lithosphere and its thermal state. Estimating :math:`T_e` is typically done by 
@@ -23,13 +18,12 @@ Once obtained, the wavelet cross-spectral quantities (admittance and coherence) 
 used to determine the parameters of the effectively elastic plate, such as the 
 effective elastic thickness (:math:`T_e`), the initial subsurface-to-surface
 load ratio (:math:`F`) and optionally the initial phase difference between
-surface and subsurface loads (:math:`\alpha`). The software uses the analytical
-functions with uniform :math:`F` and :math:`\alpha` to fit the admittance and/or coherence functions. 
+surface and subsurface loads (:math:`\alpha`).  
 The estimation can be done using non-linear least-squares or probabilistic (i.e., bayesian)
 inference methods. The analysis can be done using either the Bouguer or Free air gravity anomalies, and
 over land or ocean areas. Computational workflows are covered in the Jupyter 
-notebooks bundled with this package. The software contains methods to make beautiful and
-insightful plots using the `seaborn` package.
+notebooks bundled with this package. The software contains methods to make 
+publication-quality plots using the `seaborn` package.
     
 .. note:: 
 
