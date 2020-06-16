@@ -32,6 +32,8 @@ publication-quality plots using the `seaborn` package.
 Installation, Usage, API documentation and Jupyter Notebooks are described at 
 https://paudetseis.github.io/PlateFlex/
 
+Authors: [`Pascal Audet`](https://www.uogeophysics.com/authors/admin/) (Developer and Maintainer) & [`Zhezhe Lu`](https://www.uogeophysics.com/authors/lu/) (Contributor)
+
 #### Citing
 
 If you use `PlateFlex` in your work, please cite the [Zenodo DOI](https://zenodo.org/badge/latestdoi/206867590).
