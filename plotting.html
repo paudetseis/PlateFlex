@@ -21,11 +21,11 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-        <script type="text/javascript" src="_static/language_data.js"></script>
-        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
@@ -184,9 +184,9 @@
 <li><p><a class="reference internal" href="#plateflex.plotting.plot_bayes_stats" title="plateflex.plotting.plot_bayes_stats"><code class="xref py py-func docutils literal notranslate"><span class="pre">plot_bayes_stats()</span></code></a></p></li>
 <li><p><a class="reference internal" href="#plateflex.plotting.plot_functions" title="plateflex.plotting.plot_functions"><code class="xref py py-func docutils literal notranslate"><span class="pre">plot_functions()</span></code></a></p></li>
 </ul>
-<dl class="function">
+<dl class="py function">
 <dt id="plateflex.plotting.plot_real_grid">
-<code class="sig-prename descclassname">plateflex.plotting.</code><code class="sig-name descname">plot_real_grid</code><span class="sig-paren">(</span><em class="sig-param">grid</em>, <em class="sig-param">log=False</em>, <em class="sig-param">mask=None</em>, <em class="sig-param">title=None</em>, <em class="sig-param">save=None</em>, <em class="sig-param">clabel=None</em>, <em class="sig-param">contours=None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#plateflex.plotting.plot_real_grid" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">plateflex.plotting.</code><code class="sig-name descname">plot_real_grid</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">grid</span></em>, <em class="sig-param"><span class="n">log</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">mask</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">title</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">save</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">clabel</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">contours</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#plateflex.plotting.plot_real_grid" title="Permalink to this definition">¶</a></dt>
 <dd><p>Plot 2D image of any real-valued 2D array, used in several context throughout
 <a class="reference internal" href="getting_started.html#module-plateflex" title="plateflex"><code class="xref py py-mod docutils literal notranslate"><span class="pre">plateflex</span></code></a>. For example, it can be used to plot the input grids of topography
 or gravity anomalies, the real or imaginary values of the wavelet transform at a
@@ -208,9 +208,9 @@ results.</p>
 </dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="plateflex.plotting.plot_bayes_stats">
-<code class="sig-prename descclassname">plateflex.plotting.</code><code class="sig-name descname">plot_bayes_stats</code><span class="sig-paren">(</span><em class="sig-param">trace</em>, <em class="sig-param">summary</em>, <em class="sig-param">map_estimate</em>, <em class="sig-param">title=None</em>, <em class="sig-param">save=None</em><span class="sig-paren">)</span><a class="headerlink" href="#plateflex.plotting.plot_bayes_stats" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">plateflex.plotting.</code><code class="sig-name descname">plot_bayes_stats</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">trace</span></em>, <em class="sig-param"><span class="n">summary</span></em>, <em class="sig-param"><span class="n">map_estimate</span></em>, <em class="sig-param"><span class="n">title</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">save</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#plateflex.plotting.plot_bayes_stats" title="Permalink to this definition">¶</a></dt>
 <dd><p>Extract results from variables <code class="docutils literal notranslate"><span class="pre">trace</span></code>, <code class="docutils literal notranslate"><span class="pre">summary</span></code> and <code class="docutils literal notranslate"><span class="pre">map_estimate</span></code> to
 plot marginal and joint posterior distributions. Automatically determines
 how to plot results from those variables.</p>
@@ -227,9 +227,9 @@ how to plot results from those variables.</p>
 </dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="plateflex.plotting.plot_functions">
-<code class="sig-prename descclassname">plateflex.plotting.</code><code class="sig-name descname">plot_functions</code><span class="sig-paren">(</span><em class="sig-param">k</em>, <em class="sig-param">adm</em>, <em class="sig-param">eadm</em>, <em class="sig-param">coh</em>, <em class="sig-param">ecoh</em>, <em class="sig-param">padm=None</em>, <em class="sig-param">pcoh=None</em>, <em class="sig-param">title=None</em>, <em class="sig-param">save=None</em><span class="sig-paren">)</span><a class="headerlink" href="#plateflex.plotting.plot_functions" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">plateflex.plotting.</code><code class="sig-name descname">plot_functions</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">k</span></em>, <em class="sig-param"><span class="n">adm</span></em>, <em class="sig-param"><span class="n">eadm</span></em>, <em class="sig-param"><span class="n">coh</span></em>, <em class="sig-param"><span class="n">ecoh</span></em>, <em class="sig-param"><span class="n">padm</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">pcoh</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">title</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">save</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#plateflex.plotting.plot_functions" title="Permalink to this definition">¶</a></dt>
 <dd><p>Function to plot observed and predicted (<code class="docutils literal notranslate"><span class="pre">None</span></code> by default)
 admittance and coherence functions. Both admittance and coherence
 are plotted regardless of method to estimate the model paramters.</p>

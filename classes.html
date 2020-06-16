@@ -21,11 +21,11 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-        <script type="text/javascript" src="_static/language_data.js"></script>
-        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
@@ -211,9 +211,9 @@ type, and contain methods for the following functionality:</p>
 </ul>
 <div class="section" id="grid">
 <h2>Grid<a class="headerlink" href="#grid" title="Permalink to this headline">¶</a></h2>
-<dl class="class">
+<dl class="py class">
 <dt id="plateflex.classes.Grid">
-<em class="property">class </em><code class="sig-prename descclassname">plateflex.classes.</code><code class="sig-name descname">Grid</code><span class="sig-paren">(</span><em class="sig-param">grid</em>, <em class="sig-param">dx</em>, <em class="sig-param">dy</em><span class="sig-paren">)</span><a class="headerlink" href="#plateflex.classes.Grid" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">plateflex.classes.</code><code class="sig-name descname">Grid</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">grid</span></em>, <em class="sig-param"><span class="n">dx</span></em>, <em class="sig-param"><span class="n">dy</span></em><span class="sig-paren">)</span><a class="headerlink" href="#plateflex.classes.Grid" title="Permalink to this definition">¶</a></dt>
 <dd><p>An object containing a 2D array of data and Cartesian coordinates specifying the
 bounding box of the array. Contains methods to calculate the wavelet transform,
 wavelet scalogram and to plot those quantities at a specified wavenumber index.</p>
@@ -264,9 +264,9 @@ wavelet scalogram and to plot those quantities at a specified wavenumber index.<
 <span class="go">&lt;plateflex.grids.Grid object at 0x10613fe10&gt;</span>
 </pre></div>
 </div>
-<dl class="method">
+<dl class="py method">
 <dt id="plateflex.classes.Grid.make_contours">
-<code class="sig-name descname">make_contours</code><span class="sig-paren">(</span><em class="sig-param">level=0.0</em><span class="sig-paren">)</span><a class="headerlink" href="#plateflex.classes.Grid.make_contours" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">make_contours</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">level</span><span class="o">=</span><span class="default_value">0.0</span></em><span class="sig-paren">)</span><a class="headerlink" href="#plateflex.classes.Grid.make_contours" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function returns the contours as a List of coordinate positions
 at one given level - run this more than once with different levels
 if desired</p>
@@ -280,7 +280,7 @@ if desired</p>
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="plateflex.classes.Grid.wlet_transform">
 <code class="sig-name descname">wlet_transform</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#plateflex.classes.Grid.wlet_transform" title="Permalink to this definition">¶</a></dt>
 <dd><p>This method uses the module <code class="xref py py-mod docutils literal notranslate"><span class="pre">cpwt</span></code> to calculate
@@ -309,7 +309,7 @@ power of 2. The wavelet transform is stored as an attribute of the object.</p>
 </div>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="plateflex.classes.Grid.wlet_scalogram">
 <code class="sig-name descname">wlet_scalogram</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#plateflex.classes.Grid.wlet_scalogram" title="Permalink to this definition">¶</a></dt>
 <dd><p>This method uses the module <code class="xref py py-mod docutils literal notranslate"><span class="pre">cpwt</span></code> to calculate
@@ -355,9 +355,9 @@ the wavelet transform first.</p>
 </div>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="plateflex.classes.Grid.plot_transform">
-<code class="sig-name descname">plot_transform</code><span class="sig-paren">(</span><em class="sig-param">kindex=None</em>, <em class="sig-param">aindex=None</em>, <em class="sig-param">log=False</em>, <em class="sig-param">mask=None</em>, <em class="sig-param">save=None</em>, <em class="sig-param">clabel=None</em>, <em class="sig-param">contours=None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#plateflex.classes.Grid.plot_transform" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">plot_transform</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">kindex</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">aindex</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">log</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">mask</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">save</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">clabel</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">contours</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#plateflex.classes.Grid.plot_transform" title="Permalink to this definition">¶</a></dt>
 <dd><p>This method plots the real and imaginary components of the wavelet transform of a
 <a class="reference internal" href="#plateflex.classes.Grid" title="plateflex.classes.Grid"><code class="xref py py-class docutils literal notranslate"><span class="pre">Grid</span></code></a> object at wavenumber and angle indices (int).
 Raises <code class="docutils literal notranslate"><span class="pre">Exception</span></code> for the cases where:</p>
@@ -373,9 +373,9 @@ the wavelet transform first.</p>
 </div>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="plateflex.classes.Grid.plot_scalogram">
-<code class="sig-name descname">plot_scalogram</code><span class="sig-paren">(</span><em class="sig-param">kindex=None</em>, <em class="sig-param">log=True</em>, <em class="sig-param">mask=None</em>, <em class="sig-param">title='Wavelet scalogram'</em>, <em class="sig-param">save=None</em>, <em class="sig-param">clabel=None</em>, <em class="sig-param">contours=None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#plateflex.classes.Grid.plot_scalogram" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">plot_scalogram</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">kindex</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">log</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">mask</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">title</span><span class="o">=</span><span class="default_value">'Wavelet scalogram'</span></em>, <em class="sig-param"><span class="n">save</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">clabel</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">contours</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#plateflex.classes.Grid.plot_scalogram" title="Permalink to this definition">¶</a></dt>
 <dd><p>This method plots the wavelet scalogram of a <a class="reference internal" href="#plateflex.classes.Grid" title="plateflex.classes.Grid"><code class="xref py py-class docutils literal notranslate"><span class="pre">Grid</span></code></a>
 object at a wavenumber index (int). Raises <code class="docutils literal notranslate"><span class="pre">Exception</span></code> for the cases where:</p>
 <ul class="simple">
@@ -394,9 +394,9 @@ the wavelet scalogram (and maybe also the wavelet transform) first.</p>
 </div>
 <div class="section" id="topogrid">
 <h2>TopoGrid<a class="headerlink" href="#topogrid" title="Permalink to this headline">¶</a></h2>
-<dl class="class">
+<dl class="py class">
 <dt id="plateflex.classes.TopoGrid">
-<em class="property">class </em><code class="sig-prename descclassname">plateflex.classes.</code><code class="sig-name descname">TopoGrid</code><span class="sig-paren">(</span><em class="sig-param">grid</em>, <em class="sig-param">dx</em>, <em class="sig-param">dy</em><span class="sig-paren">)</span><a class="headerlink" href="#plateflex.classes.TopoGrid" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">plateflex.classes.</code><code class="sig-name descname">TopoGrid</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">grid</span></em>, <em class="sig-param"><span class="n">dx</span></em>, <em class="sig-param"><span class="n">dy</span></em><span class="sig-paren">)</span><a class="headerlink" href="#plateflex.classes.TopoGrid" title="Permalink to this definition">¶</a></dt>
 <dd><p>Basic grid class of <a class="reference internal" href="getting_started.html#module-plateflex" title="plateflex"><code class="xref py py-mod docutils literal notranslate"><span class="pre">plateflex</span></code></a> for Topography data that inherits
 from <a class="reference internal" href="#plateflex.classes.Grid" title="plateflex.classes.Grid"><code class="xref py py-class docutils literal notranslate"><span class="pre">Grid</span></code></a></p>
 <p class="rubric">Additional Attributes</p>
@@ -428,9 +428,9 @@ than 20</p>
 </div>
 <div class="section" id="gravgrid">
 <h2>GravGrid<a class="headerlink" href="#gravgrid" title="Permalink to this headline">¶</a></h2>
-<dl class="class">
+<dl class="py class">
 <dt id="plateflex.classes.GravGrid">
-<em class="property">class </em><code class="sig-prename descclassname">plateflex.classes.</code><code class="sig-name descname">GravGrid</code><span class="sig-paren">(</span><em class="sig-param">grid</em>, <em class="sig-param">dx</em>, <em class="sig-param">dy</em><span class="sig-paren">)</span><a class="headerlink" href="#plateflex.classes.GravGrid" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">plateflex.classes.</code><code class="sig-name descname">GravGrid</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">grid</span></em>, <em class="sig-param"><span class="n">dx</span></em>, <em class="sig-param"><span class="n">dy</span></em><span class="sig-paren">)</span><a class="headerlink" href="#plateflex.classes.GravGrid" title="Permalink to this definition">¶</a></dt>
 <dd><p>Basic grid class of <a class="reference internal" href="getting_started.html#module-plateflex" title="plateflex"><code class="xref py py-mod docutils literal notranslate"><span class="pre">plateflex</span></code></a> for gravity data that inherits
 from <a class="reference internal" href="#plateflex.classes.Grid" title="plateflex.classes.Grid"><code class="xref py py-class docutils literal notranslate"><span class="pre">Grid</span></code></a></p>
 <p class="rubric">Additional Attributes</p>
@@ -457,9 +457,9 @@ from <a class="reference internal" href="#plateflex.classes.Grid" title="platefl
 </div>
 <div class="section" id="bouggrid">
 <h2>BougGrid<a class="headerlink" href="#bouggrid" title="Permalink to this headline">¶</a></h2>
-<dl class="class">
+<dl class="py class">
 <dt id="plateflex.classes.BougGrid">
-<em class="property">class </em><code class="sig-prename descclassname">plateflex.classes.</code><code class="sig-name descname">BougGrid</code><span class="sig-paren">(</span><em class="sig-param">grid</em>, <em class="sig-param">dx</em>, <em class="sig-param">dy</em><span class="sig-paren">)</span><a class="headerlink" href="#plateflex.classes.BougGrid" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">plateflex.classes.</code><code class="sig-name descname">BougGrid</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">grid</span></em>, <em class="sig-param"><span class="n">dx</span></em>, <em class="sig-param"><span class="n">dy</span></em><span class="sig-paren">)</span><a class="headerlink" href="#plateflex.classes.BougGrid" title="Permalink to this definition">¶</a></dt>
 <dd><p>Basic grid class of <a class="reference internal" href="getting_started.html#module-plateflex" title="plateflex"><code class="xref py py-mod docutils literal notranslate"><span class="pre">plateflex</span></code></a> for Bouguer gravity data that inherits
 from <a class="reference internal" href="#plateflex.classes.GravGrid" title="plateflex.classes.GravGrid"><code class="xref py py-class docutils literal notranslate"><span class="pre">GravGrid</span></code></a></p>
 <p class="rubric">Additional Attributes</p>
@@ -482,9 +482,9 @@ from <a class="reference internal" href="#plateflex.classes.GravGrid" title="pla
 </div>
 <div class="section" id="fairgrid">
 <h2>FairGrid<a class="headerlink" href="#fairgrid" title="Permalink to this headline">¶</a></h2>
-<dl class="class">
+<dl class="py class">
 <dt id="plateflex.classes.FairGrid">
-<em class="property">class </em><code class="sig-prename descclassname">plateflex.classes.</code><code class="sig-name descname">FairGrid</code><span class="sig-paren">(</span><em class="sig-param">grid</em>, <em class="sig-param">dx</em>, <em class="sig-param">dy</em><span class="sig-paren">)</span><a class="headerlink" href="#plateflex.classes.FairGrid" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">plateflex.classes.</code><code class="sig-name descname">FairGrid</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">grid</span></em>, <em class="sig-param"><span class="n">dx</span></em>, <em class="sig-param"><span class="n">dy</span></em><span class="sig-paren">)</span><a class="headerlink" href="#plateflex.classes.FairGrid" title="Permalink to this definition">¶</a></dt>
 <dd><p>Basic grid class of <a class="reference internal" href="getting_started.html#module-plateflex" title="plateflex"><code class="xref py py-mod docutils literal notranslate"><span class="pre">plateflex</span></code></a> for Free-air gravity data that inherits
 from <a class="reference internal" href="#plateflex.classes.GravGrid" title="plateflex.classes.GravGrid"><code class="xref py py-class docutils literal notranslate"><span class="pre">GravGrid</span></code></a></p>
 <p class="rubric">Additional Attributes</p>
@@ -507,9 +507,9 @@ from <a class="reference internal" href="#plateflex.classes.GravGrid" title="pla
 </div>
 <div class="section" id="rhocgrid">
 <h2>RhocGrid<a class="headerlink" href="#rhocgrid" title="Permalink to this headline">¶</a></h2>
-<dl class="class">
+<dl class="py class">
 <dt id="plateflex.classes.RhocGrid">
-<em class="property">class </em><code class="sig-prename descclassname">plateflex.classes.</code><code class="sig-name descname">RhocGrid</code><span class="sig-paren">(</span><em class="sig-param">grid</em>, <em class="sig-param">dx</em>, <em class="sig-param">dy</em><span class="sig-paren">)</span><a class="headerlink" href="#plateflex.classes.RhocGrid" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">plateflex.classes.</code><code class="sig-name descname">RhocGrid</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">grid</span></em>, <em class="sig-param"><span class="n">dx</span></em>, <em class="sig-param"><span class="n">dy</span></em><span class="sig-paren">)</span><a class="headerlink" href="#plateflex.classes.RhocGrid" title="Permalink to this definition">¶</a></dt>
 <dd><p>Basic grid class of <a class="reference internal" href="getting_started.html#module-plateflex" title="plateflex"><code class="xref py py-mod docutils literal notranslate"><span class="pre">plateflex</span></code></a> for crustal density data that inherits
 from <a class="reference internal" href="#plateflex.classes.Grid" title="plateflex.classes.Grid"><code class="xref py py-class docutils literal notranslate"><span class="pre">Grid</span></code></a></p>
 <p class="rubric">Additional Attributes</p>
@@ -530,9 +530,9 @@ methods are still available, they are not useful in this context.</p>
 </div>
 <div class="section" id="zcgrid">
 <h2>ZcGrid<a class="headerlink" href="#zcgrid" title="Permalink to this headline">¶</a></h2>
-<dl class="class">
+<dl class="py class">
 <dt id="plateflex.classes.ZcGrid">
-<em class="property">class </em><code class="sig-prename descclassname">plateflex.classes.</code><code class="sig-name descname">ZcGrid</code><span class="sig-paren">(</span><em class="sig-param">grid</em>, <em class="sig-param">dx</em>, <em class="sig-param">dy</em><span class="sig-paren">)</span><a class="headerlink" href="#plateflex.classes.ZcGrid" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">plateflex.classes.</code><code class="sig-name descname">ZcGrid</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">grid</span></em>, <em class="sig-param"><span class="n">dx</span></em>, <em class="sig-param"><span class="n">dy</span></em><span class="sig-paren">)</span><a class="headerlink" href="#plateflex.classes.ZcGrid" title="Permalink to this definition">¶</a></dt>
 <dd><p>Basic grid class of <a class="reference internal" href="getting_started.html#module-plateflex" title="plateflex"><code class="xref py py-mod docutils literal notranslate"><span class="pre">plateflex</span></code></a> for crustal thickness data that inherits
 from <a class="reference internal" href="#plateflex.classes.Grid" title="plateflex.classes.Grid"><code class="xref py py-class docutils literal notranslate"><span class="pre">Grid</span></code></a></p>
 <p class="rubric">Additional Attributes</p>
@@ -572,9 +572,9 @@ which itself is a container of <a class="reference internal" href="#plateflex.cl
 </ul>
 <div class="section" id="project">
 <h2>Project<a class="headerlink" href="#project" title="Permalink to this headline">¶</a></h2>
-<dl class="class">
+<dl class="py class">
 <dt id="plateflex.classes.Project">
-<em class="property">class </em><code class="sig-prename descclassname">plateflex.classes.</code><code class="sig-name descname">Project</code><span class="sig-paren">(</span><em class="sig-param">grids=None</em><span class="sig-paren">)</span><a class="headerlink" href="#plateflex.classes.Project" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">plateflex.classes.</code><code class="sig-name descname">Project</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">grids</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#plateflex.classes.Project" title="Permalink to this definition">¶</a></dt>
 <dd><p>Container for <a class="reference internal" href="#plateflex.classes.Grid" title="plateflex.classes.Grid"><code class="xref py py-class docutils literal notranslate"><span class="pre">Grid</span></code></a> objects, with
 methods to calculate the wavelet admittance and coherence and
 estimate flexural model parameters as well as plot various results.</p>
@@ -663,9 +663,9 @@ of <a class="reference internal" href="#plateflex.classes.TopoGrid" title="plate
 <span class="go"> Calculation jackknife error on admittance and coherence</span>
 </pre></div>
 </div>
-<dl class="method">
+<dl class="py method">
 <dt id="plateflex.classes.Project.append">
-<code class="sig-name descname">append</code><span class="sig-paren">(</span><em class="sig-param">grid</em><span class="sig-paren">)</span><a class="headerlink" href="#plateflex.classes.Project.append" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">append</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">grid</span></em><span class="sig-paren">)</span><a class="headerlink" href="#plateflex.classes.Project.append" title="Permalink to this definition">¶</a></dt>
 <dd><p>Append a single <a class="reference internal" href="#plateflex.classes.Grid" title="plateflex.classes.Grid"><code class="xref py py-class docutils literal notranslate"><span class="pre">Grid</span></code></a> object to the
 current <cite>:class:`~plateflex.classes.Project</cite> object.</p>
 <dl class="field-list simple">
@@ -684,9 +684,9 @@ current <cite>:class:`~plateflex.classes.Project</cite> object.</p>
 </div>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="plateflex.classes.Project.extend">
-<code class="sig-name descname">extend</code><span class="sig-paren">(</span><em class="sig-param">grid_list</em><span class="sig-paren">)</span><a class="headerlink" href="#plateflex.classes.Project.extend" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">extend</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">grid_list</span></em><span class="sig-paren">)</span><a class="headerlink" href="#plateflex.classes.Project.extend" title="Permalink to this definition">¶</a></dt>
 <dd><p>Extend the current Project object with a list of Grid objects.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -706,7 +706,7 @@ current <cite>:class:`~plateflex.classes.Project</cite> object.</p>
 </div>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="plateflex.classes.Project.init">
 <code class="sig-name descname">init</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#plateflex.classes.Project.init" title="Permalink to this definition">¶</a></dt>
 <dd><p>Method to initialize a project. This step is required before calculating
@@ -746,7 +746,7 @@ used in the estimation part. The method further sets the water depth at each cel
 </div>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="plateflex.classes.Project.wlet_admit_coh">
 <code class="sig-name descname">wlet_admit_coh</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#plateflex.classes.Project.wlet_admit_coh" title="Permalink to this definition">¶</a></dt>
 <dd><p>This method uses the module <code class="xref py py-mod docutils literal notranslate"><span class="pre">cpwt</span></code> to calculate
@@ -774,9 +774,9 @@ them first.</p>
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="plateflex.classes.Project.plot_admit_coh">
-<code class="sig-name descname">plot_admit_coh</code><span class="sig-paren">(</span><em class="sig-param">kindex=None</em>, <em class="sig-param">mask=None</em>, <em class="sig-param">save=None</em>, <em class="sig-param">contours=None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#plateflex.classes.Project.plot_admit_coh" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">plot_admit_coh</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">kindex</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">mask</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">save</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">contours</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#plateflex.classes.Project.plot_admit_coh" title="Permalink to this definition">¶</a></dt>
 <dd><p>Method to plot grids of wavelet admittance and coherence at a given  wavenumber index.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -793,9 +793,9 @@ them first.</p>
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="plateflex.classes.Project.estimate_cell">
-<code class="sig-name descname">estimate_cell</code><span class="sig-paren">(</span><em class="sig-param">cell=(0</em>, <em class="sig-param">0)</em>, <em class="sig-param">alph=False</em>, <em class="sig-param">atype='joint'</em>, <em class="sig-param">returned=False</em><span class="sig-paren">)</span><a class="headerlink" href="#plateflex.classes.Project.estimate_cell" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">estimate_cell</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">cell</span><span class="o">=</span><span class="default_value">0, 0</span></em>, <em class="sig-param"><span class="n">alph</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">atype</span><span class="o">=</span><span class="default_value">'joint'</span></em>, <em class="sig-param"><span class="n">returned</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#plateflex.classes.Project.estimate_cell" title="Permalink to this definition">¶</a></dt>
 <dd><p>Method to estimate the parameters of the flexural model at a single cell location
 of the input grids. The type of estimation performed is set by the project attribute
 <code class="docutils literal notranslate"><span class="pre">inverse</span></code>. See <code class="xref py py-class docutils literal notranslate"><span class="pre">Project`</span></code> and <a class="reference internal" href="estimate.html#module-plateflex.estimate" title="plateflex.estimate"><code class="xref py py-mod docutils literal notranslate"><span class="pre">estimate</span></code></a>
@@ -827,9 +827,9 @@ objects if they were initialized in the project.</p>
 object.</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="plateflex.classes.Project.estimate_grid">
-<code class="sig-name descname">estimate_grid</code><span class="sig-paren">(</span><em class="sig-param">nn=10</em>, <em class="sig-param">alph=False</em>, <em class="sig-param">atype='joint'</em>, <em class="sig-param">parallel=False</em><span class="sig-paren">)</span><a class="headerlink" href="#plateflex.classes.Project.estimate_grid" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">estimate_grid</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">nn</span><span class="o">=</span><span class="default_value">10</span></em>, <em class="sig-param"><span class="n">alph</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">atype</span><span class="o">=</span><span class="default_value">'joint'</span></em>, <em class="sig-param"><span class="n">parallel</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#plateflex.classes.Project.estimate_grid" title="Permalink to this definition">¶</a></dt>
 <dd><p>Method to estimate the parameters of the flexural model at all grid point locations.
 It is also possible to decimate the number of grid cells at which to estimate parameters.</p>
 <dl class="field-list simple">
@@ -874,9 +874,9 @@ Only present if <code class="docutils literal notranslate"><span class="pre">pro
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="plateflex.classes.Project.plot_bayes_stats">
-<code class="sig-name descname">plot_bayes_stats</code><span class="sig-paren">(</span><em class="sig-param">title=None</em>, <em class="sig-param">save=None</em><span class="sig-paren">)</span><a class="headerlink" href="#plateflex.classes.Project.plot_bayes_stats" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">plot_bayes_stats</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">title</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">save</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#plateflex.classes.Project.plot_bayes_stats" title="Permalink to this definition">¶</a></dt>
 <dd><p>Method to plot the marginal and joint distributions of samples drawn from the
 posterior distribution as well as the extracted statistics. Calls the function
 <code class="xref py py-func docutils literal notranslate"><span class="pre">plot_stats()</span></code> with attributes as arguments.</p>
@@ -890,9 +890,9 @@ posterior distribution as well as the extracted statistics. Calls the function
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="plateflex.classes.Project.plot_functions">
-<code class="sig-name descname">plot_functions</code><span class="sig-paren">(</span><em class="sig-param">est='mean'</em>, <em class="sig-param">title=None</em>, <em class="sig-param">save=None</em><span class="sig-paren">)</span><a class="headerlink" href="#plateflex.classes.Project.plot_functions" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">plot_functions</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">est</span><span class="o">=</span><span class="default_value">'mean'</span></em>, <em class="sig-param"><span class="n">title</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">save</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#plateflex.classes.Project.plot_functions" title="Permalink to this definition">¶</a></dt>
 <dd><p>Method to plot observed and fitted admittance and coherence functions using
 one of <code class="docutils literal notranslate"><span class="pre">mean</span></code> or <code class="docutils literal notranslate"><span class="pre">MAP</span></code> estimates. The <code class="docutils literal notranslate"><span class="pre">MAP</span></code> is only available if the project
 attribute has been set to <code class="docutils literal notranslate"><span class="pre">project='bayes'</span></code>. Calls the function
@@ -908,9 +908,9 @@ attribute has been set to <code class="docutils literal notranslate"><span class
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="plateflex.classes.Project.plot_results">
-<code class="sig-name descname">plot_results</code><span class="sig-paren">(</span><em class="sig-param">mean_Te=False</em>, <em class="sig-param">MAP_Te=False</em>, <em class="sig-param">std_Te=False</em>, <em class="sig-param">mean_F=False</em>, <em class="sig-param">MAP_F=False</em>, <em class="sig-param">std_F=False</em>, <em class="sig-param">mean_a=False</em>, <em class="sig-param">MAP_a=False</em>, <em class="sig-param">std_a=False</em>, <em class="sig-param">chi2=False</em>, <em class="sig-param">mask=False</em>, <em class="sig-param">contours=None</em>, <em class="sig-param">save=None</em>, <em class="sig-param">filter=True</em>, <em class="sig-param">sigma=1</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#plateflex.classes.Project.plot_results" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">plot_results</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">mean_Te</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">MAP_Te</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">std_Te</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">mean_F</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">MAP_F</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">std_F</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">mean_a</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">MAP_a</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">std_a</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">chi2</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">mask</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">contours</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">save</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">filter</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">sigma</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#plateflex.classes.Project.plot_results" title="Permalink to this definition">¶</a></dt>
 <dd><p>Method to plot grids of estimated parameters with fixed labels and titles.
 To have more control over the plot rendering, use the function
 <a class="reference internal" href="plotting.html#plateflex.plotting.plot_real_grid" title="plateflex.plotting.plot_real_grid"><code class="xref py py-func docutils literal notranslate"><span class="pre">plot_real_grid()</span></code></a> with the relevant quantities and
@@ -936,9 +936,9 @@ colorbar, etc.).</p>
 </div>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="plateflex.classes.Project.save_results">
-<code class="sig-name descname">save_results</code><span class="sig-paren">(</span><em class="sig-param">mean_Te=False</em>, <em class="sig-param">MAP_Te=False</em>, <em class="sig-param">std_Te=False</em>, <em class="sig-param">mean_F=False</em>, <em class="sig-param">MAP_F=False</em>, <em class="sig-param">std_F=False</em>, <em class="sig-param">mean_a=False</em>, <em class="sig-param">MAP_a=False</em>, <em class="sig-param">std_a=False</em>, <em class="sig-param">chi2=False</em>, <em class="sig-param">mask=False</em>, <em class="sig-param">contours=None</em>, <em class="sig-param">filter=True</em>, <em class="sig-param">sigma=1</em>, <em class="sig-param">prefix='PlateFlex_'</em><span class="sig-paren">)</span><a class="headerlink" href="#plateflex.classes.Project.save_results" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">save_results</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">mean_Te</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">MAP_Te</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">std_Te</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">mean_F</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">MAP_F</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">std_F</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">mean_a</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">MAP_a</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">std_a</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">chi2</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">mask</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">contours</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">filter</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">sigma</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">prefix</span><span class="o">=</span><span class="default_value">'PlateFlex_'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#plateflex.classes.Project.save_results" title="Permalink to this definition">¶</a></dt>
 <dd><p>Method to save grids of estimated parameters with default file names.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>

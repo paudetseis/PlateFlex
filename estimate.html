@@ -21,11 +21,11 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-        <script type="text/javascript" src="_static/language_data.js"></script>
-        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
@@ -207,9 +207,9 @@ method, on the other hand, gives useful estimation statistics from sampling the 
 and can provide better insight on the trade-off between parameters. Estimates from the two methods are
 otherwise asymptotically identical (i.e., given infinite sampling of the posterior)</p>
 </div>
-<dl class="function">
+<dl class="py function">
 <dt id="plateflex.estimate.bayes_estimate_cell">
-<code class="sig-prename descclassname">plateflex.estimate.</code><code class="sig-name descname">bayes_estimate_cell</code><span class="sig-paren">(</span><em class="sig-param">k</em>, <em class="sig-param">adm</em>, <em class="sig-param">eadm</em>, <em class="sig-param">coh</em>, <em class="sig-param">ecoh</em>, <em class="sig-param">alph=False</em>, <em class="sig-param">atype='joint'</em><span class="sig-paren">)</span><a class="headerlink" href="#plateflex.estimate.bayes_estimate_cell" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">plateflex.estimate.</code><code class="sig-name descname">bayes_estimate_cell</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">k</span></em>, <em class="sig-param"><span class="n">adm</span></em>, <em class="sig-param"><span class="n">eadm</span></em>, <em class="sig-param"><span class="n">coh</span></em>, <em class="sig-param"><span class="n">ecoh</span></em>, <em class="sig-param"><span class="n">alph</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">atype</span><span class="o">=</span><span class="default_value">'joint'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#plateflex.estimate.bayes_estimate_cell" title="Permalink to this definition">¶</a></dt>
 <dd><p>Function to estimate the parameters of the flexural model at a single cell location
 of the input grids.</p>
 <dl class="field-list simple">
@@ -250,9 +250,9 @@ of the input grids.</p>
 </dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="plateflex.estimate.get_bayes_estimates">
-<code class="sig-prename descclassname">plateflex.estimate.</code><code class="sig-name descname">get_bayes_estimates</code><span class="sig-paren">(</span><em class="sig-param">summary</em>, <em class="sig-param">map_estimate</em><span class="sig-paren">)</span><a class="headerlink" href="#plateflex.estimate.get_bayes_estimates" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">plateflex.estimate.</code><code class="sig-name descname">get_bayes_estimates</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">summary</span></em>, <em class="sig-param"><span class="n">map_estimate</span></em><span class="sig-paren">)</span><a class="headerlink" href="#plateflex.estimate.get_bayes_estimates" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns digestible estimates from the Posterior distributions.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -287,9 +287,9 @@ of the input grids.</p>
 </dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="plateflex.estimate.L2_estimate_cell">
-<code class="sig-prename descclassname">plateflex.estimate.</code><code class="sig-name descname">L2_estimate_cell</code><span class="sig-paren">(</span><em class="sig-param">k</em>, <em class="sig-param">adm</em>, <em class="sig-param">eadm</em>, <em class="sig-param">coh</em>, <em class="sig-param">ecoh</em>, <em class="sig-param">alph=False</em>, <em class="sig-param">atype='joint'</em><span class="sig-paren">)</span><a class="headerlink" href="#plateflex.estimate.L2_estimate_cell" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">plateflex.estimate.</code><code class="sig-name descname">L2_estimate_cell</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">k</span></em>, <em class="sig-param"><span class="n">adm</span></em>, <em class="sig-param"><span class="n">eadm</span></em>, <em class="sig-param"><span class="n">coh</span></em>, <em class="sig-param"><span class="n">ecoh</span></em>, <em class="sig-param"><span class="n">alph</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">atype</span><span class="o">=</span><span class="default_value">'joint'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#plateflex.estimate.L2_estimate_cell" title="Permalink to this definition">¶</a></dt>
 <dd><p>Function to estimate the parameters of the flexural model at a single cell location
 of the input grids.</p>
 <dl class="field-list simple">
@@ -320,9 +320,9 @@ of the input grids.</p>
 </dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="plateflex.estimate.get_L2_estimates">
-<code class="sig-prename descclassname">plateflex.estimate.</code><code class="sig-name descname">get_L2_estimates</code><span class="sig-paren">(</span><em class="sig-param">summary</em><span class="sig-paren">)</span><a class="headerlink" href="#plateflex.estimate.get_L2_estimates" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">plateflex.estimate.</code><code class="sig-name descname">get_L2_estimates</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">summary</span></em><span class="sig-paren">)</span><a class="headerlink" href="#plateflex.estimate.get_L2_estimates" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns digestible estimates from the L2 estimates.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -346,9 +346,9 @@ of the input grids.</p>
 </dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="plateflex.estimate.real_xspec_functions">
-<code class="sig-prename descclassname">plateflex.estimate.</code><code class="sig-name descname">real_xspec_functions</code><span class="sig-paren">(</span><em class="sig-param">k</em>, <em class="sig-param">Te</em>, <em class="sig-param">F</em>, <em class="sig-param">alpha=1.5707963267948966</em><span class="sig-paren">)</span><a class="headerlink" href="#plateflex.estimate.real_xspec_functions" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">plateflex.estimate.</code><code class="sig-name descname">real_xspec_functions</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">k</span></em>, <em class="sig-param"><span class="n">Te</span></em>, <em class="sig-param"><span class="n">F</span></em>, <em class="sig-param"><span class="n">alpha</span><span class="o">=</span><span class="default_value">1.5707963267948966</span></em><span class="sig-paren">)</span><a class="headerlink" href="#plateflex.estimate.real_xspec_functions" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate analytical expressions for the real component of admittance
 and coherence functions.</p>
 <dl class="field-list simple">
