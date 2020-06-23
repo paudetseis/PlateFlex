@@ -260,6 +260,14 @@ where <code class="docutils literal notranslate"><span class="pre">plateflex</sp
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip install .
 </pre></div>
 </div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If you run into problems during installation using MacOS due to LLVM versions, make sure
+you update XCode, then try creating
+a <code class="docutils literal notranslate"><span class="pre">conda</span></code> environment where only <code class="docutils literal notranslate"><span class="pre">python</span></code> is installed, install the
+<code class="docutils literal notranslate"><span class="pre">conda</span></code>-provided gfortran package, then install <code class="docutils literal notranslate"><span class="pre">numpy</span></code> and <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">.</span></code>.
+The dependencies can be installed afterwards.</p>
+</div>
 </div>
 <div class="section" id="jupyter-notebooks">
 <h2>Jupyter Notebooks<a class="headerlink" href="#jupyter-notebooks" title="Permalink to this headline">¶</a></h2>
