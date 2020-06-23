@@ -100,7 +100,7 @@ Installing from source
 
    pip install .
 
-.. note
+.. note::
 
     If you run into problems during installation using MacOS due to LLVM versions, make sure
     you update XCode, then try creating 
