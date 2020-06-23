@@ -165,63 +165,63 @@
 !
 !     Calculates Jackknife error on admittance.
 !----------------------------------------------------------
-      SUBROUTINE jackknife_1d_admit(sxp,ss1,nx,ny,na,ns,sad)
-      IMPLICIT NONE
-      INTEGER :: nx,ny,na,ns,ix,iy,ia,ia2,i_k,is
-      REAL :: ss1(nx,ny,na,ns),p1
-      REAL :: sxp(nx,ny,na,ns),xp
-
-      REAL :: mad,dad,ad(na-1),ad2(na),sad(nx,ny,ns)
-
-      DO is=1,ns
-      DO iy=1,ny
-      DO ix=1,nx
-      DO ia=1,na
-
-        i_k=0
-        p1=0.
-        xp=(0.,0.)
-
-        DO ia2=1,na
-
-          IF (ia2==ia) THEN
-            CYCLE
-          END IF
-
-          i_k=i_k+1
-
-          p1=p1+ss1(ix,iy,ia2,is)
-          xp=xp+sxp(ix,iy,ia2,is)
-
-          IF (p1.ne.0) THEN
-            ad(i_k)=xp/p1
-          ELSE
-            ad(i_k)=0.
-          END IF
-
-        END DO
-
-        ad2(ia)=SUM(ad)/FLOAT(na-1)
-
-      END DO
-
-      mad=SUM(ad2)/FLOAT(na)
-      dad=0.
-
-      DO ia=1,na
-        dad=dad+(ad2(ia)-mad)**2
-      END DO
-
-      dad=(SQRT(dad*FLOAT(na-1)/FLOAT(na)))
-      IF (ISNAN(dad)) dad=0.
-
-      sad(ix,iy,is)=dad
-      END DO
-      END DO
-      END DO
-
-      RETURN
-      END SUBROUTINE jackknife_1d_admit
+!      SUBROUTINE jackknife_1d_admit(sxp,ss1,nx,ny,na,ns,sad)
+!      IMPLICIT NONE
+!      INTEGER :: nx,ny,na,ns,ix,iy,ia,ia2,i_k,is
+!      REAL :: ss1(nx,ny,na,ns),p1
+!      REAL :: sxp(nx,ny,na,ns),xp
+!
+!      REAL :: mad,dad,ad(na-1),ad2(na),sad(nx,ny,ns)
+!
+!      DO is=1,ns
+!      DO iy=1,ny
+!      DO ix=1,nx
+!      DO ia=1,na
+!
+!        i_k=0
+!        p1=0.
+!        xp=(0.,0.)
+!
+!        DO ia2=1,na
+!
+!          IF (ia2==ia) THEN
+!            CYCLE
+!          END IF
+!
+!          i_k=i_k+1
+!
+!          p1=p1+ss1(ix,iy,ia2,is)
+!          xp=xp+sxp(ix,iy,ia2,is)
+!
+!          IF (p1.ne.0) THEN
+!            ad(i_k)=xp/p1
+!          ELSE
+!            ad(i_k)=0.
+!          END IF
+!
+!        END DO
+!
+!        ad2(ia)=SUM(ad)/FLOAT(na-1)
+!
+!      END DO
+!
+!      mad=SUM(ad2)/FLOAT(na)
+!      dad=0.
+!
+!      DO ia=1,na
+!        dad=dad+(ad2(ia)-mad)**2
+!      END DO
+!
+!      dad=(SQRT(dad*FLOAT(na-1)/FLOAT(na)))
+!      IF (ISNAN(dad)) dad=0.
+!
+!      sad(ix,iy,is)=dad
+!      END DO
+!      END DO
+!      END DO
+!
+!      RETURN
+!      END SUBROUTINE jackknife_1d_admit
 
 
 !----------------------------------------------------------
@@ -229,65 +229,65 @@
 !
 !     !alculates Jackknife error on coherency.
 !----------------------------------------------------------
-      SUBROUTINE jackknife_1d_corr(sxp,ss1,ss2,nx,ny,na,ns,sco)
-      IMPLICIT NONE
-      INTEGER :: nx,ny,na,ns,ix,iy,ia,ia2,i_k,is
-      REAL :: ss1(nx,ny,na,ns),ss2(nx,ny,na,ns),p1,p2
-      REAL :: sxp(nx,ny,na,ns),xp
-
-      REAL :: mco,dco,co(na-1),co2(na),sco(nx,ny,ns)
-
-      DO is=1,ns
-      DO iy=1,ny
-      DO ix=1,nx
-      DO ia=1,na
-
-        i_k=0
-        p1=0.
-        p2=0.
-        xp=(0.,0.)
-
-        DO ia2=1,na
-
-          IF (ia2==ia) THEN
-            CYCLE
-          END IF
-
-          i_k=i_k+1
-
-          p1=p1+ss1(ix,iy,ia2,is)
-          p2=p2+ss2(ix,iy,ia2,is)
-          xp=xp+sxp(ix,iy,ia2,is)
-
-          IF ((p1.ne.0).and.(p2.ne.0)) THEN
-            co(i_k)=xp/SQRT(p1*p2)
-          ELSE
-            co(i_k)=0.
-          END IF
-
-        END DO
-
-        co2(ia)=SUM(co)/FLOAT(na-1)
-
-      END DO
-
-      mco=SUM(co2)/FLOAT(na)
-      dco=0.
-
-      DO ia=1,na
-        dco=dco+(co2(ia)-mco)**2
-      END DO
-
-      dco=(SQRT(dco*FLOAT(na-1)/FLOAT(na)))
-      IF (ISNAN(dco)) dco=0.
-
-      sco(ix,iy,is)=dco
-      END DO
-      END DO
-      END DO
-
-      RETURN
-      END SUBROUTINE jackknife_1d_corr
+!      SUBROUTINE jackknife_1d_corr(sxp,ss1,ss2,nx,ny,na,ns,sco)
+!      IMPLICIT NONE
+!      INTEGER :: nx,ny,na,ns,ix,iy,ia,ia2,i_k,is
+!      REAL :: ss1(nx,ny,na,ns),ss2(nx,ny,na,ns),p1,p2
+!      REAL :: sxp(nx,ny,na,ns),xp
+!
+!      REAL :: mco,dco,co(na-1),co2(na),sco(nx,ny,ns)
+!
+!      DO is=1,ns
+!      DO iy=1,ny
+!      DO ix=1,nx
+!      DO ia=1,na
+!
+!        i_k=0
+!        p1=0.
+!        p2=0.
+!        xp=(0.,0.)
+!
+!        DO ia2=1,na
+!
+!          IF (ia2==ia) THEN
+!            CYCLE
+!          END IF
+!
+!          i_k=i_k+1
+!
+!          p1=p1+ss1(ix,iy,ia2,is)
+!          p2=p2+ss2(ix,iy,ia2,is)
+!          xp=xp+sxp(ix,iy,ia2,is)
+!
+!          IF ((p1.ne.0).and.(p2.ne.0)) THEN
+!            co(i_k)=xp/SQRT(p1*p2)
+!          ELSE
+!            co(i_k)=0.
+!          END IF
+!
+!        END DO
+!
+!        co2(ia)=SUM(co)/FLOAT(na-1)
+!
+!      END DO
+!
+!      mco=SUM(co2)/FLOAT(na)
+!      dco=0.
+!
+!      DO ia=1,na
+!        dco=dco+(co2(ia)-mco)**2
+!      END DO
+!
+!      dco=(SQRT(dco*FLOAT(na-1)/FLOAT(na)))
+!      IF (ISNAN(dco)) dco=0.
+!
+!      sco(ix,iy,is)=dco
+!      END DO
+!      END DO
+!      END DO
+!
+!      RETURN
+!      END SUBROUTINE jackknife_1d_corr
 
 
 !----------------------------------------------------------

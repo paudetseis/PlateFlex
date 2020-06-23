@@ -22,7 +22,7 @@
 !
 !===========================================================================
 !
-! MODULE conf)flex
+! MODULE conf_flex
 !
 ! Configuration module defining global variables used in modules to 
 ! interface with the Python codes.

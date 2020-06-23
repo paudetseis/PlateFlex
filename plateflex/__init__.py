@@ -100,6 +100,14 @@ Installing from source
 
    pip install .
 
+.. note
+
+    If you run into problems during installation using MacOS due to LLVM versions, make sure
+    you update XCode, then try creating 
+    a ``conda`` environment where only ``python`` is installed, install the
+    ``conda``-provided gfortran package, then install ``numpy`` and ``pip install .``.
+    The dependencies can be installed afterwards.
+
 Jupyter Notebooks
 +++++++++++++++++
 
