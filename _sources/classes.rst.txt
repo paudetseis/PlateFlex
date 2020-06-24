@@ -80,6 +80,7 @@ which itself is a container of :class:`~plateflex.classes.Grid` objects
 - Plot the statistics of the estimated parameters at single grid cell
 - Plot the observed and predicted admittance and coherence functions at single grid cell
 - Plot the final grids of model parameters
+- Save the results to disk as .csv files
 
 Project
 --------
