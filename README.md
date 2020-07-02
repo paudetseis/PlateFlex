@@ -61,3 +61,6 @@ from a spherical wavelet analysis of gravity and topography. Physics of the Eart
 
 - Kirby, J.F. (2014). Estimation of the effective elastic thickness of the lithosphere using inverse spectral methods: The state of the art. Tectonophysics, 631, 87-116. https://doi.org/10.1016/j.tecto.2014.04.021
 
+#### Use cases
+
+- Lu, Z., Li, C.-F., Zhu, S., and Audet, P. (2020). Effective elastic thickness over the Chinese mainland and surroundings estimated from a joint inversion of Bouguer admittance and coherence. Physics of the Earth and Planetary Interiors, 301, 106456, https://doi.org/10.1016/j.pepi.2020.106456
