@@ -227,7 +227,9 @@ SOFTWARE.</p>
 <li><p><code class="docutils literal notranslate"><span class="pre">pymc3</span></code> (<a class="reference external" href="https://docs.pymc.io">https://docs.pymc.io</a>)</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">seaborn</span></code> (<a class="reference external" href="https://seaborn.pydata.org">https://seaborn.pydata.org</a>)</p></li>
 </ul>
-<p>The following package is useful to draw outline of land areas:</p>
+<p>The following package is useful to draw outline of land areas, and is required
+if there are NaNs in the data set (which will be interpolated over using
+a <code class="docutils literal notranslate"><span class="pre">scikit-image</span></code> function):</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">scikit-image</span></code> (<a class="reference external" href="https://scikit-image.org">https://scikit-image.org</a>)</p></li>
 </ul>
@@ -236,8 +238,9 @@ SOFTWARE.</p>
 <div class="section" id="conda-environment">
 <h2>Conda environment<a class="headerlink" href="#conda-environment" title="Permalink to this headline">¶</a></h2>
 <p>We recommend creating a custom <code class="docutils literal notranslate"><span class="pre">conda</span></code> environment
-where <code class="docutils literal notranslate"><span class="pre">plateflex</span></code> can be installed along with its dependencies.</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>conda create -n pflex <span class="nv">python</span><span class="o">=</span><span class="m">3</span>.7 numpy pymc3 matplotlib seaborn scikit-image -c conda-forge
+where <code class="docutils literal notranslate"><span class="pre">plateflex</span></code> can be installed along with its dependencies. This will ensure
+that all packages are compatible.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>conda create -n pflex <span class="nv">python</span><span class="o">=</span><span class="m">3</span>.8 fortran-compiler numpy pymc3 matplotlib seaborn scikit-image -c conda-forge
 </pre></div>
 </div>
 <p>Activate the newly created environment:</p>
@@ -260,13 +263,13 @@ where <code class="docutils literal notranslate"><span class="pre">plateflex</sp
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip install .
 </pre></div>
 </div>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>If you run into problems during installation using MacOS due to LLVM versions, make sure
-you update XCode, then try creating
-a <code class="docutils literal notranslate"><span class="pre">conda</span></code> environment where only <code class="docutils literal notranslate"><span class="pre">python</span></code> is installed, install the
-<code class="docutils literal notranslate"><span class="pre">conda</span></code>-provided gfortran package, then install <code class="docutils literal notranslate"><span class="pre">numpy</span></code> and <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">.</span></code>.
-The dependencies can be installed afterwards.</p>
+<p># .. note:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#     If you run into problems during installation using MacOS due to LLVM versions, make sure</span>
+<span class="c1">#     you update XCode, then try creating</span>
+<span class="c1">#     a ``conda`` environment where only ``python`` is installed, install the</span>
+<span class="c1">#     ``conda``-provided gfortran package, then install ``numpy`` and ``pip install .``.</span>
+<span class="c1">#     The dependencies can be installed afterwards.</span>
+</pre></div>
 </div>
 </div>
 <div class="section" id="jupyter-notebooks">
