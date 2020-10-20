@@ -13,14 +13,18 @@ def find_version(*paths):
     raise RuntimeError("Unable to find version string.")
 
 
+# ext_cpwt = Extension(name='plateflex.cpwt',
+#                      sources=['src/cpwt/cpwt.f90', 'src/cpwt/cpwt_sub.f90'],
+#                      libraries=['gfortran'],
+#                      library_dirs=get_info('gfortran').get('library_dirs'))
+# ext_flex = Extension(name='plateflex.flex',
+#                      sources=['src/flex/flex.f90'],
+#                      libraries=['gfortran'],
+#                      library_dirs=get_info('gfortran').get('library_dirs'))
 ext_cpwt = Extension(name='plateflex.cpwt',
-                     sources=['src/cpwt/cpwt.f90', 'src/cpwt/cpwt_sub.f90'],
-                     libraries=['gfortran'],
-                     library_dirs=get_info('gfortran').get('library_dirs'))
+                     sources=['src/cpwt/cpwt.f90', 'src/cpwt/cpwt_sub.f90'])
 ext_flex = Extension(name='plateflex.flex',
-                     sources=['src/flex/flex.f90'],
-                     libraries=['gfortran'],
-                     library_dirs=get_info('gfortran').get('library_dirs'))
+                     sources=['src/flex/flex.f90'])
 
 setup(
     name='plateflex',
@@ -36,7 +40,8 @@ setup(
         'Programming Language :: Fortran',
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
-        'Programming Language :: Python :: 3.7'],
+        'Programming Language :: Python :: 3.7',
+        'Programming Language :: Python :: 3.8'],
     install_requires=['numpy>=1.15', 'pymc3', 'matplotlib', 'seaborn'],
     python_requires='>=3.5',
     tests_require=['pytest'],
