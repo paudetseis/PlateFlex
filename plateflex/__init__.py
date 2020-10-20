@@ -62,7 +62,9 @@ Also, the following packages are required:
 - ``pymc3`` (https://docs.pymc.io)
 - ``seaborn`` (https://seaborn.pydata.org)
 
-The following package is useful to draw outline of land areas:
+The following package is useful to draw outline of land areas, and is required
+if there are NaNs in the data set (which will be interpolated over using
+a ``scikit-image`` function):
 
 - ``scikit-image`` (https://scikit-image.org)
 
@@ -72,11 +74,12 @@ Conda environment
 +++++++++++++++++
 
 We recommend creating a custom ``conda`` environment
-where ``plateflex`` can be installed along with its dependencies.
+where ``plateflex`` can be installed along with its dependencies. This will ensure
+that all packages are compatible.
 
 .. sourcecode:: bash
 
-   conda create -n pflex python=3.7 numpy pymc3 matplotlib seaborn scikit-image -c conda-forge
+   conda create -n pflex python=3.8 fortran-compiler numpy pymc3 matplotlib seaborn scikit-image -c conda-forge
 
 Activate the newly created environment:
 
@@ -100,13 +103,13 @@ Installing from source
 
    pip install .
 
-.. note::
+# .. note::
 
-    If you run into problems during installation using MacOS due to LLVM versions, make sure
-    you update XCode, then try creating 
-    a ``conda`` environment where only ``python`` is installed, install the
-    ``conda``-provided gfortran package, then install ``numpy`` and ``pip install .``.
-    The dependencies can be installed afterwards.
+#     If you run into problems during installation using MacOS due to LLVM versions, make sure
+#     you update XCode, then try creating 
+#     a ``conda`` environment where only ``python`` is installed, install the
+#     ``conda``-provided gfortran package, then install ``numpy`` and ``pip install .``.
+#     The dependencies can be installed afterwards.
 
 Jupyter Notebooks
 +++++++++++++++++
