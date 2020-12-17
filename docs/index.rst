@@ -35,8 +35,8 @@ publication-quality plots using the `seaborn` package.
 
 .. image:: https://zenodo.org/badge/206867590.svg
    :target: https://zenodo.org/badge/latestdoi/206867590
-.. image:: https://travis-ci.com/paudetseis/PlateFlex.svg?branch=master
-   :target: https://travis-ci.com/paudetseis/PlateFlex
+.. image:: https://github.com/paudetseis/PlateFlex/workflows/Build/badge.svg
+    :target: https://github.com/paudetseis/PlateFlex/actions
 
 
 .. toctree::

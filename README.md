@@ -27,7 +27,7 @@ notebooks bundled with this package. The software contains methods to make
 publication-quality plots using the `seaborn` package.
 
 [![DOI](https://zenodo.org/badge/206867590.svg)](https://zenodo.org/badge/latestdoi/206867590)
-[![Build Status](https://travis-ci.com/paudetseis/PlateFlex.svg?branch=master)](https://travis-ci.com/paudetseis/PlateFlex)
+[![build](https://github.com/paudetseis/PlateFlex/workflows/Build/badge.svg)](https://github.com/paudetseis/PlateFlex/actions)
 
 Installation, Usage, API documentation and Jupyter Notebooks are described at 
 https://paudetseis.github.io/PlateFlex/
