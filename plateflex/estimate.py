@@ -199,20 +199,20 @@ def get_bayes_estimates(summary, map_estimate):
         if index == 'Te':
             mean_te = row['mean']
             std_te = row['sd']
-            C2_5_te = row['hpd_2.5']
-            C97_5_te = row['hpd_97.5']
+            C2_5_te = row['hdi_3%']
+            C97_5_te = row['hdi_97%']
             MAP_te = np.float(map_estimate['Te'])
         elif index == 'F':
             mean_F = row['mean']
             std_F = row['sd']
-            C2_5_F = row['hpd_2.5']
-            C97_5_F = row['hpd_97.5']
+            C2_5_F = row['hdi_3%']
+            C97_5_F = row['hdi_97%']
             MAP_F = np.float(map_estimate['F'])
         elif index == 'alpha':
             mean_a = row['mean']
             std_a = row['sd']
-            C2_5_a = row['hpd_2.5']
-            C97_5_a = row['hpd_97.5']
+            C2_5_a = row['hdi_3%']
+            C97_5_a = row['hdi_97%']
             MAP_a = np.float(map_estimate['alpha'])
 
     if mean_a is not None:
