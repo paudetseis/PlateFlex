@@ -192,7 +192,7 @@ def get_bayes_estimates(summary, map_estimate):
 
     """
 
-    mean_a = None
+    mean_a = None 
 
     # Go through all estimates
     for index, row in summary.iterrows():
