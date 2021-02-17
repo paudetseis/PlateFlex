@@ -13,3 +13,6 @@ build
 dist
 
 _build
+_images
+_sources
+_static

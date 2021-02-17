@@ -81,6 +81,11 @@ that all packages are compatible.
 
    conda create -n pflex python=3.8 fortran-compiler numpy pymc3 matplotlib seaborn scikit-image -c conda-forge
 
+.. Note::
+
+    PlateFlex currently only works with `pymc3==3.10` (to be updated to 3.11 shortly). Therefore, use
+    `pymc3=3.10` when creating the new environment.
+
 Activate the newly created environment:
 
 .. sourcecode:: bash
