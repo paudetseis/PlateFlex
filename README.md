@@ -64,3 +64,5 @@ from a spherical wavelet analysis of gravity and topography. Physics of the Eart
 #### Use cases
 
 - Lu, Z., Li, C.-F., Zhu, S., and Audet, P. (2020). Effective elastic thickness over the Chinese mainland and surroundings estimated from a joint inversion of Bouguer admittance and coherence. Physics of the Earth and Planetary Interiors, 301, 106456, https://doi.org/10.1016/j.pepi.2020.106456
+
+- Lu, Z., Audet, P., Li, C.-F., Zhu, S., and Wu, Z. (2021). What Controls Effective Elastic Thickness of the Lithosphere in the Pacific Ocean? Journal of Geophysical Research, https://doi.org/10.1029/2020JB021074
