@@ -13,6 +13,8 @@
   
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
 
   
   
@@ -29,6 +31,7 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
         <script src="_static/doctools.js"></script>
@@ -87,12 +90,12 @@
               
             
             
-              <p class="caption"><span class="caption-text">Quick Links</span></p>
+              <p class="caption" role="heading"><span class="caption-text">Quick Links</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="links.html">GitHub Repository</a></li>
 <li class="toctree-l1"><a class="reference internal" href="links.html#references">References</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Getting Started</span></p>
+<p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Licence</a></li>
 <li class="toctree-l1"><a class="reference internal" href="#installation">Installation</a><ul>
@@ -110,7 +113,7 @@
 </ul>
 </li>
 </ul>
-<p class="caption"><span class="caption-text">API Documentation</span></p>
+<p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="conf.html">Configuration module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="classes.html">Grid Classes</a></li>
@@ -118,7 +121,7 @@
 <li class="toctree-l1"><a class="reference internal" href="estimate.html">Estimate functions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="plotting.html">Plotting functions</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Jupyter Notebooks</span></p>
+<p class="caption" role="heading"><span class="caption-text">Jupyter Notebooks</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/paudetseis/PlateFlex/blob/master/plateflex/examples/Notebooks/Ex1_making_grids.ipynb">Example 1: Making grids</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/paudetseis/PlateFlex/blob/master/plateflex/examples/Notebooks/Ex2_wavelet_analysis.ipynb">Example 2: Wavelet analysis</a></li>
@@ -251,6 +254,11 @@ that all packages are compatible.</p>
 <p>PlateFlex currently only works with <cite>pymc3==3.10</cite> (to be updated to 3.11 shortly). Therefore, use
 <cite>pymc3=3.10</cite> when creating the new environment.</p>
 </div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Windows users should consult <a class="reference external" href="https://github.com/pymc-devs/pymc3/wiki/Installation-Guide-(Windows)">this guide</a>
+to properly install <cite>pymc3</cite> and dependencies.</p>
+</div>
 <p>Activate the newly created environment:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>conda activate pflex
 </pre></div>
@@ -300,8 +308,8 @@ jupyter notebook
 <div class="section" id="global-variables">
 <h1>Global Variables<a class="headerlink" href="#global-variables" title="Permalink to this headline">¶</a></h1>
 <dl class="py function">
-<dt id="plateflex.get_conf_cpwt">
-<code class="sig-prename descclassname"><span class="pre">plateflex.</span></code><code class="sig-name descname"><span class="pre">get_conf_cpwt</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#plateflex.get_conf_cpwt" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="plateflex.get_conf_cpwt">
+<span class="sig-prename descclassname"><span class="pre">plateflex.</span></span><span class="sig-name descname"><span class="pre">get_conf_cpwt</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#plateflex.get_conf_cpwt" title="Permalink to this definition">¶</a></dt>
 <dd><p>Print global variable that controls the spatio-spectral resolution of the
 wavelet transform</p>
 <p class="rubric">Example</p>
@@ -315,8 +323,8 @@ wavelet transform</p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="plateflex.get_conf_flex">
-<code class="sig-prename descclassname"><span class="pre">plateflex.</span></code><code class="sig-name descname"><span class="pre">get_conf_flex</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#plateflex.get_conf_flex" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="plateflex.get_conf_flex">
+<span class="sig-prename descclassname"><span class="pre">plateflex.</span></span><span class="sig-name descname"><span class="pre">get_conf_flex</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#plateflex.get_conf_flex" title="Permalink to this definition">¶</a></dt>
 <dd><p>Print global variables that control the setup of the flexural isostatic model</p>
 <p class="rubric">Example</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">plateflex</span>

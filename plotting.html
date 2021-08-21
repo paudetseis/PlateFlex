@@ -13,6 +13,8 @@
   
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
 
   
   
@@ -29,6 +31,7 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
         <script src="_static/doctools.js"></script>
@@ -86,19 +89,19 @@
               
             
             
-              <p class="caption"><span class="caption-text">Quick Links</span></p>
+              <p class="caption" role="heading"><span class="caption-text">Quick Links</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="links.html">GitHub Repository</a></li>
 <li class="toctree-l1"><a class="reference internal" href="links.html#references">References</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Getting Started</span></p>
+<p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="getting_started.html">Licence</a></li>
 <li class="toctree-l1"><a class="reference internal" href="getting_started.html#installation">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="getting_started.html#global-variables">Global Variables</a></li>
 <li class="toctree-l1"><a class="reference internal" href="getting_started.html#making-gridded-data">Making gridded data</a></li>
 </ul>
-<p class="caption"><span class="caption-text">API Documentation</span></p>
+<p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="conf.html">Configuration module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="classes.html">Grid Classes</a></li>
@@ -106,7 +109,7 @@
 <li class="toctree-l1"><a class="reference internal" href="estimate.html">Estimate functions</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Plotting functions</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Jupyter Notebooks</span></p>
+<p class="caption" role="heading"><span class="caption-text">Jupyter Notebooks</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/paudetseis/PlateFlex/blob/master/plateflex/examples/Notebooks/Ex1_making_grids.ipynb">Example 1: Making grids</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/paudetseis/PlateFlex/blob/master/plateflex/examples/Notebooks/Ex2_wavelet_analysis.ipynb">Example 2: Wavelet analysis</a></li>
@@ -191,8 +194,8 @@
 <li><p><a class="reference internal" href="#plateflex.plotting.plot_functions" title="plateflex.plotting.plot_functions"><code class="xref py py-func docutils literal notranslate"><span class="pre">plot_functions()</span></code></a></p></li>
 </ul>
 <dl class="py function">
-<dt id="plateflex.plotting.plot_real_grid">
-<code class="sig-prename descclassname"><span class="pre">plateflex.plotting.</span></code><code class="sig-name descname"><span class="pre">plot_real_grid</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">grid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">log</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mask</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clabel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">contours</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#plateflex.plotting.plot_real_grid" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="plateflex.plotting.plot_real_grid">
+<span class="sig-prename descclassname"><span class="pre">plateflex.plotting.</span></span><span class="sig-name descname"><span class="pre">plot_real_grid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">grid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">log</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mask</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clabel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">contours</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#plateflex.plotting.plot_real_grid" title="Permalink to this definition">¶</a></dt>
 <dd><p>Plot 2D image of any real-valued 2D array, used in several context throughout
 <a class="reference internal" href="getting_started.html#module-plateflex" title="plateflex"><code class="xref py py-mod docutils literal notranslate"><span class="pre">plateflex</span></code></a>. For example, it can be used to plot the input grids of topography
 or gravity anomalies, the real or imaginary values of the wavelet transform at a
@@ -215,8 +218,8 @@ results.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="plateflex.plotting.plot_bayes_stats">
-<code class="sig-prename descclassname"><span class="pre">plateflex.plotting.</span></code><code class="sig-name descname"><span class="pre">plot_bayes_stats</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">trace</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">summary</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">map_estimate</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#plateflex.plotting.plot_bayes_stats" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="plateflex.plotting.plot_bayes_stats">
+<span class="sig-prename descclassname"><span class="pre">plateflex.plotting.</span></span><span class="sig-name descname"><span class="pre">plot_bayes_stats</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">trace</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">summary</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">map_estimate</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#plateflex.plotting.plot_bayes_stats" title="Permalink to this definition">¶</a></dt>
 <dd><p>Extract results from variables <code class="docutils literal notranslate"><span class="pre">trace</span></code>, <code class="docutils literal notranslate"><span class="pre">summary</span></code> and <code class="docutils literal notranslate"><span class="pre">map_estimate</span></code> to
 plot marginal and joint posterior distributions. Automatically determines
 how to plot results from those variables.</p>
@@ -234,8 +237,8 @@ how to plot results from those variables.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="plateflex.plotting.plot_functions">
-<code class="sig-prename descclassname"><span class="pre">plateflex.plotting.</span></code><code class="sig-name descname"><span class="pre">plot_functions</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">k</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">adm</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eadm</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">coh</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ecoh</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">padm</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pcoh</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#plateflex.plotting.plot_functions" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="plateflex.plotting.plot_functions">
+<span class="sig-prename descclassname"><span class="pre">plateflex.plotting.</span></span><span class="sig-name descname"><span class="pre">plot_functions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">k</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">adm</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eadm</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">coh</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ecoh</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">padm</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pcoh</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#plateflex.plotting.plot_functions" title="Permalink to this definition">¶</a></dt>
 <dd><p>Function to plot observed and predicted (<code class="docutils literal notranslate"><span class="pre">None</span></code> by default)
 admittance and coherence functions. Both admittance and coherence
 are plotted regardless of method to estimate the model paramters.</p>
