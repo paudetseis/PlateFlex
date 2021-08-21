@@ -86,6 +86,11 @@ that all packages are compatible.
     PlateFlex currently only works with `pymc3==3.10` (to be updated to 3.11 shortly). Therefore, use
     `pymc3=3.10` when creating the new environment.
 
+.. Note::
+    
+    Windows users should consult `this guide <https://github.com/pymc-devs/pymc3/wiki/Installation-Guide-(Windows)>`_
+    to properly install `pymc3` and dependencies.
+
 Activate the newly created environment:
 
 .. sourcecode:: bash
