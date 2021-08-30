@@ -6,7 +6,7 @@ Documentation
 =============
 
 The flexure of elastic plates is a central concept in the theory of plate tectonics,
-where the Earth's lithosphere (crust and uppermost mantle) reacts to applied loads 
+where the Earth's lithosphere (crust and uppermost mantle) reacts to transverse applied loads 
 by bending, a process referred to as flexural isostasy. Estimating the *effective* 
 elastic thickness (:math:`T_e`) of the lithosphere (thickness 
 of an equivalent ideal elastic plate) gives important clues on the rheology of the 
