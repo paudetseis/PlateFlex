@@ -72,8 +72,7 @@ that all packages are compatible.
 
 .. Note::
     In theory, you could use your own fortran compiler. However, to ensure a proper installation,
-    it is recommended to install `gfortran=9.3.0` in the `pflex` environment under MacOS,
-    or `gfortran=8.5.0` under Linux.
+    it is recommended to install `gfortran=9.3.0` in the `pflex` environment under MacOS.
 
 MacOS
 =====
@@ -85,14 +84,19 @@ MacOS
 .. Note::
     In MacOS, the package `theano-pymc` used by `pymc3` throws a compilation error 
     when using `project.inverse = 'bayes'` and `project.estimate_cell(cell)`.
-    We will attempt to resolve this in version 0.1.2.
+    We will attempt to resolve this in a future version.
 
 Linux Ubuntu
 ============
 
 .. sourcecode:: bash
 
-   conda create -n pflex -c conda-forge "python=3.8" "setuptools<60" fortran-compiler "numpy<1.22" "pymc3=3.10.0" seaborn scikit-image
+   conda create -n pflex -c conda-forge "python=3.8" "setuptools<60" "fortran-compiler=1.2.0" "numpy<1.22" "pymc3=3.10.0" seaborn scikit-image
+
+.. Note::
+    In Linux, this environment appears to be in conflict, and we haven't found
+    a solution without a major overhaul of the source code. We will attempt this in a future
+    version.
 
 Activate the newly created environment:
 
