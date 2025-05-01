@@ -23,7 +23,7 @@ jobs:
     strategy:
       matrix:
         os: ["ubuntu-latest"]
-        python-version: ["3.8"]
+        python-version: ["3.10"]
 
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
@@ -39,7 +39,7 @@ jobs:
         run: |
           conda list
           conda config --add channels conda-forge
-          conda install "gfortran=8.5.0" "setuptools<60" "numpy<1.22" "pymc3=3.10.0" seaborn scikit-image
+          conda install fortran-compiler "setuptools<60" "numpy<1.22" "pymc3=3.10.0" seaborn scikit-image
           pip install -e .
 
       # - name: Tests
@@ -52,7 +52,7 @@ jobs:
       #     bash <(curl -s https://codecov.io/bash)
 
       - name: Make docs
-        if: matrix.python-version == '3.8' 
+        if: matrix.python-version == '3.10' 
         shell: bash -l {0}
         run: |
           cd docs
@@ -63,7 +63,7 @@ jobs:
           cd ..
 
       - name: Deploy 🚀
-        if: matrix.python-version == '3.8' 
+        if: matrix.python-version == '3.10' 
         uses: JamesIves/github-pages-deploy-action@3.7.1
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
