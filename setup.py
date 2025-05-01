@@ -39,7 +39,7 @@ setup(
         'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.8',
         ],
-    install_requires=['numpy<1.22', 'pymc3=3.10.0', 'seaborn', 'scikit-image'],
+    install_requires=['numpy<1.22', 'pymc3==3.10.0', 'seaborn', 'scikit-image'],
     python_requires='>=3.8',
     tests_require=['pytest'],
     ext_modules=[ext_cpwt, ext_flex],

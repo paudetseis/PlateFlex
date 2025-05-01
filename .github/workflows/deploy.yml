@@ -37,7 +37,7 @@ jobs:
       - name: Install
         shell: bash -l {0}
         run: |
-          conda info
+          conda list
           conda config --add channels conda-forge
           conda install fortran-compiler "setuptools<60" "numpy<1.22" "pymc3=3.10.0" seaborn scikit-image
           pip install -e .
