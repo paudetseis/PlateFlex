@@ -54,18 +54,11 @@ Installation
 Dependencies
 ++++++++++++
 
-The current version was developed using **Python3.7** \
-Also, the following packages are required:
-
-- ``gfortran`` (https://gcc.gnu.org/wiki/GFortran) (or any Fortran compiler)
-- ``numpy`` (https://numpy.org)
-- ``pymc3`` (https://docs.pymc.io)
-- ``seaborn`` (https://seaborn.pydata.org)
-
-The following package is useful to draw outline of land areas, and is required
-if there are NaNs in the data set (which will be interpolated over using
-a ``scikit-image`` function):
-
+- ``gfortran=9.3.0`` 
+- ``numpy<1.22`` 
+- ``pymc3=3.10.0`` 
+- ``seaborn``
+- ``setuptools<60`` 
 - ``scikit-image`` (https://scikit-image.org)
 
 See below for full installation details. 
@@ -79,17 +72,16 @@ that all packages are compatible.
 
 .. sourcecode:: bash
 
-   conda create -n pflex python=3.8 fortran-compiler numpy pymc3 matplotlib seaborn scikit-image -c conda-forge
+   conda create -n pflex -c conda-forge "python=3.8" "setuptools<60" "gfortran=9.3.0" "numpy<1.22" "pymc3=3.10.0" seaborn scikit-image
 
 .. Note::
-
-    PlateFlex currently only works with `pymc3==3.10` (to be updated to 3.11 shortly). Therefore, use
-    `pymc3=3.10` when creating the new environment.
+    In theory, you could use your own fortran compiler. However, to ensure a proper installation,
+    it is recommended to install `gfortran=9.3.0` in the `pflex` environment.
 
 .. Note::
-    
-    Windows users should consult `this guide <https://github.com/pymc-devs/pymc3/wiki/Installation-Guide-(Windows)>`_
-    to properly install `pymc3` and dependencies.
+    In MacOS, the package `theano-pymc` used by `pymc3` throws a compilation error 
+    when using `project.inverse = 'bayes'` and `project.estimate_cell(cell)`.
+    We will attempt to resolve this in version 0.1.2.
 
 Activate the newly created environment:
 
@@ -97,21 +89,14 @@ Activate the newly created environment:
 
    conda activate pflex
 
-Installing from source
-++++++++++++++++++++++
+Installing development branch from GitHub
++++++++++++++++++++++++++++++++++++++++++
 
-- Clone the repository:
-
-.. sourcecode:: bash
-
-   git clone https://github.com/paudetseis/PlateFlex.git
-   cd PlateFlex
-
-- Install using pip:
+Install the latest version from the GitHub repository with the following command:
 
 .. sourcecode:: bash
 
-   pip install .
+    pip install plateflex@git+https://github.com/paudetseis/plateflex
 
 Jupyter Notebooks
 +++++++++++++++++
@@ -147,7 +132,7 @@ You can then save the notebooks as ``python`` scripts and you should be good to 
 
 """
 
-__version__ = '0.1.0'
+__version__ = '0.1.1'
 
 __author__ = 'Pascal Audet'
 
