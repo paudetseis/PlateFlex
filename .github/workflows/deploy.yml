@@ -22,7 +22,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: ["ubuntu-latest"]
+        os: ["macos-latest"]
         python-version: ["3.8"]
 
     steps:
@@ -39,7 +39,7 @@ jobs:
         run: |
           conda list
           conda config --add channels conda-forge
-          conda install fortran-compiler "setuptools<60" "numpy<1.22" "pymc3=3.10.0" seaborn scikit-image
+          conda install "gfortran=9.3.0" "setuptools<60" "numpy<1.22" "pymc3=3.10.0" seaborn scikit-image
           pip install -e .
 
       # - name: Tests
@@ -63,7 +63,7 @@ jobs:
           cd ..
 
       - name: Deploy 🚀
-        if: matrix.python-version == '3.10' 
+        if: matrix.python-version == '3.8' 
         uses: JamesIves/github-pages-deploy-action@3.7.1
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
