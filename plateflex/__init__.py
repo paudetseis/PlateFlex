@@ -73,7 +73,7 @@ that all packages are compatible.
 .. Note::
     In theory, you could use your own fortran compiler. However, to ensure a proper installation,
     it is recommended to install `gfortran=9.3.0` in the `pflex` environment under MacOS,
-    or simply specify `fortran-compiler` under Linux.
+    or `gfortran=8.5.0` under Linux.
 
 MacOS
 =====
