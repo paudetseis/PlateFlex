@@ -54,7 +54,7 @@ Installation
 Dependencies
 ++++++++++++
 
-- ``gfortran=9.3.0`` 
+- A fortran compiler
 - ``numpy<1.22`` 
 - ``pymc3=3.10.0`` 
 - ``seaborn``
@@ -70,18 +70,29 @@ We recommend creating a custom ``conda`` environment
 where ``plateflex`` can be installed along with its dependencies. This will ensure
 that all packages are compatible.
 
+.. Note::
+    In theory, you could use your own fortran compiler. However, to ensure a proper installation,
+    it is recommended to install `gfortran=9.3.0` in the `pflex` environment under MacOS,
+    or simply specify `fortran-compiler` under Linux.
+
+MacOS
+=====
+
 .. sourcecode:: bash
 
    conda create -n pflex -c conda-forge "python=3.8" "setuptools<60" "gfortran=9.3.0" "numpy<1.22" "pymc3=3.10.0" seaborn scikit-image
 
 .. Note::
-    In theory, you could use your own fortran compiler. However, to ensure a proper installation,
-    it is recommended to install `gfortran=9.3.0` in the `pflex` environment.
-
-.. Note::
     In MacOS, the package `theano-pymc` used by `pymc3` throws a compilation error 
     when using `project.inverse = 'bayes'` and `project.estimate_cell(cell)`.
     We will attempt to resolve this in version 0.1.2.
+
+Linux Ubuntu
+============
+
+.. sourcecode:: bash
+
+   conda create -n pflex -c conda-forge "python=3.8" "setuptools<60" fortran-compiler "numpy<1.22" "pymc3=3.10.0" seaborn scikit-image
 
 Activate the newly created environment:
 

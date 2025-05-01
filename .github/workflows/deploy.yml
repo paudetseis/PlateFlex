@@ -39,7 +39,7 @@ jobs:
         run: |
           conda list
           conda config --add channels conda-forge
-          conda install fortran-compiler "setuptools<60" "numpy<1.22" "pymc3=3.10.0" seaborn scikit-image
+          conda install "gfortran=9.4.0" "setuptools<60" "numpy<1.22" "pymc3=3.10.0" seaborn scikit-image
           pip install -e .
 
       # - name: Tests
