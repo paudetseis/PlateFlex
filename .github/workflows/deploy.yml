@@ -22,7 +22,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: ["ubuntu-latest", "macos-latest"]
+        os: ["ubuntu-latest"]
         python-version: ["3.12"]
 
     steps:
@@ -39,7 +39,7 @@ jobs:
         run: |
           conda list
           conda config --add channels conda-forge
-          conda install fortran-compiler numpy pymc seaborn scikit-image
+          conda install fortran-compiler pymc seaborn scikit-image
           pip install .
 
       # - name: Tests

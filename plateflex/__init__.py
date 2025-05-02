@@ -75,7 +75,7 @@ that all packages are compatible.
 
 .. sourcecode:: bash
 
-   conda create -n pflex -c conda-forge python=3.12 fortran-compiler numpy pymc seaborn scikit-image
+   conda create -n pflex -c conda-forge python=3.12 fortran-compiler pymc seaborn scikit-image
 
 Activate the newly created environment:
 
