@@ -61,6 +61,8 @@
 
       MODULE flex
 
+      IMPLICIT NONE
+
       CONTAINS
 
 !---------------------------------------------------------------------------
@@ -73,10 +75,9 @@
 
       USE conf_flex
 
-      IMPLICIT NONE
-
-      INTEGER :: ns
-      DOUBLE PRECISION :: psi(ns), filt(ns)
+      INTEGER, intent(in) :: ns
+      DOUBLE PRECISION, intent(in) :: psi(ns)
+      DOUBLE PRECISION, intent(out) :: filt(ns)
 
         filt = -((rhoc-rhof)/(rhom-rhoc))*(1. + psi/(rhom-rhoc)/g)**(-1.)
 
@@ -94,10 +95,9 @@
 
       USE conf_flex
 
-      IMPLICIT NONE
-
-      INTEGER :: ns
-      DOUBLE PRECISION :: psi(ns), filt(ns)
+      INTEGER, intent(in) :: ns
+      DOUBLE PRECISION, intent(in) :: psi(ns)
+      DOUBLE PRECISION, intent(out) :: filt(ns)
 
         filt = -((rhoc-rhof)/(rhom-rhoc))*(1. + psi/(rhoc-rhof)/g)
 
@@ -116,11 +116,9 @@
 
       USE conf_flex
 
-      IMPLICIT NONE
-
-      INTEGER :: ns
-      DOUBLE PRECISION :: theta(ns), phi(ns), k(ns), A
-      DOUBLE PRECISION :: mu_h(ns), mu_w(ns), nu_h(ns), nu_w(ns)
+      INTEGER, intent(in) :: ns
+      DOUBLE PRECISION, intent(in) :: theta(ns), phi(ns), k(ns), A
+      DOUBLE PRECISION, intent(out) :: mu_h(ns), mu_w(ns), nu_h(ns), nu_w(ns)
 
         mu_h = 1./(1.-theta)
         mu_w = 1./(phi-1.)
@@ -144,15 +142,14 @@
 
       USE conf_flex
 
-      IMPLICIT NONE
-
-      INTEGER :: ns
-      DOUBLE PRECISION :: mu_h(ns), mu_w(ns), nu_h(ns), nu_w(ns)
-      DOUBLE PRECISION :: r, ff, F, alpha
-      DOUBLE COMPLEX :: hg(ns)
+      INTEGER, intent(in) :: ns
+      DOUBLE PRECISION, intent(in) :: mu_h(ns), mu_w(ns), nu_h(ns), nu_w(ns)
+      DOUBLE PRECISION, intent(in) :: F, alpha
+      DOUBLE PRECISION :: r, ff
+      DOUBLE COMPLEX :: hg(ns), cohy(ns)
       DOUBLE PRECISION :: hh(ns), gg(ns)
-      DOUBLE COMPLEX :: admit(ns), cohy(ns)
-      DOUBLE PRECISION :: coh(ns)
+      DOUBLE COMPLEX, intent(out) :: admit(ns)
+      DOUBLE PRECISION, intent(out) :: coh(ns)
       DOUBLE COMPLEX :: j
 
         j = DCMPLX(0.,1.)
@@ -182,16 +179,15 @@
 
       USE conf_flex
 
-      IMPLICIT NONE
-
-      INTEGER :: ns
-      DOUBLE PRECISION :: k(ns), Te, F, alpha
+      INTEGER, intent(in) :: ns
+      DOUBLE PRECISION, intent(in) :: k(ns), Te, F, alpha
+      DOUBLE PRECISION :: Te_meters
 
       DOUBLE PRECISION :: A, D, psi(ns), theta(ns), phi(ns)
       DOUBLE PRECISION :: mu_h(ns), mu_w(ns), nu_h(ns), nu_w(ns)
       DOUBLE COMPLEX :: cadmit(ns)
 
-      DOUBLE PRECISION :: admit(ns), coh(ns)
+      DOUBLE PRECISION, intent(out) :: admit(ns), coh(ns)
 !
 ! Python bindings
 !
@@ -215,10 +211,10 @@
         END IF
 
         ! Te in meters
-        Te = Te*1.e3
+        Te_meters = Te*1.e3
 
         ! Flexural rigidity
-        D = Em*Te**3/12./(1.-nu**2.)
+        D = Em*Te_meters**3/12./(1.-nu**2.)
 
         ! Isostatic function
         psi = D*k**4.
