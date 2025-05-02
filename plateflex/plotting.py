@@ -110,7 +110,7 @@ def plot_bayes_stats(trace, summary, map_estimate, title=None, save=None):
     plot marginal and joint posterior distributions. Automatically determines
     how to plot results from those variables.
 
-    :type trace: :class:`~pymc3.backends.base.MultiTrace`
+    :type trace: :class:`~pymc.backends.base.MultiTrace`
     :param trace: Posterior samples from the MCMC chains
     :type summary: :class:`~pandas.core.frame.DataFrame`
     :param summary: Summary statistics from Posterior distributions
@@ -128,19 +128,12 @@ def plot_bayes_stats(trace, summary, map_estimate, title=None, save=None):
     # Extract results from summary and map_estimate
     results = estimate.get_bayes_estimates(summary, map_estimate)
 
-    # Collect keys in trace object
-    keys = []
-    for var in trace.varnames:
-        if var[-1] == '_':
-            continue
-        keys.append(var)
+    # Collect pymc chains as ``pandas.DataFrame`` object
+    data = trace.posterior.to_dataframe()
+    keys = data.keys()
 
     # This means we searched for Te and F only
     if len(keys) == 2:
-
-        # Collect pymc chains as ``pandas.DataFrame`` object
-        data = np.array([trace['Te'], trace['F']]).transpose()
-        data = pd.DataFrame(data, columns=['Te (km)', 'F'])
 
         # Plot marginal and joint distributions as histograms and
         # kernel density functions
@@ -181,10 +174,6 @@ def plot_bayes_stats(trace, summary, map_estimate, title=None, save=None):
 
     # This means we searched for Te, F and alpha
     elif len(keys) == 3:
-
-        # Collect pymc chains as ``pandas.DataFrame`` object
-        data = np.array([trace['Te'], trace['F'], trace['alpha']]).transpose()
-        data = pd.DataFrame(data, columns=['Te (km)', 'F', r'$\alpha$'])
 
         # Plot marginal and joint distributions as histograms and
         # kernel density functions
