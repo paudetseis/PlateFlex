@@ -37,7 +37,7 @@ This :mod:`~plateflex` module contains the following functions:
   Calculate the analytical admittance and coherence functions. 
 
 Internal functions are also available to define predicted admittance and coherence data
-with ``theano`` decorators to be incorporated as ``pymc`` variables. These functions are
+with ``pytensor`` decorators to be incorporated as ``pymc`` variables. These functions are
 used within :class:`~plateflex.classes.Project` methods as with :mod:`~plateflex.plotting`
 functions.
 
@@ -53,11 +53,11 @@ functions.
 
 # -*- coding: utf-8 -*-
 import numpy as np
-import pymc3 as pm
+import pymc as pm
 from plateflex.flex import flex
 from plateflex import conf as cf
-from theano.compile.ops import as_op
-import theano.tensor as tt
+from pytensor.compile.ops import as_op
+import pytensor.tensor as pt
 from scipy.optimize import curve_fit
 import pandas as pd
 
@@ -84,7 +84,7 @@ def bayes_estimate_cell(k, adm, eadm, coh, ecoh, alph=False, atype='joint'):
 
     :return:
         (tuple): Tuple containing:
-            * ``trace`` : :class:`~pymc3.backends.base.MultiTrace`
+            * ``trace`` : :class:`~pymc.backends.base.MultiTrace`
                 Posterior samples from the MCMC chains
             * ``summary`` : :class:`~pandas.core.frame.DataFrame`
                 Summary statistics from Posterior distributions
@@ -141,7 +141,7 @@ def bayes_estimate_cell(k, adm, eadm, coh, ecoh, alph=False, atype='joint'):
             # Define array of observations and expected values as
             # concatenated arrays
             joint = np.array([adm, coh]).flatten()
-            joint_exp = tt.flatten(tt.concatenate([admit_exp, coh_exp]))
+            joint_exp = pt.flatten(pt.concatenate([admit_exp, coh_exp]))
 
             # Uncertainty as observed distribution
             sigma = pm.Normal('sigma', mu=ejoint, sigma=1.,
@@ -201,19 +201,19 @@ def get_bayes_estimates(summary, map_estimate):
             std_te = row['sd']
             C2_5_te = row['hdi_3%']
             C97_5_te = row['hdi_97%']
-            MAP_te = np.float(map_estimate['Te'])
+            MAP_te = float(map_estimate['Te'])
         elif index == 'F':
             mean_F = row['mean']
             std_F = row['sd']
             C2_5_F = row['hdi_3%']
             C97_5_F = row['hdi_97%']
-            MAP_F = np.float(map_estimate['F'])
+            MAP_F = float(map_estimate['F'])
         elif index == 'alpha':
             mean_a = row['mean']
             std_a = row['sd']
             C2_5_a = row['hdi_3%']
             C97_5_a = row['hdi_97%']
-            MAP_a = np.float(map_estimate['alpha'])
+            MAP_a = float(map_estimate['alpha'])
 
     if mean_a is not None:
         return mean_te, std_te, C2_5_te, C97_5_te, MAP_te, \
@@ -474,8 +474,8 @@ def real_xspec_functions(k, Te, F, alpha=np.pi/2.):
     return admittance, coherence
 
 
-@as_op(itypes=[tt.dvector, tt.dscalar, tt.dscalar],
-       otypes=[tt.dvector, tt.dvector])
+@as_op(itypes=[pt.dvector, pt.dscalar, pt.dscalar],
+       otypes=[pt.dvector, pt.dvector])
 def real_xspec_functions_noalpha(k, Te, F):
     """
     Calculate analytical expressions for the real component of admittance, 
@@ -487,8 +487,8 @@ def real_xspec_functions_noalpha(k, Te, F):
     return adm, coh
 
 
-@as_op(itypes=[tt.dvector, tt.dscalar, tt.dscalar, tt.dscalar],
-       otypes=[tt.dvector, tt.dvector])
+@as_op(itypes=[pt.dvector, pt.dscalar, pt.dscalar, pt.dscalar],
+       otypes=[pt.dvector, pt.dvector])
 def real_xspec_functions_alpha(k, Te, F, alpha):
     """
     Calculate analytical expressions for the real component of admittance, 

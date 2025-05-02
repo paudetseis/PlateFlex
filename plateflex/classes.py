@@ -1395,10 +1395,10 @@ class Project(object):
 
                 # Extract MAP from map_estimate object
                 elif est == 'MAP':
-                    mte = np.float(self.map_estimate['Te'])
-                    mF = np.float(self.map_estimate['F'])
+                    mte = float(self.map_estimate['Te'])
+                    mF = float(self.map_estimate['F'])
                     if 'alpha' in self.map_estimate:
-                        ma = np.float(self.map_estimate['alpha'])
+                        ma = float(self.map_estimate['alpha'])
                 else:
                     raise(
                         Exception(
@@ -1473,7 +1473,7 @@ class Project(object):
             new_mask = None
 
         if contours is not None:
-            contours = np.array(contours)/self.nn
+            contours = [cnt/self.nn for cnt in contours]
 
         if mean_Te:
             if filter:
