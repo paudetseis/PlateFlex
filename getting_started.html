@@ -1,95 +1,48 @@
 
 
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="./">
 <head>
-  <meta charset="utf-8" />
-  
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  
-  <title>Licence &mdash; plateflex 0.1.0 documentation</title>
-  
+  <title>Licence &mdash; plateflex 0.1.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
 
   
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-
-  
-  
-
-  
-  
-
-  
-
-  
-  <!--[if lt IE 9]>
-    <script src="_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-        <script src="_static/jquery.js"></script>
-        <script src="_static/underscore.js"></script>
-        <script src="_static/doctools.js"></script>
-    
-    <script type="text/javascript" src="_static/js/theme.js"></script>
-
-    
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=a58bc63e"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Configuration module" href="conf.html" />
     <link rel="prev" title="GitHub Repository" href="links.html" /> 
 </head>
 
-<body class="wy-body-for-nav">
-
-   
+<body class="wy-body-for-nav"> 
   <div class="wy-grid-for-nav">
-    
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-          
 
           
-            <a href="index.html" class="icon icon-home"> plateflex
           
-
-          
-            
-            <img src="_static/logo_plateflex_small.png" class="logo" alt="Logo"/>
-          
+          <a href="index.html" class="icon icon-home">
+            plateflex
+              <img src="_static/logo_plateflex_small.png" class="logo" alt="Logo"/>
           </a>
-
-          
-            
-            
-          
-
-          
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
 </div>
-
-          
-        </div>
-
-        
-        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-          
-            
-            
-              
-            
-            
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Quick Links</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="links.html">GitHub Repository</a></li>
@@ -100,12 +53,20 @@
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Licence</a></li>
 <li class="toctree-l1"><a class="reference internal" href="#installation">Installation</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#dependencies">Dependencies</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#conda-environment">Conda environment</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#installing-from-source">Installing from source</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#conda-environment">Conda environment</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#macos">MacOS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#linux-ubuntu">Linux Ubuntu</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#installing-development-branch-from-github">Installing development branch from GitHub</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#jupyter-notebooks">Jupyter Notebooks</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="#global-variables">Global Variables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#global-variables">Global Variables</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#plateflex.get_conf_cpwt"><code class="docutils literal notranslate"><span class="pre">get_conf_cpwt()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#plateflex.get_conf_flex"><code class="docutils literal notranslate"><span class="pre">get_conf_flex()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="#making-gridded-data">Making gridded data</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#id1">WGM2012</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#id2">GEBCO</a></li>
@@ -132,79 +93,38 @@
 <li class="toctree-l1"><a class="reference external" href="https://github.com/paudetseis/PlateFlex/blob/master/plateflex/examples/Notebooks/Ex7_full_suite_NW_Pacific.ipynb">Example 7: Full suite for NW Pacific</a></li>
 </ul>
 
-            
-          
         </div>
-        
       </div>
     </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
-
-      
-      <nav class="wy-nav-top" aria-label="top navigation">
-        
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="index.html">plateflex</a>
-        
       </nav>
 
-
       <div class="wy-nav-content">
-        
         <div class="rst-content">
-        
-          
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div role="navigation" aria-label="breadcrumbs navigation">
-
+          <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-    
-      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-        
-      <li>Licence</li>
-    
-    
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Licence</li>
       <li class="wy-breadcrumbs-aside">
-        
-          
             <a href="_sources/getting_started.rst.txt" rel="nofollow"> View page source</a>
-          
-        
       </li>
-    
   </ul>
-
-  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
-            
-  <div class="figure align-center">
+             
+  <figure class="align-center">
 <img alt="_images/plateflex_logo.png" src="_images/plateflex_logo.png" />
-</div>
-<span class="target" id="module-plateflex"></span><p>PlateFlex is a software for estimating the effective elastic thickness of the lithosphere
+</figure>
+<p id="module-plateflex">PlateFlex is a software for estimating the effective elastic thickness of the lithosphere
 from the inversion of flexural isostatic response functions calculated from a wavelet
 analysis of gravity and topography data.</p>
-<div class="section" id="licence">
-<h1>Licence<a class="headerlink" href="#licence" title="Permalink to this headline">¶</a></h1>
+<section id="licence">
+<h1>Licence<a class="headerlink" href="#licence" title="Link to this heading"></a></h1>
 <p>Copyright 2019 Pascal Audet</p>
 <p>Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the “Software”), to deal
@@ -221,99 +141,101 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.</p>
-</div>
-<div class="section" id="installation">
-<h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="dependencies">
-<h2>Dependencies<a class="headerlink" href="#dependencies" title="Permalink to this headline">¶</a></h2>
-<p>The current version was developed using <strong>Python3.7</strong> Also, the following packages are required:</p>
+</section>
+<section id="installation">
+<h1>Installation<a class="headerlink" href="#installation" title="Link to this heading"></a></h1>
+<section id="dependencies">
+<h2>Dependencies<a class="headerlink" href="#dependencies" title="Link to this heading"></a></h2>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">gfortran</span></code> (<a class="reference external" href="https://gcc.gnu.org/wiki/GFortran">https://gcc.gnu.org/wiki/GFortran</a>) (or any Fortran compiler)</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">numpy</span></code> (<a class="reference external" href="https://numpy.org">https://numpy.org</a>)</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">pymc3</span></code> (<a class="reference external" href="https://docs.pymc.io">https://docs.pymc.io</a>)</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">seaborn</span></code> (<a class="reference external" href="https://seaborn.pydata.org">https://seaborn.pydata.org</a>)</p></li>
-</ul>
-<p>The following package is useful to draw outline of land areas, and is required
-if there are NaNs in the data set (which will be interpolated over using
-a <code class="docutils literal notranslate"><span class="pre">scikit-image</span></code> function):</p>
-<ul class="simple">
+<li><p>A fortran compiler</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">numpy&lt;1.22</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pymc3=3.10.0</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">seaborn</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">setuptools&lt;60</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">scikit-image</span></code> (<a class="reference external" href="https://scikit-image.org">https://scikit-image.org</a>)</p></li>
 </ul>
 <p>See below for full installation details.</p>
-</div>
-<div class="section" id="conda-environment">
-<h2>Conda environment<a class="headerlink" href="#conda-environment" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="conda-environment">
+<h2>Conda environment<a class="headerlink" href="#conda-environment" title="Link to this heading"></a></h2>
 <p>We recommend creating a custom <code class="docutils literal notranslate"><span class="pre">conda</span></code> environment
 where <code class="docutils literal notranslate"><span class="pre">plateflex</span></code> can be installed along with its dependencies. This will ensure
 that all packages are compatible.</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>conda create -n pflex <span class="nv">python</span><span class="o">=</span><span class="m">3</span>.8 fortran-compiler numpy pymc3 matplotlib seaborn scikit-image -c conda-forge
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>In theory, you could use your own fortran compiler. However, to ensure a proper installation,
+it is recommended to install <cite>gfortran=9.3.0</cite> in the <cite>pflex</cite> environment under MacOS.</p>
+</div>
+<section id="macos">
+<h3>MacOS<a class="headerlink" href="#macos" title="Link to this heading"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>conda<span class="w"> </span>create<span class="w"> </span>-n<span class="w"> </span>pflex<span class="w"> </span>-c<span class="w"> </span>conda-forge<span class="w"> </span><span class="s2">&quot;python=3.8&quot;</span><span class="w"> </span><span class="s2">&quot;setuptools&lt;60&quot;</span><span class="w"> </span><span class="s2">&quot;gfortran=9.3.0&quot;</span><span class="w"> </span><span class="s2">&quot;numpy&lt;1.22&quot;</span><span class="w"> </span><span class="s2">&quot;pymc3=3.10.0&quot;</span><span class="w"> </span>seaborn<span class="w"> </span>scikit-image
 </pre></div>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>PlateFlex currently only works with <cite>pymc3==3.10</cite> (to be updated to 3.11 shortly). Therefore, use
-<cite>pymc3=3.10</cite> when creating the new environment.</p>
+<p>In MacOS, the package <cite>theano-pymc</cite> used by <cite>pymc3</cite> throws a compilation error
+when using <cite>project.inverse = ‘bayes’</cite> and <cite>project.estimate_cell(cell)</cite>.
+We will attempt to resolve this in a future version.</p>
+</div>
+</section>
+<section id="linux-ubuntu">
+<h3>Linux Ubuntu<a class="headerlink" href="#linux-ubuntu" title="Link to this heading"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>conda<span class="w"> </span>create<span class="w"> </span>-n<span class="w"> </span>pflex<span class="w"> </span>-c<span class="w"> </span>conda-forge<span class="w"> </span><span class="s2">&quot;python=3.8&quot;</span><span class="w"> </span><span class="s2">&quot;setuptools&lt;60&quot;</span><span class="w"> </span><span class="s2">&quot;fortran-compiler=1.2.0&quot;</span><span class="w"> </span><span class="s2">&quot;numpy&lt;1.22&quot;</span><span class="w"> </span><span class="s2">&quot;pymc3=3.10.0&quot;</span><span class="w"> </span>seaborn<span class="w"> </span>scikit-image
+</pre></div>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>Windows users should consult <a class="reference external" href="https://github.com/pymc-devs/pymc3/wiki/Installation-Guide-(Windows)">this guide</a>
-to properly install <cite>pymc3</cite> and dependencies.</p>
+<p>In Linux, this environment appears to be in conflict, and we haven’t found
+a solution without a major overhaul of the source code. We will attempt this in a future
+version.</p>
 </div>
 <p>Activate the newly created environment:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>conda activate pflex
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>conda<span class="w"> </span>activate<span class="w"> </span>pflex
 </pre></div>
 </div>
-</div>
-<div class="section" id="installing-from-source">
-<h2>Installing from source<a class="headerlink" href="#installing-from-source" title="Permalink to this headline">¶</a></h2>
-<ul class="simple">
-<li><p>Clone the repository:</p></li>
-</ul>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git clone https://github.com/paudetseis/PlateFlex.git
-<span class="nb">cd</span> PlateFlex
+</section>
+</section>
+<section id="installing-development-branch-from-github">
+<h2>Installing development branch from GitHub<a class="headerlink" href="#installing-development-branch-from-github" title="Link to this heading"></a></h2>
+<p>Install the latest version from the GitHub repository with the following command:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>plateflex@git+https://github.com/paudetseis/plateflex
 </pre></div>
 </div>
-<ul class="simple">
-<li><p>Install using pip:</p></li>
-</ul>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip install .
-</pre></div>
-</div>
-</div>
-<div class="section" id="jupyter-notebooks">
-<h2>Jupyter Notebooks<a class="headerlink" href="#jupyter-notebooks" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="jupyter-notebooks">
+<h2>Jupyter Notebooks<a class="headerlink" href="#jupyter-notebooks" title="Link to this heading"></a></h2>
 <p>Included in this package is a set of Jupyter Notebooks, which give examples on how to create <code class="docutils literal notranslate"><span class="pre">Grid</span></code> objects and estimate
 the flexural parameters over whole grids. The Notebooks describe how to produce pulication quality results that closely
 match those published in Audet (2014) and Kirby and Swain. (2009) for North America, as well
 as those of Kalnins and Watts (2009) for the NW Pacific.</p>
 <p>After installing <code class="docutils literal notranslate"><span class="pre">plateflex</span></code>, these notebooks can be locally installed (i.e., in a local folder <code class="docutils literal notranslate"><span class="pre">Examples</span></code>)
 from the package by running:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">plateflex</span> <span class="kn">import</span> <span class="n">doc</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">plateflex</span><span class="w"> </span><span class="kn">import</span> <span class="n">doc</span>
 <span class="n">doc</span><span class="o">.</span><span class="n">install_doc</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s1">&#39;Examples&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>To run the notebooks you will have to further install <code class="docutils literal notranslate"><span class="pre">jupyter</span></code>:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>conda install jupyter
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>conda<span class="w"> </span>install<span class="w"> </span>jupyter
 </pre></div>
 </div>
 <p>Then:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>unzip data.zip
-<span class="nb">cd</span> Examples
-jupyter notebook
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>unzip<span class="w"> </span>data.zip
+<span class="nb">cd</span><span class="w"> </span>Examples
+jupyter<span class="w"> </span>notebook
 </pre></div>
 </div>
 <p>You can then save the notebooks as <code class="docutils literal notranslate"><span class="pre">python</span></code> scripts and you should be good to go!</p>
-</div>
-</div>
-<div class="section" id="global-variables">
-<h1>Global Variables<a class="headerlink" href="#global-variables" title="Permalink to this headline">¶</a></h1>
+</section>
+</section>
+<section id="global-variables">
+<h1>Global Variables<a class="headerlink" href="#global-variables" title="Link to this heading"></a></h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="plateflex.get_conf_cpwt">
-<span class="sig-prename descclassname"><span class="pre">plateflex.</span></span><span class="sig-name descname"><span class="pre">get_conf_cpwt</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#plateflex.get_conf_cpwt" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">plateflex.</span></span><span class="sig-name descname"><span class="pre">get_conf_cpwt</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#plateflex.get_conf_cpwt" title="Link to this definition"></a></dt>
 <dd><p>Print global variable that controls the spatio-spectral resolution of the
 wavelet transform</p>
 <p class="rubric">Example</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">plateflex</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">plateflex</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">plateflex</span><span class="o">.</span><span class="n">get_conf_cpwt</span><span class="p">()</span>
 <span class="go">Wavelet parameter used in plateflex.cpwt:</span>
 <span class="go">-----------------------------------------</span>
@@ -324,10 +246,10 @@ wavelet transform</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="plateflex.get_conf_flex">
-<span class="sig-prename descclassname"><span class="pre">plateflex.</span></span><span class="sig-name descname"><span class="pre">get_conf_flex</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#plateflex.get_conf_flex" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">plateflex.</span></span><span class="sig-name descname"><span class="pre">get_conf_flex</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#plateflex.get_conf_flex" title="Link to this definition"></a></dt>
 <dd><p>Print global variables that control the setup of the flexural isostatic model</p>
 <p class="rubric">Example</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">plateflex</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">plateflex</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">plateflex</span><span class="o">.</span><span class="n">get_conf_flex</span><span class="p">()</span>
 <span class="go">Global model parameters currently in use by plateflex:</span>
 <span class="go">------------------------------------------------------</span>
@@ -343,9 +265,9 @@ wavelet transform</p>
 </div>
 </dd></dl>
 
-</div>
-<div class="section" id="making-gridded-data">
-<h1>Making gridded data<a class="headerlink" href="#making-gridded-data" title="Permalink to this headline">¶</a></h1>
+</section>
+<section id="making-gridded-data">
+<h1>Making gridded data<a class="headerlink" href="#making-gridded-data" title="Link to this heading"></a></h1>
 <p>Packaged with this software is a set of topography, gravity and crustal structure data that
 are easily imported into the <code class="docutils literal notranslate"><span class="pre">PlateFlex</span></code> package. Those data sets have been produced by
 processing global grids of data from the
@@ -362,8 +284,8 @@ Since those models are all defined using a different registration and grid sampl
 we use GMT to manipulate the grids and produce consistent data sets to use with
 <code class="docutils literal notranslate"><span class="pre">PlateFlex</span></code>. We used GMT 5.4.1 in the following examples. These commands should be
 copied to a bash script file and executed from the terminal.</p>
-<div class="section" id="id1">
-<h2>WGM2012<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<section id="id1">
+<h2>WGM2012<a class="headerlink" href="#id1" title="Link to this heading"></a></h2>
 <p>These models are defined at a resolution of 2’ with a gridline registration.</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set region and projection for North America. Use a transverse mercator</span>
 <span class="c1"># with a central meridian of -95 degrees to minimize high-latitude distortions.</span>
@@ -372,23 +294,23 @@ copied to a bash script file and executed from the terminal.</p>
 
 <span class="c1"># Make map of region</span>
 <span class="nv">ps</span><span class="o">=</span>Bouguer_NA.ps
-gmt grdimage WGM2012_Bouguer_ponc_2min.grd <span class="nv">$reg</span> <span class="nv">$proj</span> -K -P <span class="se">\</span>
-            -B10WSne -CPALET_WGM_Bouguer_Global.cpt -X1.5i -Y1.25i &gt; <span class="nv">$ps</span>
-gmt psscale -CPALET_WGM_Bouguer_Global.cpt -DJRM+o0.25i/0+e+mc -R -J -O &gt;&gt; <span class="nv">$ps</span>
+gmt<span class="w"> </span>grdimage<span class="w"> </span>WGM2012_Bouguer_ponc_2min.grd<span class="w"> </span><span class="nv">$reg</span><span class="w"> </span><span class="nv">$proj</span><span class="w"> </span>-K<span class="w"> </span>-P<span class="w"> </span><span class="se">\</span>
+<span class="w">            </span>-B10WSne<span class="w"> </span>-CPALET_WGM_Bouguer_Global.cpt<span class="w"> </span>-X1.5i<span class="w"> </span>-Y1.25i<span class="w"> </span>&gt;<span class="w"> </span><span class="nv">$ps</span>
+gmt<span class="w"> </span>psscale<span class="w"> </span>-CPALET_WGM_Bouguer_Global.cpt<span class="w"> </span>-DJRM+o0.25i/0+e+mc<span class="w"> </span>-R<span class="w"> </span>-J<span class="w"> </span>-O<span class="w"> </span>&gt;&gt;<span class="w"> </span><span class="nv">$ps</span>
 
 <span class="c1"># Project onto Cartesian grid with sampling interval of 20 km</span>
-gmt grdproject WGM2012_Bouguer_ponc_2min.grd -GBouguer_NA.grd <span class="nv">$proj</span> <span class="nv">$reg</span> -D20 -Fk
+gmt<span class="w"> </span>grdproject<span class="w"> </span>WGM2012_Bouguer_ponc_2min.grd<span class="w"> </span>-GBouguer_NA.grd<span class="w"> </span><span class="nv">$proj</span><span class="w"> </span><span class="nv">$reg</span><span class="w"> </span>-D20<span class="w"> </span>-Fk
 
 <span class="c1"># Save grid information as header for use with PlateFlex software</span>
-gmt grdinfo -C Bouguer_NA.grd &gt; header.txt
-sed <span class="s1">&#39;s/^/# /g&#39;</span> header.txt &gt; Bouguer_NA.xyz
-gmt grd2xyz Bouguer_NA.grd &gt;&gt; Bouguer_NA.xyz
+gmt<span class="w"> </span>grdinfo<span class="w"> </span>-C<span class="w"> </span>Bouguer_NA.grd<span class="w"> </span>&gt;<span class="w"> </span>header.txt
+sed<span class="w"> </span><span class="s1">&#39;s/^/# /g&#39;</span><span class="w"> </span>header.txt<span class="w"> </span>&gt;<span class="w"> </span>Bouguer_NA.xyz
+gmt<span class="w"> </span>grd2xyz<span class="w"> </span>Bouguer_NA.grd<span class="w"> </span>&gt;&gt;<span class="w"> </span>Bouguer_NA.xyz
 </pre></div>
 </div>
 <p>You can repeat these commands for the corresponding Free-air anomaly and Topography data.</p>
-</div>
-<div class="section" id="id2">
-<h2>GEBCO<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="id2">
+<h2>GEBCO<a class="headerlink" href="#id2" title="Link to this heading"></a></h2>
 <p>This model is defined on a very fine grid (15” resolution) with a gridline registration.
 We first resample the grid onto a 2’ grid.</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set region and projection for NW Pacific - here we use a regular</span>
@@ -397,26 +319,26 @@ We first resample the grid onto a 2’ grid.</p>
 <span class="nv">proj</span><span class="o">=</span>-JM3i
 
 <span class="c1"># Resample on a 2&#39; grid</span>
-gmt grdsample GEBCO_data/GEBCO_2019.nc -GGEBCO_resampled_2m.grd -I2m -Rd
+gmt<span class="w"> </span>grdsample<span class="w"> </span>GEBCO_data/GEBCO_2019.nc<span class="w"> </span>-GGEBCO_resampled_2m.grd<span class="w"> </span>-I2m<span class="w"> </span>-Rd
 
 <span class="c1"># Make map of region</span>
 <span class="nv">ps</span><span class="o">=</span>Bathy_PAC.ps
-gmt grdimage GEBCO_resampled_2m.grd <span class="nv">$reg</span> <span class="nv">$proj</span> -K -P <span class="se">\</span>
-            -B10WSne -CPALET_WGM_ETOPO1_Global.cpt -X1.5i -Y1.25i &gt; <span class="nv">$ps</span>
-gmt psscale -CPALET_WGM_ETOPO1_Global.cpt -DJRM+o0.25i/0+e+mc -R -J -O &gt;&gt; <span class="nv">$ps</span>
+gmt<span class="w"> </span>grdimage<span class="w"> </span>GEBCO_resampled_2m.grd<span class="w"> </span><span class="nv">$reg</span><span class="w"> </span><span class="nv">$proj</span><span class="w"> </span>-K<span class="w"> </span>-P<span class="w"> </span><span class="se">\</span>
+<span class="w">            </span>-B10WSne<span class="w"> </span>-CPALET_WGM_ETOPO1_Global.cpt<span class="w"> </span>-X1.5i<span class="w"> </span>-Y1.25i<span class="w"> </span>&gt;<span class="w"> </span><span class="nv">$ps</span>
+gmt<span class="w"> </span>psscale<span class="w"> </span>-CPALET_WGM_ETOPO1_Global.cpt<span class="w"> </span>-DJRM+o0.25i/0+e+mc<span class="w"> </span>-R<span class="w"> </span>-J<span class="w"> </span>-O<span class="w"> </span>&gt;&gt;<span class="w"> </span><span class="nv">$ps</span>
 
 <span class="c1"># Project onto Cartesian grid</span>
-gmt grdproject GEBCO_resampled_2m.grd -GBathy_PAC.grd <span class="nv">$proj</span> <span class="nv">$reg</span> -D10 -Fk
+gmt<span class="w"> </span>grdproject<span class="w"> </span>GEBCO_resampled_2m.grd<span class="w"> </span>-GBathy_PAC.grd<span class="w"> </span><span class="nv">$proj</span><span class="w"> </span><span class="nv">$reg</span><span class="w"> </span>-D10<span class="w"> </span>-Fk
 
 <span class="c1"># Dump grid onto ASCII file with header</span>
-gmt grdinfo -C Bathy_PAC.grd &gt; header.txt
-sed <span class="s1">&#39;s/^/# /g&#39;</span> header.txt &gt; Bathy_PAC.xyz
-gmt grd2xyz Bathy_PAC.grd &gt;&gt; Bathy_PAC.xyz
+gmt<span class="w"> </span>grdinfo<span class="w"> </span>-C<span class="w"> </span>Bathy_PAC.grd<span class="w"> </span>&gt;<span class="w"> </span>header.txt
+sed<span class="w"> </span><span class="s1">&#39;s/^/# /g&#39;</span><span class="w"> </span>header.txt<span class="w"> </span>&gt;<span class="w"> </span>Bathy_PAC.xyz
+gmt<span class="w"> </span>grd2xyz<span class="w"> </span>Bathy_PAC.grd<span class="w"> </span>&gt;&gt;<span class="w"> </span>Bathy_PAC.xyz
 </pre></div>
 </div>
-</div>
-<div class="section" id="id3">
-<h2>CRUST1.0<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="id3">
+<h2>CRUST1.0<a class="headerlink" href="#id3" title="Link to this heading"></a></h2>
 <p>The CRUST1.0 model is defined on a very coarse grid (1 degree). This is not a
 problem as we only use those fields in the inversion step, and not in the
 calculation of the wavelet transform. However, we still require an identical
@@ -435,76 +357,59 @@ and rename the output file xyz-ro6 to something like crustal_density.xyz
 <span class="nv">proj</span><span class="o">=</span>-JM3i
 
 <span class="c1"># Create 2 .grd file from the ASCII data</span>
-gmt xyz2grd crsthk.xyz -Gcrust_thickness_1deg.grd -Rd -I1 -T
+gmt<span class="w"> </span>xyz2grd<span class="w"> </span>crsthk.xyz<span class="w"> </span>-Gcrust_thickness_1deg.grd<span class="w"> </span>-Rd<span class="w"> </span>-I1<span class="w"> </span>-T
 
 <span class="c1"># Resample on a 2&#39; grid using spline interpolation</span>
-gmt grdsample crust_thickness_1deg.grd -Gcrust_thickness_2m.grd -nb -Rg -I2m
+gmt<span class="w"> </span>grdsample<span class="w"> </span>crust_thickness_1deg.grd<span class="w"> </span>-Gcrust_thickness_2m.grd<span class="w"> </span>-nb<span class="w"> </span>-Rg<span class="w"> </span>-I2m
 
 <span class="c1"># Make map of region</span>
 <span class="nv">ps</span><span class="o">=</span>Crust_thick_PAC.ps
-gmt makecpt -Chaxby -T5/30/1 &gt; crust.cpt
-gmt grdimage crust_thickness_2m.grd <span class="nv">$reg</span> <span class="nv">$proj</span> -K -P <span class="se">\</span>
-            -B10WSne -Ccrust.cpt -X1.5i -Y1.25i &gt; <span class="nv">$ps</span>
-gmt psscale -Ccrust.cpt -DJRM+o0.25i/0+e+mc -R -J -O &gt;&gt; <span class="nv">$ps</span>
+gmt<span class="w"> </span>makecpt<span class="w"> </span>-Chaxby<span class="w"> </span>-T5/30/1<span class="w"> </span>&gt;<span class="w"> </span>crust.cpt
+gmt<span class="w"> </span>grdimage<span class="w"> </span>crust_thickness_2m.grd<span class="w"> </span><span class="nv">$reg</span><span class="w"> </span><span class="nv">$proj</span><span class="w"> </span>-K<span class="w"> </span>-P<span class="w"> </span><span class="se">\</span>
+<span class="w">            </span>-B10WSne<span class="w"> </span>-Ccrust.cpt<span class="w"> </span>-X1.5i<span class="w"> </span>-Y1.25i<span class="w"> </span>&gt;<span class="w"> </span><span class="nv">$ps</span>
+gmt<span class="w"> </span>psscale<span class="w"> </span>-Ccrust.cpt<span class="w"> </span>-DJRM+o0.25i/0+e+mc<span class="w"> </span>-R<span class="w"> </span>-J<span class="w"> </span>-O<span class="w"> </span>&gt;&gt;<span class="w"> </span><span class="nv">$ps</span>
 
 <span class="c1"># Project onto Cartesian grid</span>
-gmt grdproject crust_thickness_2m.grd -Gcrust_thickness.grd <span class="nv">$proj</span> <span class="nv">$reg</span> -D10 -Fk
+gmt<span class="w"> </span>grdproject<span class="w"> </span>crust_thickness_2m.grd<span class="w"> </span>-Gcrust_thickness.grd<span class="w"> </span><span class="nv">$proj</span><span class="w"> </span><span class="nv">$reg</span><span class="w"> </span>-D10<span class="w"> </span>-Fk
 
 <span class="c1"># Dump grid onto ASCII file with header</span>
-gmt grdinfo -C crust_thickness.grd &gt; header.txt
-sed <span class="s1">&#39;s/^/# /g&#39;</span> header.txt &gt; crustal_thickness_PAC.xyz
-gmt grd2xyz crust_thickness.grd &gt;&gt; crustal_thickness_PAC.xyz
+gmt<span class="w"> </span>grdinfo<span class="w"> </span>-C<span class="w"> </span>crust_thickness.grd<span class="w"> </span>&gt;<span class="w"> </span>header.txt
+sed<span class="w"> </span><span class="s1">&#39;s/^/# /g&#39;</span><span class="w"> </span>header.txt<span class="w"> </span>&gt;<span class="w"> </span>crustal_thickness_PAC.xyz
+gmt<span class="w"> </span>grd2xyz<span class="w"> </span>crust_thickness.grd<span class="w"> </span>&gt;&gt;<span class="w"> </span>crustal_thickness_PAC.xyz
 </pre></div>
 </div>
-</div>
-</div>
+</section>
+</section>
 
 
            </div>
-           
           </div>
-          <footer>
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="conf.html" class="btn btn-neutral float-right" title="Configuration module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="links.html" class="btn btn-neutral float-left" title="GitHub Repository" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="conf.html" class="btn btn-neutral float-right" title="Configuration module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
 
   <div role="contentinfo">
-    <p>
-        &#169; Copyright 2019, Pascal Audet.
-
-    </p>
+    <p>&#169; Copyright 2019, Pascal Audet.</p>
   </div>
-    
-    
-    
-    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
-    
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    
-    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
 
 </footer>
         </div>
       </div>
-
     </section>
-
   </div>
-  
-
-  <script type="text/javascript">
+  <script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>
-
-  
-  
-    
-   
+  </script> 
 
 </body>
 </html>

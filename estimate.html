@@ -1,95 +1,48 @@
 
 
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="./">
 <head>
-  <meta charset="utf-8" />
-  
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  
-  <title>Estimate functions &mdash; plateflex 0.1.0 documentation</title>
-  
+  <title>Estimate functions &mdash; plateflex 0.1.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
 
   
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-
-  
-  
-
-  
-  
-
-  
-
-  
-  <!--[if lt IE 9]>
-    <script src="_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-        <script src="_static/jquery.js"></script>
-        <script src="_static/underscore.js"></script>
-        <script src="_static/doctools.js"></script>
-    
-    <script type="text/javascript" src="_static/js/theme.js"></script>
-
-    
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=a58bc63e"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Plotting functions" href="plotting.html" />
     <link rel="prev" title="Grid Classes" href="classes.html" /> 
 </head>
 
-<body class="wy-body-for-nav">
-
-   
+<body class="wy-body-for-nav"> 
   <div class="wy-grid-for-nav">
-    
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-          
 
           
-            <a href="index.html" class="icon icon-home"> plateflex
           
-
-          
-            
-            <img src="_static/logo_plateflex_small.png" class="logo" alt="Logo"/>
-          
+          <a href="index.html" class="icon icon-home">
+            plateflex
+              <img src="_static/logo_plateflex_small.png" class="logo" alt="Logo"/>
           </a>
-
-          
-            
-            
-          
-
-          
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
 </div>
-
-          
-        </div>
-
-        
-        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-          
-            
-            
-              
-            
-            
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Quick Links</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="links.html">GitHub Repository</a></li>
@@ -107,7 +60,14 @@
 <li class="toctree-l1"><a class="reference internal" href="conf.html">Configuration module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="classes.html">Grid Classes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="classes.html#project-class">Project Class</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Estimate functions</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Estimate functions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#plateflex.estimate.bayes_estimate_cell"><code class="docutils literal notranslate"><span class="pre">bayes_estimate_cell()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#plateflex.estimate.get_bayes_estimates"><code class="docutils literal notranslate"><span class="pre">get_bayes_estimates()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#plateflex.estimate.L2_estimate_cell"><code class="docutils literal notranslate"><span class="pre">L2_estimate_cell()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#plateflex.estimate.get_L2_estimates"><code class="docutils literal notranslate"><span class="pre">get_L2_estimates()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#plateflex.estimate.real_xspec_functions"><code class="docutils literal notranslate"><span class="pre">real_xspec_functions()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="plotting.html">Plotting functions</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Jupyter Notebooks</span></p>
@@ -121,73 +81,32 @@
 <li class="toctree-l1"><a class="reference external" href="https://github.com/paudetseis/PlateFlex/blob/master/plateflex/examples/Notebooks/Ex7_full_suite_NW_Pacific.ipynb">Example 7: Full suite for NW Pacific</a></li>
 </ul>
 
-            
-          
         </div>
-        
       </div>
     </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
-
-      
-      <nav class="wy-nav-top" aria-label="top navigation">
-        
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="index.html">plateflex</a>
-        
       </nav>
 
-
       <div class="wy-nav-content">
-        
         <div class="rst-content">
-        
-          
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div role="navigation" aria-label="breadcrumbs navigation">
-
+          <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-    
-      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-        
-      <li>Estimate functions</li>
-    
-    
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Estimate functions</li>
       <li class="wy-breadcrumbs-aside">
-        
-          
             <a href="_sources/estimate.rst.txt" rel="nofollow"> View page source</a>
-          
-        
       </li>
-    
   </ul>
-
-  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
-            
-  <div class="section" id="module-plateflex.estimate">
-<span id="estimate-functions"></span><h1>Estimate functions<a class="headerlink" href="#module-plateflex.estimate" title="Permalink to this headline">¶</a></h1>
+             
+  <section id="module-plateflex.estimate">
+<span id="estimate-functions"></span><h1>Estimate functions<a class="headerlink" href="#module-plateflex.estimate" title="Link to this heading"></a></h1>
 <p>This <a class="reference internal" href="getting_started.html#module-plateflex" title="plateflex"><code class="xref py py-mod docutils literal notranslate"><span class="pre">plateflex</span></code></a> module contains the following functions:</p>
 <ul class="simple">
 <li><p><a class="reference internal" href="#plateflex.estimate.bayes_estimate_cell" title="plateflex.estimate.bayes_estimate_cell"><code class="xref py py-func docutils literal notranslate"><span class="pre">bayes_estimate_cell()</span></code></a>:
@@ -205,7 +124,7 @@ Explore the output the non-linear inversion</p></li>
 Calculate the analytical admittance and coherence functions.</p></li>
 </ul>
 <p>Internal functions are also available to define predicted admittance and coherence data
-with <code class="docutils literal notranslate"><span class="pre">theano</span></code> decorators to be incorporated as <code class="docutils literal notranslate"><span class="pre">pymc</span></code> variables. These functions are
+with <code class="docutils literal notranslate"><span class="pre">pytensor</span></code> decorators to be incorporated as <code class="docutils literal notranslate"><span class="pre">pymc</span></code> variables. These functions are
 used within <a class="reference internal" href="classes.html#plateflex.classes.Project" title="plateflex.classes.Project"><code class="xref py py-class docutils literal notranslate"><span class="pre">Project</span></code></a> methods as with <a class="reference internal" href="plotting.html#module-plateflex.plotting" title="plateflex.plotting"><code class="xref py py-mod docutils literal notranslate"><span class="pre">plotting</span></code></a>
 functions.</p>
 <div class="admonition note">
@@ -218,11 +137,11 @@ otherwise asymptotically identical (i.e., given infinite sampling of the posteri
 </div>
 <dl class="py function">
 <dt class="sig sig-object py" id="plateflex.estimate.bayes_estimate_cell">
-<span class="sig-prename descclassname"><span class="pre">plateflex.estimate.</span></span><span class="sig-name descname"><span class="pre">bayes_estimate_cell</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">k</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">adm</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eadm</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">coh</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ecoh</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alph</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'joint'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#plateflex.estimate.bayes_estimate_cell" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">plateflex.estimate.</span></span><span class="sig-name descname"><span class="pre">bayes_estimate_cell</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">k</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">adm</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eadm</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">coh</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ecoh</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alph</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'joint'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#plateflex.estimate.bayes_estimate_cell" title="Link to this definition"></a></dt>
 <dd><p>Function to estimate the parameters of the flexural model at a single cell location
 of the input grids.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>k</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code>) – 1D array of wavenumbers</p></li>
 <li><p><strong>adm</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code>) – 1D array of wavelet admittance</p></li>
@@ -233,7 +152,7 @@ of the input grids.</p>
 <li><p><strong>atype</strong> (<em>str</em><em>, </em><em>optional</em>) – Whether to use the admittance (<cite>‘admit’</cite>), coherence (<cite>‘coh’</cite>) or both (<cite>‘joint’</cite>)</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><dl>
 <dt>(tuple): Tuple containing:</dt><dd><ul>
 <li><dl>
@@ -261,16 +180,16 @@ of the input grids.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="plateflex.estimate.get_bayes_estimates">
-<span class="sig-prename descclassname"><span class="pre">plateflex.estimate.</span></span><span class="sig-name descname"><span class="pre">get_bayes_estimates</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">summary</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">map_estimate</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#plateflex.estimate.get_bayes_estimates" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">plateflex.estimate.</span></span><span class="sig-name descname"><span class="pre">get_bayes_estimates</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">summary</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">map_estimate</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#plateflex.estimate.get_bayes_estimates" title="Link to this definition"></a></dt>
 <dd><p>Returns digestible estimates from the Posterior distributions.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>summary</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">DataFrame</span></code>) – Summary statistics from Posterior distributions</p></li>
 <li><p><strong>map_estimate</strong> (<em>dict</em>) – Container for Maximum a Posteriori (MAP) estimates</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><dl class="simple">
 <dt>(tuple): tuple containing:</dt><dd><ul class="simple">
 <li><p>mean_te (float) : Mean value of elastic thickness <code class="docutils literal notranslate"><span class="pre">Te</span></code> from posterior (km)</p></li>
@@ -298,11 +217,11 @@ of the input grids.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="plateflex.estimate.L2_estimate_cell">
-<span class="sig-prename descclassname"><span class="pre">plateflex.estimate.</span></span><span class="sig-name descname"><span class="pre">L2_estimate_cell</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">k</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">adm</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eadm</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">coh</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ecoh</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alph</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'joint'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#plateflex.estimate.L2_estimate_cell" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">plateflex.estimate.</span></span><span class="sig-name descname"><span class="pre">L2_estimate_cell</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">k</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">adm</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eadm</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">coh</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ecoh</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alph</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'joint'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#plateflex.estimate.L2_estimate_cell" title="Link to this definition"></a></dt>
 <dd><p>Function to estimate the parameters of the flexural model at a single cell location
 of the input grids.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>k</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code>) – 1D array of wavenumbers</p></li>
 <li><p><strong>adm</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code>) – 1D array of wavelet admittance</p></li>
@@ -313,7 +232,7 @@ of the input grids.</p>
 <li><p><strong>atype</strong> (<em>str</em><em>, </em><em>optional</em>) – Whether to use the admittance (<cite>‘admit’</cite>), coherence (<cite>‘coh’</cite>) or both (<cite>‘joint’</cite>)</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><dl>
 <dt>(tuple): Tuple containing:</dt><dd><ul>
 <li><dl>
@@ -331,13 +250,13 @@ of the input grids.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="plateflex.estimate.get_L2_estimates">
-<span class="sig-prename descclassname"><span class="pre">plateflex.estimate.</span></span><span class="sig-name descname"><span class="pre">get_L2_estimates</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">summary</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#plateflex.estimate.get_L2_estimates" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">plateflex.estimate.</span></span><span class="sig-name descname"><span class="pre">get_L2_estimates</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">summary</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#plateflex.estimate.get_L2_estimates" title="Link to this definition"></a></dt>
 <dd><p>Returns digestible estimates from the L2 estimates.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>summary</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">DataFrame</span></code>) – Summary statistics from Posterior distributions</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><dl class="simple">
 <dt>(tuple): tuple containing:</dt><dd><ul class="simple">
 <li><p>mean_te (float) : Mean value of elastic thickness from posterior (km)</p></li>
@@ -357,11 +276,11 @@ of the input grids.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="plateflex.estimate.real_xspec_functions">
-<span class="sig-prename descclassname"><span class="pre">plateflex.estimate.</span></span><span class="sig-name descname"><span class="pre">real_xspec_functions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">k</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Te</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">F</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.5707963267948966</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#plateflex.estimate.real_xspec_functions" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">plateflex.estimate.</span></span><span class="sig-name descname"><span class="pre">real_xspec_functions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">k</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Te</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">F</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.5707963267948966</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#plateflex.estimate.real_xspec_functions" title="Link to this definition"></a></dt>
 <dd><p>Calculate analytical expressions for the real component of admittance
 and coherence functions.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>k</strong> (<em>np.ndarray</em>) – Wavenumbers (rad/m)</p></li>
 <li><p><strong>Te</strong> (<em>float</em>) – Effective elastic thickness (km)</p></li>
@@ -369,7 +288,7 @@ and coherence functions.</p>
 <li><p><strong>alpha</strong> (<em>float</em><em>, </em><em>optional</em>) – Phase difference between initial applied loads (rad)</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><dl class="simple">
 <dt>(tuple): tuple containing:</dt><dd><ul class="simple">
 <li><p>admittance (<code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code>): Real admittance function (shape: <code class="docutils literal notranslate"><span class="pre">len(k)</span></code>)</p></li>
@@ -382,54 +301,37 @@ and coherence functions.</p>
 </dl>
 </dd></dl>
 
-</div>
+</section>
 
 
            </div>
-           
           </div>
-          <footer>
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="plotting.html" class="btn btn-neutral float-right" title="Plotting functions" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="classes.html" class="btn btn-neutral float-left" title="Grid Classes" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="plotting.html" class="btn btn-neutral float-right" title="Plotting functions" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
 
   <div role="contentinfo">
-    <p>
-        &#169; Copyright 2019, Pascal Audet.
-
-    </p>
+    <p>&#169; Copyright 2019, Pascal Audet.</p>
   </div>
-    
-    
-    
-    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
-    
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    
-    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
 
 </footer>
         </div>
       </div>
-
     </section>
-
   </div>
-  
-
-  <script type="text/javascript">
+  <script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>
-
-  
-  
-    
-   
+  </script> 
 
 </body>
 </html>
