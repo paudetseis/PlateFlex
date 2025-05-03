@@ -78,6 +78,7 @@ py.extension_module('cpwt',
 py.install_sources(
   'plateflex/classes.py',
   'plateflex/conf.py',
+  'plateflex/doc.py',
   'plateflex/estimate.py',
   'plateflex/plotting.py',
   'plateflex/__init__.py',

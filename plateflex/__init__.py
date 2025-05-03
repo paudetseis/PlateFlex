@@ -55,7 +55,6 @@ Dependencies
 ++++++++++++
 
 - A fortran compiler
-- ``numpy`` 
 - ``pymc`` 
 - ``seaborn``
 - ``scikit-image`` (https://scikit-image.org)
