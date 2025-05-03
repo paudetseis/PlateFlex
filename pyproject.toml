@@ -28,9 +28,3 @@ classifiers = [
 Homepage = "https://github.com/paudetseis/PlateFlex"
 Documentation = "https://paudetseis.github.io/PlateFlex"
 "Bug Tracker" = "https://github.com/paudetseis/PlateFlex/issues"
-
-[tool.meson-python]
-package-data = {
-    "plateflex": ["examples/data/*.txt",
-    "examples/Notebooks/*.py"]
-    }
