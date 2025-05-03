@@ -33,13 +33,13 @@ import os
 
 def install_doc(path="./PlateFlex-Examples"):
     """
-    Install the examples for Telewavesim in the given location.
+    Install the examples for PlateFlex in the given location.
 
     WARNING: If the path exists, the files will be written into the path
     and will overwrite any existing files with which they collide. The default
-    path ("./Telewavesim-Examples") is chosen to make collision less likely/problematic
+    path ("./PlateFlex-Examples") is chosen to make collision less likely/problematic
 
-    The documentation for Telewavesim is in the form of jupyter notebooks.
+    Example applications of PlateFlex are in the form of jupyter notebooks.
 
     """
 
