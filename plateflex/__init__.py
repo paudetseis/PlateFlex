@@ -99,13 +99,13 @@ the flexural parameters over whole grids. The Notebooks describe how to produce 
 match those published in Audet (2014) and Kirby and Swain. (2009) for North America, as well
 as those of Kalnins and Watts (2009) for the NW Pacific.
 
-After installing ``plateflex``, these notebooks can be locally installed (i.e., in a local folder ``Examples``) 
-from the package by running:
+To install the notebooks, you will need to clone the repository
 
-.. sourcecode:: python
+.. sourcecode:: bash
 
-    from plateflex import doc
-    doc.install_doc(path='Examples')
+    git clone https://github.com/paudetseis/PlateFlex.git
+
+The Notebooks are in `PlateFlex/plateflex/examples/Notebooks`
 
 To run the notebooks you will have to further install ``jupyter``:
 
@@ -117,11 +117,7 @@ Then:
 
 .. sourcecode:: bash
 
-    unzip data.zip
-    cd Examples
     jupyter notebook
-
-You can then save the notebooks as ``python`` scripts and you should be good to go!
 
 """
 
