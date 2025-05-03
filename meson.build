@@ -11,8 +11,8 @@ project('plateflex', 'c',
 
 add_languages('fortran', native: false)
 
-#fc = meson.get_compiler('gfortran')
-#cc = meson.get_compiler('clang')
+#fc = meson.get_compiler('fortran')
+#cc = meson.get_compiler('c')
 
 py_mod = import('python')
 py = py_mod.find_installation()
