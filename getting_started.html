@@ -181,23 +181,19 @@ it is recommended to install <cite>fortran-compiler</cite> in the <cite>pflex</c
 the flexural parameters over whole grids. The Notebooks describe how to produce pulication quality results that closely
 match those published in Audet (2014) and Kirby and Swain. (2009) for North America, as well
 as those of Kalnins and Watts (2009) for the NW Pacific.</p>
-<p>After installing <code class="docutils literal notranslate"><span class="pre">plateflex</span></code>, these notebooks can be locally installed (i.e., in a local folder <code class="docutils literal notranslate"><span class="pre">Examples</span></code>)
-from the package by running:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">plateflex</span><span class="w"> </span><span class="kn">import</span> <span class="n">doc</span>
-<span class="n">doc</span><span class="o">.</span><span class="n">install_doc</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s1">&#39;Examples&#39;</span><span class="p">)</span>
+<p>To install the notebooks, you will need to clone the repository</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/paudetseis/PlateFlex.git
 </pre></div>
 </div>
+<p>The Notebooks are in <cite>PlateFlex/plateflex/examples/Notebooks</cite></p>
 <p>To run the notebooks you will have to further install <code class="docutils literal notranslate"><span class="pre">jupyter</span></code>:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>conda<span class="w"> </span>install<span class="w"> </span>jupyter
 </pre></div>
 </div>
 <p>Then:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>unzip<span class="w"> </span>data.zip
-<span class="nb">cd</span><span class="w"> </span>Examples
-jupyter<span class="w"> </span>notebook
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>jupyter<span class="w"> </span>notebook
 </pre></div>
 </div>
-<p>You can then save the notebooks as <code class="docutils literal notranslate"><span class="pre">python</span></code> scripts and you should be good to go!</p>
 </section>
 </section>
 <section id="global-variables">
