@@ -177,28 +177,30 @@ it is recommended to install <cite>fortran-compiler</cite> in the <cite>pflex</c
 </section>
 <section id="jupyter-notebooks">
 <h2>Jupyter Notebooks<a class="headerlink" href="#jupyter-notebooks" title="Link to this heading"></a></h2>
-<p>Included in the documentation is a set of Jupyter Notebooks, which give examples on how to create <code class="docutils literal notranslate"><span class="pre">Grid</span></code> objects and estimate
-the flexural parameters over whole grids. The Notebooks describe how to produce pulication quality results that closely
-match those published in Audet (2014) and Kirby and Swain. (2009) for North America, as well
+<p>Included in this package is a set of Jupyter Notebooks and accompanying data,
+which give examples on how to create <code class="docutils literal notranslate"><span class="pre">Grid</span></code> objects and estimate
+the flexural parameters over whole grids. The Notebooks describe how to
+produce pulication quality results that closely match those published
+in Audet (2014) and Kirby and Swain (2009) for North America, as well
 as those of Kalnins and Watts (2009) for the NW Pacific.</p>
-<p>To install the notebooks locally, you will need to clone the repository</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/paudetseis/PlateFlex.git
+<p>These data and notebooks can be locally installed
+(i.e., in a local folder <code class="docutils literal notranslate"><span class="pre">Examples</span></code>) from the package
+by typing in a <code class="docutils literal notranslate"><span class="pre">python</span></code> window:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">plateflex.doc</span><span class="w"> </span><span class="kn">import</span> <span class="n">install_doc</span>
+<span class="n">install_doc</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s1">&#39;Examples&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>The Notebooks are in <cite>PlateFlex/plateflex/examples/Notebooks</cite></p>
-<p>To run the notebooks you will have to further install <code class="docutils literal notranslate"><span class="pre">jupyter</span></code>:</p>
+<p>To view and run the notebooks you will have to further install <code class="docutils literal notranslate"><span class="pre">jupyter</span></code>.
+From the terminal, type:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>conda<span class="w"> </span>install<span class="w"> </span>jupyter
 </pre></div>
 </div>
-<p>Then:</p>
+<p>Followed by:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>jupyter<span class="w"> </span>notebook
 </pre></div>
 </div>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>It is recommended to copy the notebooks from the PlateFlex repository
-to some local folder before running them.</p>
-</div>
+<p>You can then save the notebooks as <code class="docutils literal notranslate"><span class="pre">python</span></code> scripts,
+check out the model files and set up your own examples.</p>
 </section>
 </section>
 <section id="global-variables">
