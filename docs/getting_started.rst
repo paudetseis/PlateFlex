@@ -1,4 +1,4 @@
-
+==
 .. figure:: ../plateflex/examples/picture/plateflex_logo.png
    :align: center
 
