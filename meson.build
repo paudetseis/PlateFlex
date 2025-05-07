@@ -80,7 +80,31 @@ py.install_sources(
   'plateflex/conf.py',
   'plateflex/estimate.py',
   'plateflex/plotting.py',
+  'plateflex/doc.py',
   'plateflex/__init__.py',
   pure: false,
   subdir: 'plateflex'
   )
+
+install_data(
+    'plateflex/examples/data/Bathy_PAC.xyz',
+    'plateflex/examples/data/Freeair_PAC.xyz',
+    'plateflex/examples/data/crustal_thickness_PAC.xyz',
+    'plateflex/examples/data/Topo_NA.xyz',
+    'plateflex/examples/data/Freeair_NA.xyz',
+    'plateflex/examples/data/Bouguer_NA.xyz',
+    'plateflex/examples/data/crustal_density_NA.xyz',
+    'plateflex/examples/data/crustal_thickness_NA.xyz',
+    install_dir: py.get_install_dir(pure: false) / 'plateflex/examples/data',
+)
+install_data(
+    'plateflex/examples/Notebooks/Ex1_making_grids.ipynb',
+    'plateflex/examples/Notebooks/Ex2_wavelet_analysis.ipynb',
+    'plateflex/examples/Notebooks/Ex3_admittance_coherence.ipynb',
+    'plateflex/examples/Notebooks/Ex4_estimate_flex_parameters_cell.ipynb',
+    'plateflex/examples/Notebooks/Ex5_estimate_flex_parameters_grid.ipynb',
+    'plateflex/examples/Notebooks/Ex6_full_suite_North_America.ipynb',
+    'plateflex/examples/Notebooks/Ex7_full_suite_NW_Pacific.ipynb',
+    install_dir: py.get_install_dir(pure: false) / 'plateflex/examples/Notebooks',
+
+)
