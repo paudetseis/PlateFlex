@@ -26,9 +26,9 @@ Jupyter Notebooks and example data to a local directory.
 
 """
 
-import pkg_resources as _pkg_resources
-from distutils import dir_util as _dir_util
 import os
+import shutil
+import importlib.resources as resources
 
 
 def install_doc(path="./PlateFlex-Examples"):
@@ -37,22 +37,20 @@ def install_doc(path="./PlateFlex-Examples"):
 
     WARNING: If the path exists, the files will be written into the path
     and will overwrite any existing files with which they collide. The default
-    path ("./PlateFlex-Examples") is chosen to make collision less likely/problematic
+    path ("./PlateFlex-Examples") is chosen to make collision less
+    likely/problematic.
 
     Example applications of PlateFlex are in the form of jupyter notebooks.
-
     """
 
-    Notebooks_Path = _pkg_resources.resource_filename(
-        "plateflex", "examples")
-
-    ct = _dir_util.copy_tree(
-        Notebooks_Path,
-        path,
-        preserve_mode=1,
-        preserve_times=1,
-        preserve_symlinks=1,
-        update=0,
-        verbose=1,
-        dry_run=0,
-    )
+    # Access the package resources
+    # Make sure 'plateflex' is a package and 'examples' is a subdirectory/package
+    with resources.path("plateflex", "examples") as notebooks_path:
+        # Use shutil.copytree() to copy directory contents
+        if os.path.exists(path):
+            raise FileExistsError(f"The target directory {path} already exists.")
+        shutil.copytree(
+            notebooks_path,
+            path,
+            copy_function=shutil.copy2,
+        )
